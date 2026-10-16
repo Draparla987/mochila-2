@@ -1,6 +1,6 @@
 // Guarda la app en el dispositivo para que funcione sin conexión.
-const CACHE='mochila-2c169bb11c', FONTS='mochila-fonts';
-const CORE=["./", "index.html", "manifest.webmanifest", "img/cono.png", "img/cuaderno.png", "img/ingles.png", "img/lectura.png", "img/lengua.png", "img/mates.png", "img/mochi-happy.png", "img/mochi-read.png", "img/mochi-think.png", "img/mochi-wave.png", "voz/cuentos.mp4", "voz/en.mp4", "voz/fra.mp4", "voz/num.mp4", "voz/pal.mp4", "voz/pre.mp4", "voz/pro.mp4", "voz/ui.mp4", "img/icon-180.png", "img/icon-192.png", "img/icon-512.png", "img/icon-maskable-512.png"];
+const CACHE='mochila-32465a9627', FONTS='mochila-fonts';
+const CORE=["./", "index.html", "manifest.webmanifest", "img/ciguena.png", "img/cono.png", "img/cuaderno.png", "img/explora-happy.png", "img/explora-look.png", "img/explora-wave.png", "img/ingles.png", "img/lectura.png", "img/lengua.png", "img/lince.png", "img/mapa.jpg", "img/mates.png", "img/mochi-happy.png", "img/mochi-read.png", "img/mochi-think.png", "img/mochi-wave.png", "voz/animales.mp4", "voz/cuentos.mp4", "voz/en.mp4", "voz/fra.mp4", "voz/num.mp4", "voz/pal.mp4", "voz/pre.mp4", "voz/pro.mp4", "voz/ui.mp4", "img/icon-180.png", "img/icon-192.png", "img/icon-512.png", "img/icon-maskable-512.png"];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!==FONTS).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{
