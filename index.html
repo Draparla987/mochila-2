@@ -649,15 +649,15 @@ function backupBox(){
     try{const d=JSON.parse(decodeURIComponent(escape(atob(inp.value.trim().replace(/^MOCHILA:/,'')))));
       if(!d||!Array.isArray(d.players)) throw 0; let n=0;
       d.players.forEach(p=>{if(!p||!p.id||!p.name)return;const cur=DB.players.find(x=>x.id===p.id);
-        if(cur){cur.stars=cur.stars||{};Object.entries(p.stars||{}).forEach(([k,v])=>{if((cur.stars[k]||0)<v)cur.stars[k]=v;});cur.read=[...new Set([...(cur.read||[]),...(p.read||[])])].slice(-90);}
-        else DB.players.push({id:String(p.id),name:String(p.name).slice(0,16),avatar:p.avatar||'🦊',stars:p.stars||{},read:p.read||[]});n++;});
+        if(cur){cur.stars=cur.stars||{};Object.entries(p.stars||{}).forEach(([k,v])=>{if((cur.stars[k]||0)<v)cur.stars[k]=v;});cur.read=[...new Set([...(cur.read||[]),...(p.read||[])])].slice(-90);cur.album=[...new Set([...(cur.album||[]),...(p.album||[])])];}
+        else DB.players.push({id:String(p.id),name:String(p.name).slice(0,16),avatar:p.avatar||'🦊',stars:p.stars||{},read:p.read||[],album:Array.isArray(p.album)?p.album:[]});n++;});
       if(!DB.cur&&DB.players.length)DB.cur=DB.players[0].id; save(); inp.value=''; make();
       say(`Listo: ${n} ${n===1?'jugador cargado':'jugadores cargados'}.`);
     }catch(e){say('Ese código no es válido. Cópialo entero, empezando por MOCHILA:',true);}
   };
   make();
   return h('div',{class:'backup'},h('h3',null,'Pasar el progreso a otro dispositivo'),
-    h('p',{style:'margin:0;color:var(--ink-soft)'},'Copia este código y pégalo en la Mochila del otro iPad o navegador. Las estrellas se suman; no se borra nada.'),
+    h('p',{style:'margin:0;color:var(--ink-soft)'},'Copia este código y pégalo en la Mochila del otro iPad o navegador. Las estrellas y los cromos se suman; no se borra nada.'),
     out,h('div',{class:'row'},h('button',{class:'btn',style:'--c:var(--mates)',onclick:copy},'Copiar código')),
     inp,h('div',{class:'row'},h('button',{class:'btn',style:'--c:var(--cono)',onclick:load},'Cargar código'),msg));
 }
