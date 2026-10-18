@@ -728,21 +728,29 @@ audioSessionPlayback();
 /* motor «html»: un reproductor para la voz y otro para efectos y música */
 const HA={};
 function haEl(ch){if(!HA[ch]){const a=new Audio();a.preload='auto';a.setAttribute('playsinline','');a.setAttribute('webkit-playsinline','');HA[ch]=a;}return HA[ch];}
-function haStop(ch){const a=HA[ch];if(!a)return;clearTimeout(a._t);a.onplaying=null;a._done=null;try{a.pause();}catch(e){}}
+function haStop(ch){const a=HA[ch];if(!a)return;clearInterval(a._t);a._done=null;try{a.pause();}catch(e){}}
+/* El final del trozo se decide mirando por dónde va el audio, no con un reloj: en el iPad el audio
+   puede tardar en arrancar o pararse un momento a cargar, y un reloj lo cortaba a media palabra. */
 function haPlay(ch,file,start,dur,onend){
   const a=haEl(ch); haStop(ch);
-  const done=()=>{if(a._done!==done)return;a._done=null;clearTimeout(a._t);a.onplaying=null;try{a.pause();}catch(e){} onend&&onend();};
+  const end=start+dur; let last=-1, still=0, moved=false;
+  const done=()=>{if(a._done!==done)return;a._done=null;clearInterval(a._t);try{a.pause();}catch(e){} onend&&onend();};
   a._done=done;
-  a.src=file+'#t='+start.toFixed(3)+','+(start+dur).toFixed(3);
-  a._t=setTimeout(done,(dur+2.5)*1000);
-  a.onplaying=()=>{clearTimeout(a._t);a._t=setTimeout(done,dur*1000+80);};
+  a.src=file+'#t='+start.toFixed(3)+','+end.toFixed(3);
+  a._t=setInterval(()=>{
+    const t=a.currentTime||0;
+    if(a.ended||t>=end-.02||(moved&&a.paused&&t>=end-.3)) return done();
+    if(!a.paused&&a.readyState>2&&t<start-.25){try{a.currentTime=start;}catch(e){}}
+    if(Math.abs(t-last)>.001){if(last>=0&&t>last)moved=true;last=t;still=0;}
+    else if((still+=40)>(moved?2500:6000)){dlog('html '+ch+': se quedó parado en '+t.toFixed(2));done();}
+  },40);
   try{const p=a.play();if(p&&p.catch)p.catch(e=>{dlog('html '+ch+': '+(e&&e.message||e));done();});}catch(e){dlog('html! '+e.message);done();}
 }
 let haUnlocked=false, stuckSince=0;
 function unlockAudio(){
   audioSessionPlayback();
   if(engine()==='html'){
-    if(!haUnlocked&&V.files.length){haUnlocked=true;['voice','fx'].forEach(ch=>haPlay(ch,V.files[0],0,.05));}
+    if(!haUnlocked&&V.files.length){haUnlocked=true;['voice','fx'].forEach(ch=>{if(!(HA[ch]&&HA[ch]._done)) haPlay(ch,V.files[0],0,.05);});}
     return;
   }
   if(actx&&actx.state==='interrupted'){if(!stuckSince) stuckSince=Date.now(); else if(Date.now()-stuckSince>1500){try{actx.close();}catch(e){} actx=null; stuckSince=0;}}
@@ -886,6 +894,7 @@ const rewardSay=sid=>`¡Enhorabuena! ¡Has conseguido todas las estrellas de ${S
 let cleanup=null, RUN=null, greeted=false;
 const SHOWN={};
 function mount(...nodes){
+  nodes=nodes.flat().filter(n=>n!=null&&n!==false);   // un hueco vacío no debe salir escrito como «null»
   if(cleanup){try{cleanup()}catch(e){} cleanup=null;}
   hideFb(); stopVoice(); stopSnd(); closeReward();
   const noTop=nodes[0]&&nodes[0].dataset&&nodes[0].dataset.notop;
@@ -965,10 +974,21 @@ function goNewPlayer(){
 }
 /* código de progreso: sirve para otro iPad y para pasar de Safari a la app de la pantalla de inicio,
    que en el iPad guardan sus datos por separado */
-const exportCode=()=>'MOCHILA:'+btoa(unescape(encodeURIComponent(JSON.stringify({v:1,players:DB.players}))));
+/* El código va sin palabras delante («MOCHILA:» parecía un enlace y el iPad lo cambiaba al pegarlo)
+   y solo con letras, números, - y _. Al leerlo se busca el código dentro de lo que se haya pegado. */
+const exportCode=()=>btoa(unescape(encodeURIComponent(JSON.stringify({v:1,players:DB.players})))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+function readCode(t){
+  t=t.replace(/-/g,'+').replace(/_/g,'/').replace(/[^A-Za-z0-9+/]/g,''); while(t.length%4) t+='=';
+  const d=JSON.parse(decodeURIComponent(escape(atob(t)))); if(!d||!Array.isArray(d.players)) throw new Error('código'); return d;
+}
+function findCode(txt){
+  let s=String(txt||''); try{if(/%[0-9a-f]{2}/i.test(s)) s=decodeURIComponent(s);}catch(e){}
+  const tries=[...(s.match(/[A-Za-z0-9+/_-]{16,}=*/g)||[]).sort((a,b)=>b.length-a.length),s.replace(/^[\s\S]*?mochila\s*:/i,'').replace(/\s+/g,'')];
+  for(const t of tries){try{return readCode(t);}catch(e){}}
+  throw new Error('código');
+}
 function importCode(txt){
-  const raw=String(txt||'').replace(/^[\s\S]*?MOCHILA:/,'').replace(/\s+/g,'');
-  const d=JSON.parse(decodeURIComponent(escape(atob(raw)))); if(!d||!Array.isArray(d.players)) throw new Error('código');
+  const d=findCode(txt);
   const arr=v=>Array.isArray(v)?v:[], norm=v=>String(v||'').trim().toLowerCase(); let n=0, last=null;
   d.players.forEach(p=>{if(!p||!p.id||!p.name) return;
     const cur=DB.players.find(x=>x.id===p.id)||DB.players.find(x=>norm(x.name)===norm(p.name));
@@ -984,13 +1004,13 @@ function importCode(txt){
 function copyText(t,ok,fail){try{navigator.clipboard.writeText(t).then(ok,fail);}catch(e){fail();}}
 function backupBox(){
   const out=h('textarea',{id:'backup-out',readonly:true,'aria-label':'Código de copia de seguridad'});
-  const inp=h('textarea',{id:'backup-in',placeholder:'Pega aquí el código del otro dispositivo','aria-label':'Pegar código'});
+  const inp=h('textarea',{id:'backup-in',placeholder:'Pega aquí el código del otro dispositivo','aria-label':'Pegar código',autocapitalize:'off',autocorrect:'off',autocomplete:'off',spellcheck:'false'});
   const msg=h('span',{class:'msg','aria-live':'polite'});
   const make=()=>{try{out.value=exportCode();}catch(e){out.value='';}};
   const say=(t,err)=>{msg.className='msg'+(err?' err':'');msg.textContent=t;};
   const copy=()=>{make();copyText(out.value,()=>say('Código copiado.'),()=>{out.select();say('Selecciona el código y cópialo.');});};
   const load=()=>{try{const n=importCode(inp.value);inp.value='';make();say(`Listo: ${n} ${n===1?'jugador cargado':'jugadores cargados'}.`);}
-    catch(e){say('Ese código no es válido. Cópialo entero, empezando por MOCHILA:',true);}};
+    catch(e){say('Ese código no es válido. Cópialo entero, sin dejarte ningún trozo.',true);}};
   make();
   return h('div',{class:'backup'},h('h3',null,'Pasar el progreso a otro dispositivo'),
     h('p',{style:'margin:0;color:var(--ink-soft)'},'Copia este código y pégalo en la Mochila del otro iPad o navegador. Las estrellas, los cromos y los trofeos se suman; no se borra nada.'),
@@ -1013,12 +1033,12 @@ function installCard(){
 }
 /* en la app de la pantalla de inicio: traer las estrellas copiadas en Safari */
 function bringPanel(after,small){
-  const ta=h('textarea',{class:'codebox',placeholder:'Mantén pulsado aquí y elige «Pegar»','aria-label':'Pegar el código de Safari'});
+  const ta=h('textarea',{class:'codebox',placeholder:'Mantén pulsado aquí y elige «Pegar»','aria-label':'Pegar el código de Safari',autocapitalize:'off',autocorrect:'off',autocomplete:'off',spellcheck:'false'});
   const msg=h('p',{class:'msg','aria-live':'polite'}), man=h('div',{class:'bring-man',hidden:true},ta,h('button',{type:'button',class:'btn',style:'--c:var(--cono)',onclick:()=>load(ta.value)},'Cargar'));
   const say=(t,err)=>{msg.className='msg'+(err?' err':'');msg.textContent=t;};
   function load(t){try{const n=importCode(t);sfx.win();say(`¡Listo! ${n===1?'Ya están tus estrellas.':'Ya están las estrellas de '+n+' jugadores.'}`);setTimeout(after,900);}
     catch(e){say('No encuentro el código. En Safari, toca «Copiar mis estrellas» y vuelve aquí.',true);man.hidden=false;}}
-  const paste=async()=>{sfx.tap();try{const t=await navigator.clipboard.readText();if(t&&t.includes('MOCHILA:')) return load(t);}catch(e){}
+  const paste=async()=>{sfx.tap();try{const t=await navigator.clipboard.readText();if(t&&t.trim()) return load(t);}catch(e){}
     man.hidden=false;try{ta.focus();}catch(e){} say('Mantén pulsado el recuadro, elige «Pegar» y toca «Cargar».');};
   return h('div',{class:'panel bring'+(small?' small':'')},
     h('h3',null,'📥 ¿Ya jugabas en Safari?'),
@@ -1520,7 +1540,8 @@ defGame({id:'lectora',subject:'lengua',icon:'📗',title:'Comprensión lectora',
     if(lvl>1){
       const peek=lvl===2?h('button',{class:'btn ghost',onclick:()=>{run.missed=true;peek.replaceWith(h('article',{class:'readtext'},h('h3',null,t.title),h('p',null,t.text)));}},'📖 Mirar el cuento'):null;
       stage.append(qTag(q),h('div',{class:'with-say'},h('div',{class:'q-prompt'},q.q),sayBtn(q.q)),
-        choices(shuffle([q.a,...q.o]),q.a,ctx,{wide:true,explain:q.why||'',hint:q.t?'Recuerda el cuento y piensa en las pistas.':'Intenta recordar qué decía el cuento.'}),peek);
+        choices(shuffle([q.a,...q.o]),q.a,ctx,{wide:true,explain:q.why||'',hint:q.t?'Recuerda el cuento y piensa en las pistas.':'Intenta recordar qué decía el cuento.'}));
+      if(peek) stage.append(peek);
       instr(q.q); return;
     }
     stage.append(pane2([h('article',{class:'readtext'},h('h3',null,t.title),h('p',null,t.text)),listenBtn(t.text)],[qTag(q),
@@ -1550,8 +1571,8 @@ defGame({id:'oral',subject:'lengua',icon:'👂',title:'Comprensión oral',desc:'
   make(run){return run.data.t.qs[run.i];},
   render(q,stage,ctx,run){const t=run.data.t;
     stage.append(qTag(q),h('div',{class:'with-say'},h('div',{class:'q-prompt'},q.q),sayBtn(q.q)),
-      choices(shuffle([q.a,...q.o]),q.a,ctx,{wide:true,explain:q.why||'',hint:(run.lvl||1)===3?'Intenta recordar qué decía el cuento.':'Escucha el cuento otra vez con el botón de abajo.'}),
-      (run.lvl||1)===3?null:listenBtn(t.text,'🔊 Escuchar el cuento otra vez'));
+      choices(shuffle([q.a,...q.o]),q.a,ctx,{wide:true,explain:q.why||'',hint:(run.lvl||1)===3?'Intenta recordar qué decía el cuento.':'Escucha el cuento otra vez con el botón de abajo.'}));
+    if((run.lvl||1)<3) stage.append(listenBtn(t.text,'🔊 Escuchar el cuento otra vez'));
     if(run.i===0) instr(SAYL.oral3,q.q); else instr(q.q);
   }});
 </script>
