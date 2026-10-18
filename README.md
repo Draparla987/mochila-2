@@ -1,6 +1,6 @@
 # Mochila de 2º
 
-Juegos para repasar en casa lo que se trabaja en 2º de Primaria, con Mochi como guía: ortografía, comprensión lectora y oral, números hasta el 999, sumas y restas con llevadas, tablas, redondeo, problemas, animales vertebrados e invertebrados, inglés y lectura diaria.
+Juegos para repasar en casa lo que se trabaja en 2º de Primaria, con Mochi como guía: ortografía, comprensión lectora y oral, números hasta el 999, sumas y restas con llevadas, tablas, redondeo, problemas, animales del mundo (dónde viven, qué comen, cómo nacen, sus crías y un álbum de cromos), inglés, arte y música (colores, formas, instrumentos y sonidos) y lectura diaria. Cada asignatura tiene una barra de estrellas y, al completarla, un trofeo con su vídeo de premio.
 
 **Abrir la app:** https://draparla987.github.io/mochila-2/
 

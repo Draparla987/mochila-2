@@ -22,7 +22,7 @@
 :root{
   --sky1:#BDE8FF; --sky2:#F1FAFF; --cloud:rgba(255,255,255,.75);
   --ink:#232A4D; --ink-soft:#5C6589; --card:#FFFFFF; --line:#DDE6F4; --paper:#F7FAFF; --rule:#D8E6F6;
-  --lengua:#F04F59; --mates:#3570F0; --cono:#1FA862; --ingles:#8456F0; --lectura:#F07A12; --cuaderno:#0AA3B2;
+  --lengua:#F04F59; --mates:#3570F0; --cono:#1FA862; --ingles:#8456F0; --lectura:#F07A12; --arte:#DE3F96;
   --sun:#FFC93C; --on-c:#FFFFFF;
   --ok:#1FA65A; --ok-bg:#E3F7EA; --ko:#EC4256; --ko-bg:#FFE9EC; --star:#FFB400; --star-off:#D7E0EE;
   --shadow:rgba(35,42,77,.16);
@@ -108,7 +108,32 @@ h1,h2,h3{font-family:var(--f-display); line-height:1.08; margin:0; text-wrap:bal
 .subj-blurb{font-size:1rem; line-height:1.3; padding-right:110px; opacity:.96; flex:1}
 .subj-prog{display:flex; align-items:center; gap:10px; font-family:var(--f-display); font-weight:800; font-size:1.05rem}
 .bar{flex:1; height:14px; border-radius:8px; background:rgba(0,0,0,.18); overflow:hidden; box-shadow:inset 0 2px 0 rgba(0,0,0,.12)}
-.bar i{display:block; height:100%; min-width:14px; background:linear-gradient(180deg,#FFE27A,var(--star)); border-radius:8px}
+.bar i{display:block; height:100%; min-width:14px; background:linear-gradient(180deg,#FFE27A,var(--star)); border-radius:8px; transition:width 1.2s cubic-bezier(.3,1.1,.5,1) .15s}
+.subj-prog b{font-weight:800; font-variant-numeric:tabular-nums}
+.subj-prog .st{color:#FFE27A; text-shadow:0 2px 0 rgba(0,0,0,.2); font-size:1.25rem; margin-left:-6px}
+.subj-prog.grow b,.subj-prog.grow .st{display:inline-block; animation:bounce .6s .9s}
+.subj-prog.full .bar i{background:linear-gradient(90deg,#FFE27A,#FFF6C9,#FFB400,#FFE27A); background-size:300% 100%; animation:gold 3s linear infinite}
+@keyframes gold{to{background-position:-300% 0}}
+.subj-cup{position:absolute; left:-12px; top:-22px; font-size:2.6rem; line-height:1; filter:drop-shadow(0 4px 4px rgba(0,0,0,.25)); animation:float 3s ease-in-out infinite}
+.coin.pop{animation:bounce .6s} .coin.pop::before{animation:starpop2 .7s cubic-bezier(.3,1.6,.5,1)}
+@keyframes starpop2{50%{transform:scale(1.5) rotate(25deg)}}
+.shelf{margin-top:34px}
+.shelf-head{display:flex; align-items:center; gap:12px; margin-bottom:12px}
+.shelf-head h2{font-size:1.7rem}
+.shelf-row{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:12px; padding:16px 16px 22px; border-radius:var(--r);
+  background:linear-gradient(180deg,color-mix(in srgb,#D9A066 32%,var(--card)),color-mix(in srgb,#C68A50 48%,var(--card)));
+  box-shadow:inset 0 -12px 0 color-mix(in srgb,#8F5D2E 60%,var(--card)),0 10px 22px var(--shadow)}
+.trophy{position:relative; display:flex; flex-direction:column; align-items:center; gap:4px; min-width:0; border:0; border-radius:20px; padding:12px 6px 10px; background:var(--card); box-shadow:inset 0 -5px 0 var(--line),0 4px 10px var(--shadow)}
+.trophy:active{transform:translateY(3px) scale(.98)}
+.trophy .cup{font-size:2.6rem; line-height:1; filter:grayscale(1) opacity(.3)}
+.trophy img{position:absolute; right:2px; top:2px; width:44px; height:44px; object-fit:contain; filter:grayscale(1) opacity(.45)}
+.trophy .t-name{font-family:var(--f-display); font-weight:800; font-size:.98rem; line-height:1.05; text-align:center; overflow-wrap:anywhere}
+.trophy .t-sub{font-size:.85rem; font-weight:700; color:var(--ink-soft); font-variant-numeric:tabular-nums}
+.trophy.own{background:linear-gradient(180deg,color-mix(in srgb,var(--star) 22%,var(--card)),var(--card)); box-shadow:inset 0 -5px 0 color-mix(in srgb,var(--star) 55%,var(--line)),0 0 0 3px var(--star),0 6px 14px var(--shadow)}
+.trophy.own .cup{filter:drop-shadow(0 4px 3px rgba(0,0,0,.2)); animation:float 3s ease-in-out infinite}
+.trophy.own img{filter:none}
+.trophy.own .t-sub{color:var(--c)}
+@media (max-width:860px){ .shelf-row{grid-template-columns:repeat(3,minmax(0,1fr))} }
 .families{margin-top:30px; background:var(--card); border-radius:var(--r); padding:4px 22px; box-shadow:0 5px 0 var(--line),0 10px 22px var(--shadow)}
 .families summary{font-family:var(--f-display); font-weight:800; font-size:1.25rem; padding-block:14px; cursor:pointer}
 .families ul{margin:0 0 14px; padding-left:20px; max-width:72ch}
@@ -122,6 +147,11 @@ h1,h2,h3{font-family:var(--f-display); line-height:1.08; margin:0; text-wrap:bal
 .banner p{margin:2px 0 0; font-size:1.1rem; opacity:.95}
 .banner img{position:absolute; right:6px; bottom:-6px; width:180px; height:180px; object-fit:contain; filter:drop-shadow(0 8px 8px rgba(0,0,0,.2))}
 .banner .round{background:rgba(255,255,255,.92); color:var(--ink); box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.banner-txt{flex:1; min-width:0}
+.banner-prog{display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; margin-top:10px; max-width:480px}
+.banner-prog .subj-prog{flex:1; min-width:200px}
+.cupbtn{min-height:46px; border:0; border-radius:999px; padding:4px 16px; background:#fff; color:#232A4D; font-family:var(--f-display); font-weight:800; font-size:1.05rem; box-shadow:0 4px 0 rgba(0,0,0,.18),0 0 0 3px var(--star)}
+.cupbtn:active{transform:translateY(3px)}
 .acts{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px}
 .act{display:grid; grid-template-columns:76px 1fr; gap:4px 16px; align-items:center; text-align:left; background:var(--card); border:0; border-radius:24px; padding:16px 18px;
   box-shadow:inset 0 -6px 0 var(--line),0 10px 22px var(--shadow); transition:transform .1s}
@@ -138,11 +168,17 @@ h1,h2,h3{font-family:var(--f-display); line-height:1.08; margin:0; text-wrap:bal
 .game-head{display:flex; align-items:center; gap:14px; margin-bottom:16px}
 .game-title{flex:1; min-width:0}
 .game-title h2{font-size:1.55rem; color:var(--c)}
-.prog{display:flex; gap:5px; margin-top:6px; align-items:center}
-.seg{flex:1; max-width:46px; height:14px; border-radius:8px; background:var(--card); box-shadow:inset 0 2px 0 var(--line)}
-.seg.cur{background:color-mix(in srgb,var(--c) 40%,var(--card)); box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 30%,transparent)}
-.seg.ok{background:var(--ok)} .seg.miss{background:var(--star)}
-.prog .goal{font-size:1.3rem; color:var(--star); margin-left:4px}
+.meter{display:flex; align-items:center; gap:12px; margin-top:8px; max-width:560px}
+.m-count{flex:none; min-width:2.6em; font-family:var(--f-display); font-weight:800; font-size:1.05rem; color:var(--ink-soft); font-variant-numeric:tabular-nums}
+.m-track{position:relative; flex:1; height:18px; margin:0 18px 0 4px; border-radius:10px; background:var(--card); box-shadow:inset 0 3px 0 var(--line),0 2px 6px var(--shadow)}
+.m-fill{position:absolute; left:0; top:0; bottom:0; width:0; border-radius:10px; background:linear-gradient(180deg,#FFE27A,var(--star)); box-shadow:inset 0 -3px 0 rgba(0,0,0,.12); transition:width .7s cubic-bezier(.3,1.25,.5,1); overflow:hidden}
+.m-fill::after{content:""; position:absolute; inset:0; background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.7) 50%,transparent 70%); transform:translateX(-100%)}
+.m-fill.up::after{animation:shine .9s ease-out}
+.m-star{position:absolute; top:50%; width:36px; height:36px; transform:translate(-50%,-50%); display:grid; place-items:center; border-radius:50%; background:var(--card); color:var(--star-off); font-size:1.4rem; line-height:1;
+  box-shadow:0 3px 0 var(--line),0 4px 10px var(--shadow)}
+.m-star.on{background:radial-gradient(circle at 35% 30%,#FFE9A0,var(--star) 70%); color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.18); box-shadow:0 0 0 4px color-mix(in srgb,var(--star) 35%,transparent),0 4px 10px var(--shadow); animation:starpop .7s cubic-bezier(.3,1.6,.5,1)}
+@keyframes starpop{0%{transform:translate(-50%,-50%) scale(.5)}55%{transform:translate(-50%,-50%) scale(1.45) rotate(18deg)}100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes shine{to{transform:translateX(100%)}}
 .stage{position:relative; background:var(--card); border-radius:34px; padding:clamp(18px,3.4vw,36px); min-height:380px; display:flex; flex-direction:column; align-items:center; gap:22px;
   box-shadow:inset 0 -8px 0 color-mix(in srgb,var(--c) 22%,var(--line)),0 18px 40px var(--shadow)}
 .stage::before{content:""; position:absolute; inset:0 0 auto; height:10px; border-radius:34px 34px 0 0; background:var(--c); opacity:.9}
@@ -269,18 +305,6 @@ h1,h2,h3{font-family:var(--f-display); line-height:1.08; margin:0; text-wrap:bal
 .askcard h3{font-size:1.3rem; margin-bottom:6px}
 .askcard ul{margin:0; padding-left:22px}
 
-.nb-wrap{width:100%; overflow-x:auto; padding-bottom:6px}
-.nb{display:grid; grid-auto-columns:32px; grid-auto-rows:32px; width:max-content; margin:0 auto; background-color:#fff; color:#232A4D;
-  background-image:linear-gradient(#D6E6F7 1px,transparent 1px),linear-gradient(90deg,#D6E6F7 1px,transparent 1px); background-size:32px 32px; border-left:4px solid #F04F59; border-radius:8px; box-shadow:0 6px 16px var(--shadow)}
-.nb .sq{display:grid; place-items:center; font-weight:700; font-size:1rem}
-.nb .gapsq{background:color-mix(in srgb,var(--c) 22%,transparent); color:var(--c); font-size:.9rem}
-.nb .gapsq span{opacity:0; transition:opacity .3s}
-.nb.reveal .gapsq span{opacity:1}
-.nb .dotsq::after{content:""; width:9px; height:9px; border-radius:50%; background:#232A4D}
-.nb .txt{font-size:1.25rem; justify-content:start; white-space:nowrap}
-.nb .cuenta{display:grid; grid-template-rows:repeat(3,32px); align-items:center; justify-items:end; font-size:1.2rem; font-weight:700; font-variant-numeric:tabular-nums; padding-right:4px}
-.nb .cuenta b{border-top:2px solid #232A4D; width:100%; text-align:right}
-
 /* preparar, final, perfiles */
 .setup,.end{display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center; padding-block:8px}
 .setup-icon{width:120px; height:120px; border-radius:36px; display:grid; place-items:center; font-size:4.2rem;
@@ -297,6 +321,7 @@ h1,h2,h3{font-family:var(--f-display); line-height:1.08; margin:0; text-wrap:bal
 .end-stars span.on{color:var(--star); text-shadow:0 5px 0 color-mix(in srgb,var(--star) 55%,#000); animation:popin .6s cubic-bezier(.3,1.6,.5,1) backwards}
 .end-stars span:nth-child(2){animation-delay:.25s; transform:translateY(-14px)} .end-stars span:nth-child(3){animation-delay:.5s}
 .end p{margin:0; font-size:1.2rem; color:var(--ink-soft)}
+.stars.big{font-size:clamp(2.6rem,7vw,3.4rem); gap:6px}
 .form{max-width:700px; margin:6px auto; display:flex; flex-direction:column; gap:18px}
 .form .hero{margin:0}
 .form .panel{background:var(--card); border-radius:var(--r); padding:24px; display:flex; flex-direction:column; gap:14px; box-shadow:inset 0 -7px 0 var(--line),0 14px 30px var(--shadow)}
@@ -324,7 +349,19 @@ h1,h2,h3{font-family:var(--f-display); line-height:1.08; margin:0; text-wrap:bal
 .fb-text span{font-size:1.15rem}
 .fb .btn{--c:var(--ok)}
 
-#confetti{position:fixed; inset:0; pointer-events:none; z-index:30}
+#confetti{position:fixed; inset:0; pointer-events:none; z-index:60}
+/* trofeo con vídeo */
+.reward{position:fixed; inset:0; z-index:50; display:grid; place-items:center; padding:16px; background:radial-gradient(circle at 50% 38%,rgba(255,210,80,.38),rgba(16,22,46,.82) 72%); animation:fadein .25s both}
+.reward.out{animation:fadein .25s reverse both}
+.rw-card{--c:var(--mates); width:min(860px,100%); max-height:calc(100vh - 32px); max-height:calc(100dvh - 32px); overflow:auto; background:var(--card); border-radius:34px; padding:18px 22px 22px;
+  display:flex; flex-direction:column; align-items:center; gap:16px; box-shadow:inset 0 -9px 0 color-mix(in srgb,var(--c) 35%,var(--line)),0 30px 80px rgba(0,0,0,.45); animation:popin .55s cubic-bezier(.3,1.45,.5,1) both}
+.rw-head{display:flex; align-items:center; gap:14px; align-self:stretch}
+.rw-cup{font-size:clamp(3.2rem,8vw,4.4rem); line-height:1; filter:drop-shadow(0 6px 6px var(--shadow)); animation:wiggle 1s .5s 2}
+.rw-head h2{font-size:clamp(1.8rem,4.6vw,2.7rem); color:var(--c)}
+.rw-head p{margin:2px 0 0; color:var(--ink-soft); font-size:1.12rem}
+.rw-frame{width:100%; aspect-ratio:16/9; border-radius:24px; overflow:hidden; background:#000; box-shadow:0 0 0 6px var(--star),0 14px 30px var(--shadow)}
+.rw-video{width:100%; height:100%; object-fit:cover; display:block}
+@keyframes fadein{from{opacity:0}}
 .shake{animation:shake .35s}
 @keyframes shake{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 @keyframes float{50%{transform:translateY(-8px) rotate(-1.5deg)}}
@@ -382,12 +419,20 @@ html{touch-action:manipulation; -webkit-text-size-adjust:100%}
 .backup .msg{font-weight:700; color:var(--ok)}
 .backup .msg.err{color:var(--ko)}
 @media (max-width:600px){ .gh-tools .pill .coin{font-size:1rem} }
+@media (max-width:640px){
+  .game-head{flex-wrap:wrap; row-gap:8px}
+  .game-title{order:3; flex-basis:100%}
+  .game-title h2{font-size:1.35rem}
+  .meter{max-width:none}
+}
 .read-side .week{gap:6px; flex-wrap:nowrap}
 .read-side .day{width:46px; height:58px}
 @media (max-width:420px){ .read-side .day{width:40px} .read-side .week{gap:4px} }
 
 /* ---- Conocimiento del medio: mapa, álbum y fichas ---- */
-.subj.long .subj-name{font-size:1.75rem}
+.subj.long .subj-name{font-size:1.6rem; padding-right:92px}
+.subj.long .subj-img{width:122px; height:122px; top:-26px; right:-6px}
+.subj.long .subj-blurb{padding-right:84px}
 .ani-row{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px 22px; width:100%}
 .q-emoji.small{font-size:clamp(3.4rem,8vw,4.6rem)}
 .ani-img{width:clamp(110px,18vw,160px); height:auto; object-fit:contain}
@@ -416,6 +461,46 @@ html{touch-action:manipulation; -webkit-text-size-adjust:100%}
 .ficha ul{list-style:none; margin:0; padding:0; display:grid; gap:8px; width:100%}
 .ficha li{display:flex; gap:12px; align-items:flex-start; background:var(--paper); border-radius:16px; padding:10px 14px; font-size:1.1rem; line-height:1.35}
 .ficha .ic{font-size:1.4rem; line-height:1.1}
+
+/* ---- Arte y música ---- */
+.mix{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px 14px}
+.mix b{font-family:var(--f-display); font-size:2.6rem; color:var(--ink-soft)}
+.blob{--b:#ccc; display:grid; place-items:center; width:clamp(82px,13vw,112px); aspect-ratio:1/1; border-radius:52% 48% 50% 50% / 48% 54% 46% 52%;
+  background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--b) 45%,#fff) 0 14%,var(--b) 48%,color-mix(in srgb,var(--b) 78%,#000) 100%);
+  box-shadow:inset 0 -7px 0 rgba(0,0,0,.12),0 8px 14px var(--shadow); font-family:var(--f-display); font-weight:800; font-size:2.6rem; color:var(--ink-soft)}
+.mix.three{gap:8px 10px}
+.mix.three .blob{width:clamp(64px,8.5vw,92px)}
+.mix.three b{font-size:2.1rem}
+.blob.white{box-shadow:inset 0 -7px 0 rgba(0,0,0,.08),0 0 0 3px var(--line),0 8px 14px var(--shadow)}
+.blob.q{background:var(--paper); border:4px dashed color-mix(in srgb,var(--c) 55%,var(--line)); box-shadow:none}
+.blob.filled{animation:bounce .6s}
+.blob.mini{width:44px; font-size:1rem; box-shadow:inset 0 -4px 0 rgba(0,0,0,.12),0 3px 6px var(--shadow)}
+.blob.mini.white{box-shadow:inset 0 -4px 0 rgba(0,0,0,.08),0 0 0 2px var(--line)}
+.opts.colors{grid-template-columns:repeat(2,minmax(0,1fr)); max-width:520px}
+.opts.colors .opt{display:flex; align-items:center; gap:14px; font-size:clamp(1.25rem,2.6vw,1.6rem); text-align:left}
+.opts.pairs{grid-template-columns:1fr}
+.pair{display:inline-flex; align-items:center; gap:4px; font-family:var(--f-display); font-weight:800; color:var(--ink-soft)}
+.shape{width:clamp(170px,26vw,240px); height:auto; filter:drop-shadow(0 10px 10px var(--shadow)); animation:popin .45s cubic-bezier(.3,1.6,.5,1) both}
+.opts.fams{grid-template-columns:1fr; max-width:520px}
+.opts.fams .opt{display:flex; flex-direction:column; align-items:flex-start; gap:2px; text-align:left; padding:12px 20px}
+.opts.fams strong{font-family:var(--f-display); font-size:1.6rem; line-height:1.1}
+.opts.fams small{font-family:var(--f-read); font-weight:400; font-size:1.05rem; color:var(--ink-soft)}
+.ins-img{width:64px; height:64px; object-fit:contain}
+.ins-img.big{width:clamp(150px,22vw,210px); height:auto; filter:drop-shadow(0 10px 8px var(--shadow)); animation:popin .45s cubic-bezier(.3,1.6,.5,1) both}
+.opts.insts{grid-template-columns:repeat(2,minmax(0,1fr)); max-width:520px}
+.opts.insts .opt{display:flex; flex-direction:column; align-items:center; gap:4px; font-size:clamp(1.1rem,2.3vw,1.35rem); padding:12px 8px}
+.opts.insts .ins-img{width:clamp(70px,10vw,96px); height:clamp(70px,10vw,96px)}
+.snd-row{display:flex; gap:18px}
+.snd-n{width:64px; height:64px; border-radius:50%; display:grid; place-items:center; font-family:var(--f-display); font-weight:800; font-size:2rem; background:var(--paper); color:var(--ink-soft); box-shadow:inset 0 -5px 0 var(--line); transition:transform .15s}
+.snd-n.on{background:var(--c); color:#fff; transform:scale(1.15); box-shadow:inset 0 -5px 0 color-mix(in srgb,var(--c) 65%,#000)}
+.simon{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; width:100%; max-width:720px}
+.skey{--k:#e33; aspect-ratio:3/4; border:0; border-radius:26px; display:flex; align-items:flex-end; justify-content:center; padding-bottom:16px; color:#fff; font-family:var(--f-display); font-weight:800; font-size:clamp(1.5rem,3.4vw,2.1rem);
+  text-shadow:0 2px 0 rgba(0,0,0,.2); background:linear-gradient(180deg,color-mix(in srgb,var(--k) 70%,#fff),var(--k)); box-shadow:inset 0 -10px 0 color-mix(in srgb,var(--k) 68%,#000),0 10px 18px color-mix(in srgb,var(--k) 35%,transparent);
+  transition:transform .08s,filter .08s; touch-action:manipulation}
+.skey.on{transform:translateY(5px) scale(.97); filter:brightness(1.25) saturate(1.1); box-shadow:inset 0 -4px 0 color-mix(in srgb,var(--k) 68%,#000),0 0 0 6px color-mix(in srgb,var(--k) 40%,transparent),0 0 34px var(--k)}
+.tag.go{background:var(--ok); color:#fff; animation:bounce .5s}
+.tag.good{background:var(--ok-bg); color:var(--ok)}
+@media (max-width:600px){ .simon{gap:8px} .skey{border-radius:18px} }
 </style>
 </head>
 <body>
@@ -448,9 +533,11 @@ function deck(arr){let pool=[];return ()=>{if(!pool.length)pool=shuffle(arr);ret
 const cap=s=>s[0].toUpperCase()+s.slice(1);
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const IMG={wave:'img/mochi-wave.png',happy:'img/mochi-happy.png',think:'img/mochi-think.png',read:'img/mochi-read.png'};
-const XIMG={wave:'img/explora-wave.png',happy:'img/explora-happy.png',think:'img/explora-look.png',read:'img/explora-look.png'};
+const SUBIMG={
+  cono:{wave:'img/explora-wave.png',happy:'img/explora-happy.png',think:'img/explora-look.png',read:'img/explora-look.png'},
+  arte:{wave:'img/arte-wave.png',happy:'img/arte-happy.png',think:'img/arte-think.png',read:'img/arte-think.png'}};
 let CUR_SUB=null;
-const pic=k=>(CUR_SUB==='cono'&&XIMG[k])||IMG[k];
+const pic=k=>(SUBIMG[CUR_SUB]&&SUBIMG[CUR_SUB][k])||IMG[k];
 const mochi=(k,cls='')=>h('img',{class:'mochi '+cls,src:pic(k),alt:'Mochi, la mochila'});
 const pane2=(l,r,cls='')=>h('div',{class:'pane2 '+cls},h('div',{class:'pane'},l),h('div',{class:'pane'},r));
 
@@ -461,12 +548,17 @@ let DB={players:[],cur:null,sound:true,opt:{}};
 try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s&&Array.isArray(s.players)) DB=Object.assign(DB,s);}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(DB));}catch(e){}}
 function me(){return DB.players.find(p=>p.id===DB.cur)||null;}
-function bestStars(id){const p=me();return (p&&p.stars&&p.stars[id])||0;}
-function totalStars(p=me()){return p?Object.values(p.stars||{}).reduce((a,b)=>a+b,0):0;}
+const gmax=g=>(g&&g.max)||3;
+function starsOf(p,id){return p?Math.min((p.stars&&p.stars[id])||0,gmax(GAMES[id])):0;}
+function bestStars(id){return starsOf(me(),id);}
+function subjProg(sid,p=me()){const gs=gamesOf(sid).filter(g=>!g.noStars);return {got:gs.reduce((a,g)=>a+starsOf(p,g.id),0),max:gs.reduce((a,g)=>a+gmax(g),0)};}
+function totalStars(p=me()){return p?SUBJECTS.reduce((a,s)=>a+subjProg(s.id,p).got,0):0;}
 function setStars(id,n){const p=me(); if(!p) return; p.stars=p.stars||{}; if(n>(p.stars[id]||0)) p.stars[id]=n; save();}
+const hasTrophy=(sid,p=me())=>!!(p&&p.trophies&&p.trophies.includes(sid));
+function earnTrophy(sid){const p=me(),sp=subjProg(sid); if(!p||!sp.max||sp.got<sp.max||hasTrophy(sid)) return false; p.trophies=[...(p.trophies||[]),sid]; save(); return true;}
 
 /* ---------- sonido y voces grabadas ---------- */
-const VOICE_MANIFEST={"files":["voz/ui.mp4","voz/pal.mp4","voz/num.mp4","voz/fra.mp4","voz/pre.mp4","voz/pro.mp4","voz/cuentos.mp4","voz/en.mp4","voz/animales.mp4"],"map":{"¡Hola! Soy Mochi, tu mochila. ¿Cómo te llamas? Escribe tu nombre y elige tu animal.":[0,0.3,5.66],"¿Quién va a jugar hoy?":[0,6.26,1.2],"¡Hola! ¿Qué repasamos hoy? Elige una asignatura.":[0,7.76,3.12],"¿Qué quieres practicar? Elige y pulsa jugar.":[0,11.18,2.84],"Escucha la palabra y toca la letra que falta.":[0,14.32,2.54],"Ordena las sílabas para formar la palabra.":[0,17.16,2.3],"Esta palabra no cabe en el renglón. ¿Por dónde la corto?":[0,19.76,3.3],"Toca las palabras que van con mayúscula y luego pulsa comprobar.":[0,23.36,3.36],"Mayúscula al empezar la frase y en los nombres de personas, animales, ciudades, ríos y fiestas.":[0,27.02,5.82],"¿Qué palabra va en el hueco?":[0,33.14,1.48],"Lee el cuento con atención y contesta las preguntas.":[0,34.92,2.84],"Primero, lee las preguntas. Así sabrás en qué fijarte cuando escuches el cuento.":[0,38.06,4.6],"Ahora escucha el cuento con mucha atención.":[0,42.96,2.44],"Ya puedes contestar. Si lo necesitas, escucha el cuento otra vez.":[0,45.7,4.26],"¿Qué número es? Cuenta los cuadrados, las barras y los cubitos.":[0,50.26,4.12],"Escribe el número con cifras.":[0,54.68,1.72],"¿Qué cifra está en las unidades?":[0,56.7,1.72],"¿Qué cifra está en las decenas?":[0,58.72,1.62],"¿Qué cifra está en las centenas?":[0,60.64,1.62],"¿Qué número va justo después?":[0,62.56,1.72],"¿Qué número va justo antes?":[0,64.58,1.72],"¿Qué signo va en el medio: menor, igual o mayor?":[0,66.6,3.52],"Resuelve la suma. Empieza por las unidades.":[0,70.42,3.08],"Resuelve la resta. Empieza por las unidades.":[0,73.8,3.0],"Redondea a la decena. ¿A qué número está más cerca?":[0,77.1,3.46],"Redondea a la centena. ¿A qué número está más cerca?":[0,80.86,3.4],"¿Qué operación hago? ¿Sumar o restar?":[0,84.56,2.58],"Ahora haz la cuenta y escribe el resultado.":[0,87.44,2.44],"¿Cómo escribo la solución? Recuerda: una frase con verbo.":[0,90.18,4.1],"La solución es una frase completa, con verbo.":[0,94.58,2.82],"¿Tiene huesos por dentro?":[0,97.7,1.42],"¿A qué grupo pertenece?":[0,99.42,1.44],"Busca las parejas: el dibujo y su palabra en inglés.":[0,101.16,3.5],"Escucha y escribe la palabra en inglés.":[0,104.96,2.2],"Lee en voz alta, despacito, respetando los puntos y las comas.":[0,107.46,4.2],"¡Lectura terminada! Ahora cuéntale a alguien lo que has leído.":[0,111.96,3.96],"¡Muy bien!":[0,116.22,1.04],"¡Genial!":[0,117.56,0.96],"¡Bravo!":[0,118.82,0.92],"¡Lo has clavado!":[0,120.04,1.14],"¡Fenomenal!":[0,121.48,1.08],"¡Estupendo!":[0,122.86,1.04],"¡Perfecto!":[0,124.2,1.0],"¡Qué máquina!":[0,125.5,1.06],"¡Casi!":[0,126.86,0.7],"Uy, prueba otra vez.":[0,127.86,1.36],"¡Tú puedes!":[0,129.52,0.96],"Piénsalo un poquito más.":[0,130.78,1.6],"¡Buen trabajo!":[0,132.68,1.1],"¡Increíble!":[0,134.08,1.04],"Lengua":[0,135.42,0.76],"Mates":[0,136.48,0.8],"Cono":[0,137.58,0.62],"Inglés":[0,138.5,0.82],"Leer cada día":[0,139.62,1.24],"Mi cuaderno":[0,141.16,0.98],"Cazafaltas":[0,142.44,1.08],"Sílabas":[0,143.82,0.82],"Mayúsculas":[0,144.94,1.08],"Palabras del revés":[0,146.32,1.3],"Comprensión lectora":[0,147.92,1.44],"Comprensión oral":[0,149.66,1.28],"Números hasta el 999":[0,151.24,2.4],"Sumas con llevadas":[0,153.94,1.34],"Restas con llevadas":[0,155.58,1.46],"Tablas de multiplicar":[0,157.34,1.38],"Redondear":[0,159.02,0.9],"Problemas":[0,160.22,0.88],"¿Tiene huesos?":[0,161.4,1.08],"Grupos de vertebrados":[0,162.78,1.56],"Memory":[0,164.64,0.74],"Spell it!":[0,165.68,0.8],"Lectura en voz alta":[0,166.78,1.42],"¿Cuántos cuadritos?":[0,168.5,1.24],"Antes de p y b, siempre se escribe m.":[0,170.04,3.06],"Delante de las demás letras va n. La m solo va antes de p y b.":[0,173.4,5.44],"Suena fuerte entre dos vocales: se escribe rr.":[0,179.14,3.38],"Al empezar la palabra, una sola r ya suena fuerte.":[0,182.82,3.32],"Suena suave: se escribe una sola r.":[0,186.44,2.66],"Con a, o, u se escribe z: za, zo, zu.":[0,189.4,5.3],"Al final de la palabra, este sonido se escribe con z.":[0,195.0,3.36],"Con e, i se escribe c: ce, ci.":[0,198.66,3.84],"Para decir que, qui usamos qu. La u no suena.":[0,202.8,5.2],"Con a, o, u se escribe c: ca, co, cu.":[0,208.3,4.66],"Para decir gue, gui ponemos gu. La u no suena.":[0,213.26,5.04],"Con a, o, u se escribe g: ga, go, gu.":[0,218.6,5.06],"Los mamíferos tienen pelo y sus crías toman leche de su madre.":[0,223.96,3.42],"Las aves tienen plumas, pico y dos patas. Nacen de un huevo.":[0,227.68,3.92],"Los peces tienen escamas y aletas, y respiran dentro del agua.":[0,231.9,3.54],"Los reptiles tienen escamas o caparazón y se arrastran o andan con patas cortas.":[0,235.74,4.48],"Los anfibios tienen la piel húmeda y viven en el agua y en la tierra.":[0,240.52,3.56],"En Lengua, ¿cuántos cuadritos dejo antes de empezar a escribir?":[0,244.38,3.42],"En Lengua dejo 2 cuadritos, pongo un puntito y empiezo.":[0,248.1,3.44],"Después de dejar los cuadritos, ¿qué pongo antes de escribir?":[0,251.84,3.28],"2 cuadritos, un puntito… ¡y a escribir!":[0,255.42,2.96],"En Mates, ¿cuántos cuadritos dejo hasta la primera cuenta?":[0,258.68,3.22],"5 cuadritos hasta la primera cuenta.":[0,262.2,2.2],"En Mates, ¿cuántos cuadritos dejo entre una cuenta y la siguiente?":[0,264.7,3.62],"10 cuadritos entre cuenta y cuenta, para que no se mezclen.":[0,268.62,3.239],"campo":[1,0.3,0.6],"tambor":[1,1.2,0.68],"hombre":[1,2.18,0.68],"sombrero":[1,3.16,0.84],"campeón":[1,4.3,0.84],"bombero":[1,5.44,0.82],"compra":[1,6.56,0.68],"bombilla":[1,7.54,0.86],"trompeta":[1,8.7,0.82],"canción":[1,9.82,0.82],"ventana":[1,10.94,0.82],"manzana":[1,12.06,0.86],"montaña":[1,13.22,0.86],"canguro":[1,14.38,0.78],"lengua":[1,15.46,0.7],"perro":[1,16.46,0.58],"burro":[1,17.34,0.66],"gorra":[1,18.3,0.68],"zorro":[1,19.28,0.58],"guitarra":[1,20.16,0.8],"arroz":[1,21.26,0.58],"torre":[1,22.14,0.6],"ratón":[1,23.04,0.78],"rosa":[1,24.12,0.72],"pera":[1,25.14,0.54],"loro":[1,25.98,0.64],"mariposa":[1,26.92,0.9],"rana":[1,28.12,0.7],"regalo":[1,29.12,0.74],"paraguas":[1,30.16,0.78],"zapato":[1,31.24,0.72],"taza":[1,32.26,0.6],"pez":[1,33.16,0.44],"lápiz":[1,33.9,0.64],"zanahoria":[1,34.84,0.84],"calabaza":[1,35.98,0.82],"zumo":[1,37.1,0.6],"cebolla":[1,38.0,0.74],"cerdo":[1,39.04,0.62],"cisne":[1,39.96,0.66],"cine":[1,40.92,0.62],"cereza":[1,41.84,0.7],"maceta":[1,42.84,0.74],"ciervo":[1,43.88,0.7],"queso":[1,44.88,0.68],"casa":[1,45.86,0.68],"cohete":[1,46.84,0.78],"mantequilla":[1,47.92,0.98],"paquete":[1,49.2,0.74],"cuchara":[1,50.24,0.76],"mosquito":[1,51.3,0.82],"raqueta":[1,52.42,0.84],"vaca":[1,53.56,0.7],"caracol":[1,54.56,0.8],"esquí":[1,55.66,0.66],"coco":[1,56.62,0.62],"gato":[1,57.54,0.74],"gafas":[1,58.58,0.84],"globo":[1,59.72,0.74],"gallina":[1,60.76,0.82],"gorila":[1,61.88,0.8],"tigre":[1,62.98,0.64],"juguete":[1,63.92,0.78],"hamburguesa":[1,65.0,0.96],"guisantes":[1,66.26,1.06],"guepardo":[1,67.62,0.86],"chocolate":[1,68.78,0.86],"llave":[1,69.94,0.7],"pollito":[1,70.94,0.82],"lluvia":[1,72.06,0.76],"coche":[1,73.12,0.7],"leche":[1,74.12,0.74],"estrella":[1,75.16,0.84],"chaqueta":[1,76.3,0.8],"llama":[1,77.4,0.72],"mochila":[1,78.42,0.82],"ardilla":[1,79.54,0.82],"pelota":[1,80.66,0.72],"camión":[1,81.68,0.8],"teléfono":[1,82.78,0.82],"elefante":[1,83.9,0.9],"tomate":[1,85.1,0.72],"conejo":[1,86.12,0.82],"tortuga":[1,87.24,0.78],"maleta":[1,88.32,0.72],"bicicleta":[1,89.34,0.94],"helado":[1,90.58,0.68],"fresa":[1,91.56,0.66],"dragón":[1,92.52,0.84],"árbol":[1,93.66,0.76],"pájaro":[1,94.72,0.7],"jirafa":[1,95.72,0.76],"cocodrilo":[1,96.78,0.92],"pirata":[1,98.0,0.7],"castillo":[1,99.0,0.86],"caballo":[1,100.16,0.76],"pintura":[1,101.22,0.76],"serpiente":[1,102.28,0.92],"león":[1,103.5,0.76],"pingüino":[1,104.56,0.78],"delfín":[1,105.64,0.86],"águila":[1,106.8,0.72],"murciélago":[1,107.82,0.98],"ballena":[1,109.1,0.8],"tiburón":[1,110.2,0.8],"lagartija":[1,111.3,0.94],"pato":[1,112.54,0.58],"araña":[1,113.42,0.74],"hormiga":[1,114.46,0.8],"abeja":[1,115.56,0.74],"oruga":[1,116.6,0.74],"pulpo":[1,117.64,0.66],"cangrejo":[1,118.6,0.84],"medusa":[1,119.74,0.84],"mariquita":[1,120.88,0.9],"saltamontes":[1,122.08,1.12],"lombriz":[1,123.5,0.72],"gamba":[1,124.52,0.74],"escorpión":[1,125.56,0.913],"ciento uno":[2,0.3,0.94],"ciento diez":[2,1.54,0.82],"ciento quince":[2,2.66,1.04],"ciento veinte":[2,4.0,1.02],"ciento veintiuno":[2,5.32,1.2],"ciento cincuenta":[2,6.82,1.2],"ciento noventa y nueve":[2,8.32,1.34],"doscientos":[2,9.96,1.02],"doscientos cinco":[2,11.28,1.26],"doscientos doce":[2,12.84,1.2],"doscientos sesenta":[2,14.34,1.36],"trescientos":[2,16.0,1.04],"trescientos cuarenta y cinco":[2,17.34,1.58],"trescientos ochenta y uno":[2,19.22,1.5],"cuatrocientos nueve":[2,21.02,1.28],"cuatrocientos treinta y dos":[2,22.6,1.5],"cuatrocientos setenta":[2,24.4,1.32],"quinientos":[2,26.02,0.9],"quinientos quince":[2,27.22,1.18],"quinientos cincuenta y cinco":[2,28.7,1.58],"quinientos noventa y cuatro":[2,30.58,1.56],"seiscientos":[2,32.44,1.08],"seiscientos diecisiete":[2,33.82,1.54],"seiscientos cincuenta y tres":[2,35.66,1.66],"setecientos":[2,37.62,1.1],"setecientos veintiocho":[2,39.02,1.6],"setecientos cuarenta y ocho":[2,40.92,1.66],"setecientos setenta y siete":[2,42.88,1.7],"ochocientos":[2,44.88,1.06],"ochocientos seis":[2,46.24,1.26],"ochocientos sesenta y cinco":[2,47.8,1.74],"ochocientos noventa":[2,49.84,1.42],"novecientos":[2,51.56,1.04],"novecientos once":[2,52.9,1.32],"novecientos treinta y seis":[2,54.52,1.62],"novecientos noventa y nueve":[2,56.44,1.64],"cero por cero":[2,58.38,0.98],"cero por uno":[2,59.66,0.94],"cero por dos":[2,60.9,1.02],"cero por tres":[2,62.22,1.06],"cero por cuatro":[2,63.58,1.08],"cero por cinco":[2,64.96,1.08],"cero por seis":[2,66.34,1.08],"cero por siete":[2,67.72,1.1],"cero por ocho":[2,69.12,1.02],"cero por nueve":[2,70.44,1.06],"cero por diez":[2,71.8,0.9],"uno por cero":[2,73.0,1.0],"uno por uno":[2,74.3,1.0],"uno por dos":[2,75.6,1.02],"uno por tres":[2,76.92,1.06],"uno por cuatro":[2,78.28,1.08],"uno por cinco":[2,79.66,1.1],"uno por seis":[2,81.06,1.12],"uno por siete":[2,82.48,1.1],"uno por ocho":[2,83.88,1.06],"uno por nueve":[2,85.24,1.04],"uno por diez":[2,86.58,0.92],"dos por cero":[2,87.8,1.08],"dos por uno":[2,89.18,1.0],"dos por dos":[2,90.48,1.08],"dos por tres":[2,91.86,1.12],"dos por cuatro":[2,93.28,1.14],"dos por cinco":[2,94.72,1.14],"dos por seis":[2,96.16,1.16],"dos por siete":[2,97.62,1.14],"dos por ocho":[2,99.06,1.08],"dos por nueve":[2,100.44,1.08],"dos por diez":[2,101.82,0.96],"cinco por cero":[2,103.08,1.1],"cinco por uno":[2,104.48,1.04],"cinco por dos":[2,105.82,1.12],"cinco por tres":[2,107.24,1.18],"cinco por cuatro":[2,108.72,1.18],"cinco por cinco":[2,110.2,1.18],"cinco por seis":[2,111.679,1.2],"cinco por siete":[2,113.179,1.18],"cinco por ocho":[2,114.659,1.14],"cinco por nueve":[2,116.099,1.14],"cinco por diez":[2,117.539,1.04],"Mi perro se llama Toby.":[3,0.3,1.5],"Lucía y Hugo juegan en el parque.":[3,2.1,2.16],"El sábado vamos al zoo de Córdoba.":[3,4.56,1.98],"Mañana es el cumpleaños de Pablo.":[3,6.84,1.94],"Mi abuela vive en Sevilla.":[3,9.08,1.56],"La seño nos lee un cuento.":[3,10.94,1.68],"El río Guadalquivir es muy largo.":[3,12.92,2.1],"En Navidad visitamos el belén.":[3,15.32,1.9],"Ayer fuimos al cine con Marta.":[3,17.52,1.8],"Mi gata Luna duerme en el sofá.":[3,19.62,1.86],"El castillo de Almodóvar es muy alto.":[3,21.78,2.24],"Papá Noel trae regalos.":[3,24.32,1.64],"Los delfines viven en el mar.":[3,26.26,1.7],"El cielo es azul.":[3,28.26,1.2],"Mi hermano se lava los dientes.":[3,29.76,1.66],"La sopa es muy caliente.":[3,31.72,1.74],"Ana se peina antes del cole.":[3,33.76,1.76],"Hoy es lunes.":[3,35.82,1.08],"El gato se esconde debajo de la cama.":[3,37.2,2.04],"Vamos al parque.":[3,39.54,1.12],"La luna brilla de noche.":[3,40.96,1.52],"El sol calienta mucho.":[3,42.78,1.56],"Dame el lápiz rojo.":[3,44.64,1.28],"Los niños se ríen mucho.":[3,46.22,1.64],"Mañana voy al cine.":[3,48.16,1.28],"La niña salta a la comba.":[3,49.74,1.64],"Echa un poco de sal a la sopa.":[3,51.68,1.74],"Me gustan las fresas.":[3,53.72,1.46],"Mi casa es grande.":[3,55.48,1.24],"El perro ladra.":[3,57.02,1.12],"Ese es mi libro.":[3,58.44,1.16],"Lucía tiene 383 cromos.":[3,59.9,2.82],"A Hugo le quedan 217 canicas.":[3,63.02,2.82],"En total hay 283 galletas.":[3,66.14,2.66],"En el tren quedan 255 pasajeros.":[3,69.1,3.08],"Martina ha leído 125 páginas en total.":[3,72.48,3.14],"En el zoo quedan 54 pájaros.":[3,75.92,2.48],"A Leo le faltan 174 pegatinas.":[3,78.7,2.84],"Ese día van al cine 623 personas.":[3,81.84,3.24],"En el huerto hay 121 plantas.":[3,85.38,2.5],"A Sofía le quedan 66 euros.":[3,88.18,2.42],"En el colegio hay 611 alumnos.":[3,90.9,2.54],"A la granja le quedan 355 gallinas.":[3,93.74,3.18],"¿Dónde duerme Pincho durante el día?":[4,0.3,1.94],"¿Qué come Pincho?":[4,2.54,1.18],"¿Por qué se convierte Pincho en una bola de púas?":[4,4.02,2.7],"¿Qué tiempo había hecho la noche antes de que la abuela viera las huellas?":[4,7.02,3.46],"¿Cuántos años cumple Leo?":[4,10.78,1.52],"¿Dónde juegan al escondite?":[4,12.6,1.6],"¿Cuántos amigos del cole van a la fiesta?":[4,14.5,2.26],"¿Cómo se siente Leo al final del día?":[4,17.06,2.04],"¿Para qué estira el cuello la jirafa?":[4,19.4,1.78],"¿Cuántas patas tiene la araña?":[4,21.48,1.76],"¿Tiene huesos la jirafa?":[4,23.54,1.42],"¿Qué necesitan los pingüinos en el zoo?":[4,25.26,2.0],"¿Qué quería hacer Marta?":[4,27.56,1.34],"¿Qué sacó el abuelo?":[4,29.2,1.18],"¿Cómo se sentía Marta al mirar por la ventana?":[4,30.68,2.44],"Al final, ¿se lo pasó bien Marta?":[4,33.42,2.28],"¿Qué hacía la hormiga en verano?":[4,36.0,1.6],"¿Qué instrumento tocaba el saltamontes?":[4,37.9,2.18],"¿Por qué llamó el saltamontes a la puerta de la hormiga?":[4,40.38,2.64],"¿Quién pensó antes en el invierno?":[4,43.32,1.82],"¿De qué color es Burbuja?":[4,45.44,1.5],"¿Cuándo le da de comer Daniel?":[4,47.24,1.54],"¿Qué le puso Daniel en la pecera?":[4,49.08,1.78],"¿Le gusta a Burbuja el barco?":[4,51.16,1.68],"¿Qué día fueron de excursión?":[4,53.14,1.6],"¿Cómo llegaron al castillo?":[4,55.04,1.54],"¿Quién vivió en el castillo hace muchos años?":[4,56.88,2.62],"¿Por qué Nora sujetaba la gorra con la mano?":[4,59.8,2.34],"¿Cómo es Pelusa?":[4,62.44,1.12],"¿Dónde le gusta dormir?":[4,63.86,1.38],"¿Qué dejó la abuela encima del sofá?":[4,65.54,1.96],"¿Cómo estaba el salón cuando volvió la abuela?":[4,67.8,2.218],"Lucía tiene 245 cromos. Su abuela le regala 138 cromos más. ¿Cuántos cromos tiene ahora?":[5,0.3,7.36],"Hugo tenía 362 canicas y le da 145 a sus amigos. ¿Cuántas canicas le quedan?":[5,7.96,6.44],"En una caja hay 156 galletas y en otra caja hay 127. ¿Cuántas galletas hay en total?":[5,14.7,6.82],"Un tren lleva 430 pasajeros. En la estación se bajan 175. ¿Cuántos pasajeros quedan en el tren?":[5,21.82,7.36],"Martina leyó 68 páginas la semana pasada y 57 páginas esta semana. ¿Cuántas páginas ha leído en total?":[5,29.48,7.48],"En el zoo hay 92 pájaros. Se van volando 38. ¿Cuántos pájaros quedan?":[5,37.26,5.36],"Leo quiere juntar 500 pegatinas. Ya tiene 326. ¿Cuántas pegatinas le faltan?":[5,42.92,6.1],"Al cine van 248 personas por la mañana y 375 por la tarde. ¿Cuántas personas van al cine ese día?":[5,49.32,7.96],"En el huerto del cole hay 75 lechugas y 46 tomateras. ¿Cuántas plantas hay en total?":[5,57.58,5.9],"Sofía tenía 85 euros en su hucha. Se compra un libro de 19 euros. ¿Cuánto dinero le queda?":[5,63.78,6.66],"En el colegio hay 315 niños y 296 niñas. ¿Cuántos alumnos hay en total?":[5,70.74,6.06],"Una granja tiene 640 gallinas. Vende 285. ¿Cuántas gallinas le quedan?":[5,77.1,6.371],"Pincho es un erizo pequeño que vive en el jardín de la abuela Carmen. Por el día duerme debajo de un montón de hojas secas. Cuando se hace de noche, sale a buscar caracoles y gusanos para comer. Si un perro se acerca, Pincho se convierte en una bola llena de púas. Una mañana, la abuela encontró sus huellas en la tierra mojada.":[6,0.3,19.566],"Hoy Leo cumple siete años. Su madre ha preparado una tarta de chocolate con siete velas. A la fiesta vienen sus amigos del cole: Sara, Iván y Nora. Juegan al escondite en el patio hasta que se hace de noche. Cuando Leo sopla las velas, todos aplauden. Antes de dormir, Leo dice: «¡Ha sido el mejor día del año!».":[6,20.166,19.859],"La clase de segundo fue de visita al zoo. La jirafa estiraba su cuello largo para comer las hojas más altas. Los pingüinos nadaban muy rápido, pero ninguno echaba a volar. En el terrario había una araña enorme con ocho patas y una mariposa azul. La seño explicó que la araña y la mariposa no tienen huesos: son animales invertebrados.":[6,40.325,19.879],"Marta quería ir al parque con su bici nueva, pero empezó a llover muy fuerte. Se quedó mirando por la ventana con la cara muy seria. Entonces su abuelo sacó una caja de pinturas y un montón de folios. Pasaron la tarde pintando dragones, castillos y barcos. Cuando salió el arcoíris, Marta ya no se acordaba de la bici.":[6,60.504,18.22],"Durante todo el verano, la hormiga trabajaba sin parar y guardaba comida en su hormiguero. El saltamontes, en cambio, se pasaba el día cantando y tocando la guitarra. «¿Por qué trabajas tanto?», le preguntaba. Cuando llegó el invierno, hacía mucho frío y en el campo no quedaba comida. Una mañana, el saltamontes llamó a la puerta de la hormiga con la tripa vacía.":[6,79.024,22.58],"Burbuja es un pez naranja que vive en una pecera redonda, en casa de Daniel. Todas las mañanas, antes de ir al cole, Daniel le echa un poquito de comida. A Burbuja le encanta esconderse detrás de una piedra verde. Un sábado, Daniel limpió la pecera y le puso un barco pirata pequeñito. Desde ese día, Burbuja nada sin parar alrededor del barco.":[6,101.904,21.159],"El viernes, la clase de segundo fue de excursión a un castillo muy antiguo. Subieron en autobús por una carretera llena de curvas. Arriba, el guía les enseñó la torre más alta y les contó que allí vivieron caballeros hace muchísimos años. Hacía mucho viento y Nora tuvo que sujetar su gorra con la mano. Antes de volver, se comieron los bocadillos sentados junto a la muralla.":[6,123.363,22.007],"Pelusa es una gatita blanca con una mancha negra en la oreja. Le encanta dormir al sol en la terraza. Una tarde, la abuela dejó un ovillo de lana roja encima del sofá. Pelusa dio un salto, lo tiró al suelo y empezó a jugar con él. Cuando la abuela volvió, ¡había lana roja por todo el salón!":[6,145.671,17.868],"en:cat":[7,0.3,0.82],"en:dog":[7,1.42,0.82],"en:fish":[7,2.54,0.74],"en:bird":[7,3.58,0.82],"en:duck":[7,4.7,0.8],"en:cow":[7,5.8,0.76],"en:pig":[7,6.86,0.7],"en:frog":[7,7.86,0.7],"en:lion":[7,8.86,0.94],"en:bee":[7,10.1,0.74],"en:bear":[7,11.14,0.82],"en:mouse":[7,12.26,1.0],"en:apple":[7,13.56,0.76],"en:banana":[7,14.62,0.92],"en:egg":[7,15.84,0.72],"en:milk":[7,16.86,0.78],"en:cake":[7,17.94,0.76],"en:pizza":[7,19.0,0.78],"en:bread":[7,20.08,0.78],"en:cheese":[7,21.16,0.98],"en:orange":[7,22.44,0.92],"en:grapes":[7,23.66,0.98],"en:sun":[7,24.94,0.8],"en:star":[7,26.04,0.9],"en:moon":[7,27.24,0.8],"en:tree":[7,28.34,0.7],"en:car":[7,29.34,0.76],"en:bus":[7,30.4,0.96],"en:ball":[7,31.66,0.84],"en:book":[7,32.8,0.82],"en:pen":[7,33.92,0.72],"en:bed":[7,34.94,0.72],"en:house":[7,35.96,0.94],"en:hat":[7,37.2,0.82],"en:kite":[7,38.32,0.78],"en:bike":[7,39.4,0.82],"en:red":[7,40.52,0.7],"en:blue":[7,41.52,0.84],"en:green":[7,42.66,0.86],"en:yellow":[7,43.82,0.78],"en:purple":[7,44.9,0.8],"en:black":[7,46.0,0.86],"en:white":[7,47.16,0.8],"en:brown":[7,48.26,0.86],"¿En qué continente vive? Tócalo en el mapa.":[8,0.3,2.9],"¿Dónde vive este animal? Elige su casa.":[8,3.5,2.76],"¿Qué come este animal?":[8,6.56,1.26],"¿Cómo nace: de la tripa de su madre o de un huevo?":[8,8.12,2.94],"¿Verdadero o falso?":[8,11.36,1.4],"Este es tu álbum de animales. Cada vez que aciertas una pregunta de animales, consigues un cromo nuevo. Toca un cromo para ver su ficha.":[8,13.06,7.74],"Conocimiento del medio":[8,21.1,1.48],"La selva es un bosque muy caluroso y húmedo, lleno de árboles y de lluvia.":[8,22.88,4.28],"La sabana es una llanura enorme de hierba alta, con pocos árboles.":[8,27.46,3.68],"En el desierto casi nunca llueve y hay mucha arena.":[8,31.44,3.0],"En los polos hace muchísimo frío y casi todo está cubierto de hielo.":[8,34.74,4.2],"Los océanos son mares inmensos de agua salada.":[8,39.24,3.02],"Los ríos y los lagos tienen agua dulce.":[8,42.56,2.4],"En el bosque hay muchos árboles y en invierno hace frío.":[8,45.26,3.14],"En la montaña hay rocas, cuestas empinadas y mucho frío en lo alto.":[8,48.7,4.28],"En la granja viven animales que cuidan las personas.":[8,53.28,2.84],"Los herbívoros comen plantas: hierba, hojas, semillas y frutas.":[8,56.42,4.6],"Los carnívoros comen otros animales.":[8,61.32,2.16],"Los omnívoros comen de todo: plantas y animales.":[8,63.78,3.12],"Los vivíparos nacen de la tripa de su madre.":[8,67.2,2.44],"Los ovíparos nacen de un huevo.":[8,69.94,1.94],"Vive en África, en las selvas del Congo y de otros países cercanos.":[8,72.18,3.94],"Es el mono más grande del mundo y vive en familias. Come sobre todo hojas, tallos y frutas.":[8,76.42,6.42],"Vive en África, en la sabana, por ejemplo en Kenia y Tanzania.":[8,83.14,3.64],"Vive en grupos llamados manadas. Las leonas son las que más cazan.":[8,87.08,4.38],"Vive en África, en la sabana.":[8,91.76,1.92],"Es el animal más alto del mundo. Con su cuello largo come las hojas de los árboles más altos.":[8,93.98,5.78],"El elefante africano vive en África, en la sabana y en la selva.":[8,100.06,3.66],"Es el animal más grande de la tierra. Usa la trompa para beber, oler, coger cosas y saludar.":[8,104.02,6.24],"cebra":[8,110.56,0.698],"Cada cebra tiene sus rayas diferentes, como nuestras huellas de los dedos.":[8,111.558,4.0],"hipopótamo":[8,115.858,1.0],"Vive en África, en los ríos y lagos.":[8,117.158,2.38],"Pasa el día dentro del agua para no quemarse con el sol y sale de noche a comer hierba.":[8,119.838,4.4],"Es el animal más rápido de la tierra: corre casi tan rápido como un coche en la autovía.":[8,124.538,4.58],"dromedario":[8,129.418,0.9],"Vive en los desiertos de África, como el Sáhara.":[8,130.618,2.6],"Tiene una sola joroba. Su primo el camello tiene dos.":[8,133.518,3.14],"camello":[8,136.957,0.7],"Vive en los desiertos de Asia, como el desierto de Gobi, en Mongolia.":[8,137.957,3.7],"Tiene dos jorobas llenas de grasa y aguanta muchos días sin beber agua.":[8,141.957,3.74],"panda":[8,145.998,0.62],"Vive en Asia, en los bosques de bambú de las montañas de China.":[8,146.918,3.36],"Se pasa casi todo el día comiendo bambú.":[8,150.578,2.26],"Vive en Asia, en las selvas y bosques de la India y de otros países.":[8,153.138,3.76],"Es el felino más grande del mundo y, al contrario que los gatos, le encanta nadar.":[8,157.198,4.44],"orangután":[8,161.937,0.94],"Vive en Asia, en las selvas de las islas de Borneo y Sumatra.":[8,163.177,3.34],"Su nombre significa «persona del bosque». Pasa casi toda su vida en los árboles.":[8,166.817,4.54],"Vive en Oceanía, en Australia.":[8,171.657,2.02],"Avanza dando saltos enormes. Su cría crece dentro de una bolsa en la tripa de su madre.":[8,173.977,5.62],"koala":[8,179.897,0.7],"Vive en Oceanía, en los bosques de eucaliptos de Australia.":[8,180.897,3.2],"Come hojas de eucalipto y duerme casi todo el día, ¡unas veinte horas!":[8,184.397,3.8],"El pingüino emperador vive en la Antártida, en el Polo Sur.":[8,188.497,3.14],"No sabe volar, pero nada rapidísimo. El papá cuida el huevo entre sus patas.":[8,191.937,5.12],"oso polar":[8,197.357,0.86],"Vive en el Ártico, cerca del Polo Norte, por ejemplo en Canadá.":[8,198.517,3.48],"Su pelo parece blanco para esconderse en la nieve, pero su piel es negra.":[8,202.297,3.82],"bisonte":[8,206.417,0.84],"Vive en América del Norte, en las praderas de Estados Unidos y Canadá.":[8,207.557,3.68],"Es el animal más pesado de América del Norte.":[8,211.537,2.52],"mapache":[8,214.357,0.82],"Vive en América del Norte, en bosques cerca de ríos.":[8,215.477,4.158],"Parece que lleva un antifaz y moja la comida en el agua antes de comérsela.":[8,219.935,3.72],"Vive en América del Sur, en las montañas de los Andes, en Perú y Bolivia.":[8,223.955,4.26],"Si se enfada, ¡escupe! Su lana es muy calentita.":[8,228.515,3.54],"perezoso":[8,232.355,0.84],"Vive en América del Sur, en la selva del Amazonas, en Brasil.":[8,233.495,3.62],"Es tan lento que en su pelo crecen algas verdes.":[8,237.415,2.76],"guacamayo":[8,240.475,0.9],"Vive en América del Sur, en la selva del Amazonas.":[8,241.675,2.92],"Tiene plumas de muchos colores y un pico muy fuerte para romper semillas.":[8,244.895,4.0],"lince ibérico":[8,249.195,1.16],"Vive solo en España y Portugal. En Andalucía vive en Doñana y en Sierra Morena, muy cerca de Córdoba.":[8,250.655,6.2],"Estuvo a punto de desaparecer, pero gracias a los cuidados ya hay más de dos mil. Le encantan los conejos.":[8,257.155,6.34],"lobo ibérico":[8,263.795,1.12],"Vive en Europa, en los montes del norte de España, como en Zamora y Asturias.":[8,265.215,4.36],"Vive en manadas y aúlla para hablar con los demás lobos.":[8,269.875,2.88],"oso pardo":[8,273.055,0.9],"En España vive en las montañas del norte: en Asturias, Cantabria y León.":[8,274.255,4.14],"En invierno se mete en una cueva y duerme mucho: hiberna. Su cría se llama osezno.":[8,278.695,5.62],"cigüeña":[8,284.615,0.74],"En primavera y verano vive en España. En invierno, muchas viajan a África.":[8,285.655,4.68],"Hace nidos enormes en lo alto de las torres y los campanarios, y vuelve a ellos cada año.":[8,290.635,4.88],"flamenco":[8,295.815,0.8],"En España podemos verlo en Doñana y en la laguna de Fuente de Piedra, en Málaga.":[8,296.915,4.4],"Es rosa por los camarones que come, y le encanta dormir sobre una sola pata.":[8,301.615,4.3],"Vive en todos los océanos del mundo.":[8,306.215,2.04],"La ballena azul es el animal más grande que ha existido, ¡más que los dinosaurios!":[8,308.555,4.7],"Vive en los mares y océanos de casi todo el mundo.":[8,313.555,2.6],"Es muy listo, juega en grupo y respira aire por un agujero que tiene en la cabeza.":[8,316.455,4.58],"Vive en los mares y océanos.":[8,321.335,1.7],"Le salen dientes nuevos durante toda su vida.":[8,323.335,2.48],"Vive en ríos, lagos y mares.":[8,326.115,2.181],"Respira debajo del agua gracias a sus branquias.":[8,328.596,2.72],"foca":[8,331.616,0.66],"Vive en los mares fríos, cerca de los polos.":[8,332.576,2.56],"En el agua nada muy bien, pero en la tierra se mueve arrastrándose.":[8,335.436,3.48],"Vive en los ríos de las zonas calurosas, por ejemplo en el río Nilo, en África.":[8,339.216,4.4],"Puede quedarse muy quieto, como un tronco, esperando a su presa.":[8,343.916,3.64],"Hay tortugas de tierra, de río y de mar.":[8,347.856,2.48],"Las tortugas gigantes de las islas Galápagos pueden vivir más de cien años.":[8,350.636,4.32],"Vive en muchos sitios: desiertos, selvas y campos.":[8,355.256,3.38],"No tiene patas y saca la lengua para oler.":[8,358.936,2.42],"Vive en paredes y piedras donde da el sol.":[8,361.656,2.36],"Si la atrapan por la cola, la suelta, ¡y le vuelve a crecer!":[8,364.316,3.14],"Vive cerca de ríos, charcas y lagos.":[8,367.756,2.48],"De pequeña es un renacuajo con cola que vive en el agua.":[8,370.536,3.08],"Vive en ríos, lagos y estanques.":[8,373.916,2.12],"Tiene las patas palmeadas, como las aletas de un buzo, para nadar mejor.":[8,376.336,3.9],"castor":[8,380.536,0.7],"Vive en los ríos de América del Norte y de Europa.":[8,381.536,2.48],"Con sus dientes corta árboles y construye presas en los ríos.":[8,384.316,3.6],"búho":[8,388.216,0.68],"Vive en los bosques.":[8,389.196,1.28],"Caza de noche y puede girar la cabeza muchísimo.":[8,390.776,3.02],"Vive en los bosques. En España hay muchos en Sierra Morena.":[8,394.095,3.48],"A los machos les crecen cuernos nuevos cada año.":[8,397.875,2.88],"Vive en bosques y campos de casi todo el mundo.":[8,401.055,2.62],"Tiene una cola muy peluda que usa como manta para dormir.":[8,403.975,3.14],"Vive en los bosques, en lo alto de los árboles.":[8,407.415,2.6],"Esconde frutos secos para comérselos en invierno.":[8,410.315,2.78],"Vive en las montañas. En España vive el águila imperial ibérica.":[8,413.395,4.0],"Ve tan bien que descubre un conejo desde muy, muy alto.":[8,417.695,3.78],"cabra":[8,421.775,0.62],"La cabra montés vive en las montañas de España.":[8,422.695,2.62],"Trepa por las rocas más empinadas sin caerse.":[8,425.615,2.7],"Vive en las granjas y en los prados.":[8,428.615,1.9],"Nos da leche, y con la leche se hacen el queso y el yogur.":[8,430.815,3.26],"Vive en granjas, cuadras y prados.":[8,434.375,2.28],"Puede dormir de pie sin caerse.":[8,436.955,1.9],"oveja":[8,439.155,0.819],"Vive en las granjas y en el campo.":[8,440.275,1.76],"Con su lana se hacen jerséis y mantas.":[8,442.335,2.4],"Vive en las granjas.":[8,445.035,1.24],"Es muy listo y se revuelca en el barro para refrescarse.":[8,446.575,3.26],"Vive en los corrales de las granjas.":[8,450.135,1.9],"Pone los huevos que comemos.":[8,452.335,1.68],"Vive en granjas y en el campo.":[8,454.315,1.68],"Es muy fuerte y ayuda a llevar cargas pesadas.":[8,456.295,2.78],"Vive en el campo, en madrigueras bajo tierra.":[8,459.375,2.52],"Tiene las orejas muy largas para oír los peligros desde lejos.":[8,462.195,3.36],"Vive con las personas, en casa.":[8,465.855,2.02],"Tiene un olfato buenísimo y es el mejor amigo de las personas.":[8,468.175,3.56],"Ve muy bien de noche y ronronea cuando está contento.":[8,472.035,3.06],"Vive en cuevas y sale de noche.":[8,475.395,1.98],"Es el único mamífero que vuela de verdad.":[8,477.675,2.22],"Vive en jardines, campos y bosques, cerca de las flores.":[8,480.195,3.54],"Antes de ser mariposa es una oruga.":[8,484.035,2.38],"Vive en las plantas, comiendo hojas.":[8,486.715,2.22],"Un día se encierra en un capullo y sale convertida en mariposa.":[8,489.235,3.42],"Vive en colmenas, con miles de abejas más.":[8,492.955,2.56],"Fabrica miel y ayuda a las flores a dar frutos.":[8,495.815,2.7],"Vive en hormigueros bajo tierra.":[8,498.815,1.82],"Puede levantar cosas mucho más pesadas que ella.":[8,500.934,2.72],"Vive en casi todas partes: casas, jardines y bosques.":[8,503.954,3.64],"Tiene ocho patas y teje telarañas para cazar insectos.":[8,507.894,3.36],"Vive en sitios húmedos y sale cuando llueve.":[8,511.554,2.52],"Lleva su casa a cuestas: su concha.":[8,514.374,2.34],"Vive en jardines y campos.":[8,517.014,1.74],"Se come los pulgones que estropean las plantas.":[8,519.054,2.52],"Vive en los prados.":[8,521.874,1.18],"Salta muchísimo con sus patas de atrás.":[8,523.354,2.3],"Vive bajo tierra.":[8,525.954,1.18],"Ayuda a que la tierra esté sana para las plantas.":[8,527.434,2.5],"Vive en el fondo del mar, escondido entre las rocas.":[8,530.234,2.86],"Tiene ocho brazos, tres corazones y puede cambiar de color.":[8,533.394,3.52],"Vive en el mar.":[8,537.214,0.92],"No tiene cerebro ni huesos, y casi toda ella es agua.":[8,538.434,3.22],"Vive en el mar y en las playas.":[8,541.954,1.88],"Camina de lado y tiene un caparazón duro.":[8,544.134,2.44],"Tiene diez patas.":[8,546.874,1.16],"Vive en sitios secos y calurosos, como los desiertos.":[8,548.334,3.26],"Lleva a sus crías encima de la espalda.":[8,551.894,1.98],"¿Cómo se llama la cría de la vaca?":[8,554.174,1.78],"La cría de la vaca es el ternero.":[8,556.254,2.4],"¿Cómo se llama la cría del caballo?":[8,558.954,1.84],"La cría del caballo es el potro.":[8,561.094,2.38],"¿Cómo se llama la cría de la oveja?":[8,563.774,1.84],"La cría de la oveja es el cordero.":[8,565.914,2.3],"¿Cómo se llama la cría del cerdo?":[8,568.514,1.8],"La cría del cerdo es el cochinillo.":[8,570.614,2.32],"¿Cómo se llama la cría de la cabra?":[8,573.234,1.86],"La cría de la cabra es el cabrito.":[8,575.394,2.38],"¿Cómo se llama la cría del burro?":[8,578.074,1.76],"La cría del burro es el pollino.":[8,580.134,2.1],"¿Cómo se llama la cría del perro?":[8,582.534,1.74],"La cría del perro es el cachorro.":[8,584.574,2.2],"¿Cómo se llama la cría del gato?":[8,587.074,1.76],"La cría del gato es el gatito.":[8,589.134,2.1],"¿Cómo se llama la cría de la gallina?":[8,591.534,1.9],"La cría de la gallina es el pollito.":[8,593.734,2.28],"¿Cómo se llama la cría del pato?":[8,596.314,1.8],"La cría del pato es el patito.":[8,598.414,2.18],"¿Cómo se llama la cría de la rana?":[8,600.894,1.8],"La cría de la rana es el renacuajo.":[8,602.994,2.42],"¿Cómo se llama la cría de la mariposa?":[8,605.714,2.0],"La cría de la mariposa es la oruga.":[8,608.014,2.32],"¿Cómo se llama la cría del conejo?":[8,610.634,1.88],"La cría del conejo es el gazapo.":[8,612.814,2.22],"¿Cómo se llama la cría del ciervo?":[8,615.334,1.84],"La cría del ciervo es el cervatillo.":[8,617.474,2.34],"¿Cómo se llama la cría del león?":[8,620.114,1.8],"La cría del león es el cachorro.":[8,622.214,2.22],"¿Cómo se llama la cría del oso?":[8,624.734,1.74],"La cría del oso es el osezno.":[8,626.774,2.06],"¿Cómo se llama la cría del lobo?":[8,629.134,1.76],"La cría del lobo es el lobezno.":[8,631.194,2.12],"¿Cómo se llama la cría del águila?":[8,633.614,1.78],"La cría del águila es el aguilucho.":[8,635.694,2.2],"Los pingüinos viven en el Polo Norte.":[8,638.194,2.22],"Viven en el Polo Sur, en la Antártida. En el Polo Norte vive el oso polar.":[8,640.714,5.176],"La ballena es un pez.":[8,646.19,1.22],"Es un mamífero: respira aire y su cría toma leche de su madre.":[8,647.71,3.98],"El guepardo es el animal más rápido de la tierra.":[8,651.99,2.52],"Corre casi tan rápido como un coche en la autovía.":[8,654.81,2.62],"La jirafa es el animal más alto del mundo.":[8,657.73,2.34],"Con su cuello tan largo llega a las hojas más altas.":[8,660.37,2.74],"Las arañas son insectos.":[8,663.41,1.62],"Los insectos tienen seis patas y las arañas tienen ocho. Las arañas son arácnidos.":[8,665.33,5.48],"Los murciélagos son aves.":[8,671.11,1.58],"Son mamíferos que vuelan: tienen pelo y sus crías toman leche.":[8,672.99,3.52],"El pulpo tiene ocho brazos.":[8,676.81,1.74],"¡Y además tiene tres corazones!":[8,678.85,1.88],"El camello tiene dos jorobas y el dromedario tiene una.":[8,681.03,3.1],"El camello vive en Asia y el dromedario, en África.":[8,684.43,3.18],"Los gorilas viven en América.":[8,687.91,1.78],"Viven en África, en las selvas del Congo y de otros países cercanos.":[8,689.99,3.76],"El oso panda come sobre todo bambú.":[8,694.05,2.08],"El lince ibérico solo vive en España y Portugal.":[8,696.43,2.82],"En Andalucía vive en Doñana y en Sierra Morena, muy cerca de Córdoba.":[8,699.55,3.84],"Las ranas nacen con patas.":[8,703.69,1.74],"Nacen como renacuajos, con cola, y viven en el agua. Después les salen las patas.":[8,705.73,5.68],"Las abejas fabrican la miel.":[8,711.71,1.72],"La hacen con el néctar de las flores.":[8,713.73,2.04],"Los elefantes beben agua con la trompa.":[8,716.07,2.2],"Sorben el agua con la trompa y luego se la echan en la boca.":[8,718.57,3.1],"Todas las cebras tienen las rayas iguales.":[8,721.97,2.42],"El koala vive en Australia.":[8,724.69,1.62],"Vive en los bosques de eucaliptos de Australia, en Oceanía.":[8,726.61,3.18],"Los delfines respiran debajo del agua, como los peces.":[8,730.09,3.18],"Tienen que subir a respirar aire por un agujero que tienen en la cabeza.":[8,733.57,3.58],"Las serpientes tienen patas.":[8,737.45,1.78],"No tienen patas: se mueven arrastrándose.":[8,739.53,2.62],"El hipopótamo pasa mucho tiempo dentro del agua.":[8,742.45,2.68],"Así no se quema con el sol.":[8,745.43,1.64],"Las cigüeñas hacen sus nidos en lo alto de las torres.":[8,747.37,2.92],"Y vuelven al mismo nido cada año.":[8,750.59,1.94],"El tiburón es un mamífero.":[8,752.83,1.531],"Es un pez: respira dentro del agua con sus branquias.":[8,754.661,3.52],"El perezoso es muy rápido.":[8,758.481,1.96],"Es uno de los animales más lentos del mundo.":[8,760.741,2.56],"Antes de ser mariposa, la mariposa es una oruga.":[8,763.601,2.98],"La oruga se encierra en un capullo y sale convertida en mariposa.":[8,766.881,3.52],"Al tigre le gusta nadar.":[8,770.701,1.5],"Al contrario que a muchos gatos, al tigre le encanta el agua.":[8,772.501,3.32],"La ballena azul es el animal más grande que existe.":[8,776.121,2.98],"Es más grande incluso que los dinosaurios.":[8,779.401,2.34],"El oso polar tiene la piel blanca.":[8,782.041,2.0],"Su pelo parece blanco, pero su piel es negra.":[8,784.341,2.88],"Las gallinas son mamíferos.":[8,787.521,1.84],"Son aves: tienen plumas y nacen de un huevo.":[8,789.661,2.8],"Los caballos pueden dormir de pie.":[8,792.761,2.06],"Pueden echar una cabezadita de pie sin caerse.":[8,795.121,2.571]}};
+const VOICE_MANIFEST={"files":["voz/ui.mp4","voz/pal.mp4","voz/num.mp4","voz/fra.mp4","voz/pre.mp4","voz/pro.mp4","voz/cuentos.mp4","voz/en.mp4","voz/animales.mp4","voz/sonidos.mp4","voz/arte.mp4"],"map":{"¡Hola! Soy Mochi, tu mochila. ¿Cómo te llamas? Escribe tu nombre y elige tu animal.":[0,0.3,5.66],"¿Quién va a jugar hoy?":[0,6.26,1.2],"¡Hola! ¿Qué repasamos hoy? Elige una asignatura.":[0,7.76,3.12],"¿Qué quieres practicar? Elige y pulsa jugar.":[0,11.18,2.84],"Escucha la palabra y toca la letra que falta.":[0,14.32,2.54],"Ordena las sílabas para formar la palabra.":[0,17.16,2.3],"Esta palabra no cabe en el renglón. ¿Por dónde la corto?":[0,19.76,3.3],"Toca las palabras que van con mayúscula y luego pulsa comprobar.":[0,23.36,3.36],"Mayúscula al empezar la frase y en los nombres de personas, animales, ciudades, ríos y fiestas.":[0,27.02,5.82],"¿Qué palabra va en el hueco?":[0,33.14,1.48],"Lee el cuento con atención y contesta las preguntas.":[0,34.92,2.84],"Primero, lee las preguntas. Así sabrás en qué fijarte cuando escuches el cuento.":[0,38.06,4.6],"Ahora escucha el cuento con mucha atención.":[0,42.96,2.44],"Ya puedes contestar. Si lo necesitas, escucha el cuento otra vez.":[0,45.7,4.26],"¿Qué número es? Cuenta los cuadrados, las barras y los cubitos.":[0,50.26,4.12],"Escribe el número con cifras.":[0,54.68,1.72],"¿Qué cifra está en las unidades?":[0,56.7,1.72],"¿Qué cifra está en las decenas?":[0,58.72,1.62],"¿Qué cifra está en las centenas?":[0,60.64,1.62],"¿Qué número va justo después?":[0,62.56,1.72],"¿Qué número va justo antes?":[0,64.58,1.72],"¿Qué signo va en el medio: menor, igual o mayor?":[0,66.6,3.52],"Resuelve la suma. Empieza por las unidades.":[0,70.42,3.08],"Resuelve la resta. Empieza por las unidades.":[0,73.8,3.0],"Redondea a la decena. ¿A qué número está más cerca?":[0,77.1,3.46],"Redondea a la centena. ¿A qué número está más cerca?":[0,80.86,3.4],"¿Qué operación hago? ¿Sumar o restar?":[0,84.56,2.58],"Ahora haz la cuenta y escribe el resultado.":[0,87.44,2.44],"¿Cómo escribo la solución? Recuerda: una frase con verbo.":[0,90.18,4.1],"La solución es una frase completa, con verbo.":[0,94.58,2.82],"¿Tiene huesos por dentro?":[0,97.7,1.42],"¿A qué grupo pertenece?":[0,99.42,1.44],"Busca las parejas: el dibujo y su palabra en inglés.":[0,101.16,3.5],"Escucha y escribe la palabra en inglés.":[0,104.96,2.2],"Lee en voz alta, despacito, respetando los puntos y las comas.":[0,107.46,4.2],"¡Lectura terminada! Ahora cuéntale a alguien lo que has leído.":[0,111.96,3.96],"¡Muy bien!":[0,116.22,1.04],"¡Genial!":[0,117.56,0.96],"¡Bravo!":[0,118.82,0.92],"¡Lo has clavado!":[0,120.04,1.14],"¡Fenomenal!":[0,121.48,1.08],"¡Estupendo!":[0,122.86,1.04],"¡Perfecto!":[0,124.2,1.0],"¡Qué máquina!":[0,125.5,1.06],"¡Casi!":[0,126.86,0.7],"Uy, prueba otra vez.":[0,127.86,1.36],"¡Tú puedes!":[0,129.52,0.96],"Piénsalo un poquito más.":[0,130.78,1.6],"¡Buen trabajo!":[0,132.68,1.1],"¡Increíble!":[0,134.08,1.04],"Lengua":[0,135.42,0.76],"Mates":[0,136.48,0.8],"Cono":[0,137.58,0.62],"Inglés":[0,138.5,0.82],"Leer cada día":[0,139.62,1.24],"Mi cuaderno":[0,141.16,0.98],"Cazafaltas":[0,142.44,1.08],"Sílabas":[0,143.82,0.82],"Mayúsculas":[0,144.94,1.08],"Palabras del revés":[0,146.32,1.3],"Comprensión lectora":[0,147.92,1.44],"Comprensión oral":[0,149.66,1.28],"Números hasta el 999":[0,151.24,2.4],"Sumas con llevadas":[0,153.94,1.34],"Restas con llevadas":[0,155.58,1.46],"Tablas de multiplicar":[0,157.34,1.38],"Redondear":[0,159.02,0.9],"Problemas":[0,160.22,0.88],"¿Tiene huesos?":[0,161.4,1.08],"Grupos de vertebrados":[0,162.78,1.56],"Memory":[0,164.64,0.74],"Spell it!":[0,165.68,0.8],"Lectura en voz alta":[0,166.78,1.42],"¿Cuántos cuadritos?":[0,168.5,1.24],"Antes de p y b, siempre se escribe m.":[0,170.04,3.06],"Delante de las demás letras va n. La m solo va antes de p y b.":[0,173.4,5.44],"Suena fuerte entre dos vocales: se escribe rr.":[0,179.14,3.38],"Al empezar la palabra, una sola r ya suena fuerte.":[0,182.82,3.32],"Suena suave: se escribe una sola r.":[0,186.44,2.66],"Con a, o, u se escribe z: za, zo, zu.":[0,189.4,5.3],"Al final de la palabra, este sonido se escribe con z.":[0,195.0,3.36],"Con e, i se escribe c: ce, ci.":[0,198.66,3.84],"Para decir que, qui usamos qu. La u no suena.":[0,202.8,5.2],"Con a, o, u se escribe c: ca, co, cu.":[0,208.3,4.66],"Para decir gue, gui ponemos gu. La u no suena.":[0,213.26,5.04],"Con a, o, u se escribe g: ga, go, gu.":[0,218.6,5.06],"Los mamíferos tienen pelo y sus crías toman leche de su madre.":[0,223.96,3.42],"Las aves tienen plumas, pico y dos patas. Nacen de un huevo.":[0,227.68,3.92],"Los peces tienen escamas y aletas, y respiran dentro del agua.":[0,231.9,3.54],"Los reptiles tienen escamas o caparazón y se arrastran o andan con patas cortas.":[0,235.74,4.48],"Los anfibios tienen la piel húmeda y viven en el agua y en la tierra.":[0,240.52,3.56],"En Lengua, ¿cuántos cuadritos dejo antes de empezar a escribir?":[0,244.38,3.42],"En Lengua dejo 2 cuadritos, pongo un puntito y empiezo.":[0,248.1,3.44],"Después de dejar los cuadritos, ¿qué pongo antes de escribir?":[0,251.84,3.28],"2 cuadritos, un puntito… ¡y a escribir!":[0,255.42,2.96],"En Mates, ¿cuántos cuadritos dejo hasta la primera cuenta?":[0,258.68,3.22],"5 cuadritos hasta la primera cuenta.":[0,262.2,2.2],"En Mates, ¿cuántos cuadritos dejo entre una cuenta y la siguiente?":[0,264.7,3.62],"10 cuadritos entre cuenta y cuenta, para que no se mezclen.":[0,268.62,3.239],"campo":[1,0.3,0.6],"tambor":[1,1.2,0.68],"hombre":[1,2.18,0.68],"sombrero":[1,3.16,0.84],"campeón":[1,4.3,0.84],"bombero":[1,5.44,0.82],"compra":[1,6.56,0.68],"bombilla":[1,7.54,0.86],"trompeta":[1,8.7,0.82],"canción":[1,9.82,0.82],"ventana":[1,10.94,0.82],"manzana":[1,12.06,0.86],"montaña":[1,13.22,0.86],"canguro":[1,14.38,0.78],"lengua":[1,15.46,0.7],"perro":[1,16.46,0.58],"burro":[1,17.34,0.66],"gorra":[1,18.3,0.68],"zorro":[1,19.28,0.58],"guitarra":[1,20.16,0.8],"arroz":[1,21.26,0.58],"torre":[1,22.14,0.6],"ratón":[1,23.04,0.78],"rosa":[1,24.12,0.72],"pera":[1,25.14,0.54],"loro":[1,25.98,0.64],"mariposa":[1,26.92,0.9],"rana":[1,28.12,0.7],"regalo":[1,29.12,0.74],"paraguas":[1,30.16,0.78],"zapato":[1,31.24,0.72],"taza":[1,32.26,0.6],"pez":[1,33.16,0.44],"lápiz":[1,33.9,0.64],"zanahoria":[1,34.84,0.84],"calabaza":[1,35.98,0.82],"zumo":[1,37.1,0.6],"cebolla":[1,38.0,0.74],"cerdo":[1,39.04,0.62],"cisne":[1,39.96,0.66],"cine":[1,40.92,0.62],"cereza":[1,41.84,0.7],"maceta":[1,42.84,0.74],"ciervo":[1,43.88,0.7],"queso":[1,44.88,0.68],"casa":[1,45.86,0.68],"cohete":[1,46.84,0.78],"mantequilla":[1,47.92,0.98],"paquete":[1,49.2,0.74],"cuchara":[1,50.24,0.76],"mosquito":[1,51.3,0.82],"raqueta":[1,52.42,0.84],"vaca":[1,53.56,0.7],"caracol":[1,54.56,0.8],"esquí":[1,55.66,0.66],"coco":[1,56.62,0.62],"gato":[1,57.54,0.74],"gafas":[1,58.58,0.84],"globo":[1,59.72,0.74],"gallina":[1,60.76,0.82],"gorila":[1,61.88,0.8],"tigre":[1,62.98,0.64],"juguete":[1,63.92,0.78],"hamburguesa":[1,65.0,0.96],"guisantes":[1,66.26,1.06],"guepardo":[1,67.62,0.86],"chocolate":[1,68.78,0.86],"llave":[1,69.94,0.7],"pollito":[1,70.94,0.82],"lluvia":[1,72.06,0.76],"coche":[1,73.12,0.7],"leche":[1,74.12,0.74],"estrella":[1,75.16,0.84],"chaqueta":[1,76.3,0.8],"llama":[1,77.4,0.72],"mochila":[1,78.42,0.82],"ardilla":[1,79.54,0.82],"pelota":[1,80.66,0.72],"camión":[1,81.68,0.8],"teléfono":[1,82.78,0.82],"elefante":[1,83.9,0.9],"tomate":[1,85.1,0.72],"conejo":[1,86.12,0.82],"tortuga":[1,87.24,0.78],"maleta":[1,88.32,0.72],"bicicleta":[1,89.34,0.94],"helado":[1,90.58,0.68],"fresa":[1,91.56,0.66],"dragón":[1,92.52,0.84],"árbol":[1,93.66,0.76],"pájaro":[1,94.72,0.7],"jirafa":[1,95.72,0.76],"cocodrilo":[1,96.78,0.92],"pirata":[1,98.0,0.7],"castillo":[1,99.0,0.86],"caballo":[1,100.16,0.76],"pintura":[1,101.22,0.76],"serpiente":[1,102.28,0.92],"león":[1,103.5,0.76],"pingüino":[1,104.56,0.78],"delfín":[1,105.64,0.86],"águila":[1,106.8,0.72],"murciélago":[1,107.82,0.98],"ballena":[1,109.1,0.8],"tiburón":[1,110.2,0.8],"lagartija":[1,111.3,0.94],"pato":[1,112.54,0.58],"araña":[1,113.42,0.74],"hormiga":[1,114.46,0.8],"abeja":[1,115.56,0.74],"oruga":[1,116.6,0.74],"pulpo":[1,117.64,0.66],"cangrejo":[1,118.6,0.84],"medusa":[1,119.74,0.84],"mariquita":[1,120.88,0.9],"saltamontes":[1,122.08,1.12],"lombriz":[1,123.5,0.72],"gamba":[1,124.52,0.74],"escorpión":[1,125.56,0.913],"ciento uno":[2,0.3,0.94],"ciento diez":[2,1.54,0.82],"ciento quince":[2,2.66,1.04],"ciento veinte":[2,4.0,1.02],"ciento veintiuno":[2,5.32,1.2],"ciento cincuenta":[2,6.82,1.2],"ciento noventa y nueve":[2,8.32,1.34],"doscientos":[2,9.96,1.02],"doscientos cinco":[2,11.28,1.26],"doscientos doce":[2,12.84,1.2],"doscientos sesenta":[2,14.34,1.36],"trescientos":[2,16.0,1.04],"trescientos cuarenta y cinco":[2,17.34,1.58],"trescientos ochenta y uno":[2,19.22,1.5],"cuatrocientos nueve":[2,21.02,1.28],"cuatrocientos treinta y dos":[2,22.6,1.5],"cuatrocientos setenta":[2,24.4,1.32],"quinientos":[2,26.02,0.9],"quinientos quince":[2,27.22,1.18],"quinientos cincuenta y cinco":[2,28.7,1.58],"quinientos noventa y cuatro":[2,30.58,1.56],"seiscientos":[2,32.44,1.08],"seiscientos diecisiete":[2,33.82,1.54],"seiscientos cincuenta y tres":[2,35.66,1.66],"setecientos":[2,37.62,1.1],"setecientos veintiocho":[2,39.02,1.6],"setecientos cuarenta y ocho":[2,40.92,1.66],"setecientos setenta y siete":[2,42.88,1.7],"ochocientos":[2,44.88,1.06],"ochocientos seis":[2,46.24,1.26],"ochocientos sesenta y cinco":[2,47.8,1.74],"ochocientos noventa":[2,49.84,1.42],"novecientos":[2,51.56,1.04],"novecientos once":[2,52.9,1.32],"novecientos treinta y seis":[2,54.52,1.62],"novecientos noventa y nueve":[2,56.44,1.64],"cero por cero":[2,58.38,0.98],"cero por uno":[2,59.66,0.94],"cero por dos":[2,60.9,1.02],"cero por tres":[2,62.22,1.06],"cero por cuatro":[2,63.58,1.08],"cero por cinco":[2,64.96,1.08],"cero por seis":[2,66.34,1.08],"cero por siete":[2,67.72,1.1],"cero por ocho":[2,69.12,1.02],"cero por nueve":[2,70.44,1.06],"cero por diez":[2,71.8,0.9],"uno por cero":[2,73.0,1.0],"uno por uno":[2,74.3,1.0],"uno por dos":[2,75.6,1.02],"uno por tres":[2,76.92,1.06],"uno por cuatro":[2,78.28,1.08],"uno por cinco":[2,79.66,1.1],"uno por seis":[2,81.06,1.12],"uno por siete":[2,82.48,1.1],"uno por ocho":[2,83.88,1.06],"uno por nueve":[2,85.24,1.04],"uno por diez":[2,86.58,0.92],"dos por cero":[2,87.8,1.08],"dos por uno":[2,89.18,1.0],"dos por dos":[2,90.48,1.08],"dos por tres":[2,91.86,1.12],"dos por cuatro":[2,93.28,1.14],"dos por cinco":[2,94.72,1.14],"dos por seis":[2,96.16,1.16],"dos por siete":[2,97.62,1.14],"dos por ocho":[2,99.06,1.08],"dos por nueve":[2,100.44,1.08],"dos por diez":[2,101.82,0.96],"cinco por cero":[2,103.08,1.1],"cinco por uno":[2,104.48,1.04],"cinco por dos":[2,105.82,1.12],"cinco por tres":[2,107.24,1.18],"cinco por cuatro":[2,108.72,1.18],"cinco por cinco":[2,110.2,1.18],"cinco por seis":[2,111.679,1.2],"cinco por siete":[2,113.179,1.18],"cinco por ocho":[2,114.659,1.14],"cinco por nueve":[2,116.099,1.14],"cinco por diez":[2,117.539,1.04],"Mi perro se llama Toby.":[3,0.3,1.5],"Lucía y Hugo juegan en el parque.":[3,2.1,2.16],"El sábado vamos al zoo de Córdoba.":[3,4.56,1.98],"Mañana es el cumpleaños de Pablo.":[3,6.84,1.94],"Mi abuela vive en Sevilla.":[3,9.08,1.56],"La seño nos lee un cuento.":[3,10.94,1.68],"El río Guadalquivir es muy largo.":[3,12.92,2.1],"En Navidad visitamos el belén.":[3,15.32,1.9],"Ayer fuimos al cine con Marta.":[3,17.52,1.8],"Mi gata Luna duerme en el sofá.":[3,19.62,1.86],"El castillo de Almodóvar es muy alto.":[3,21.78,2.24],"Papá Noel trae regalos.":[3,24.32,1.64],"Los delfines viven en el mar.":[3,26.26,1.7],"El cielo es azul.":[3,28.26,1.2],"Mi hermano se lava los dientes.":[3,29.76,1.66],"La sopa es muy caliente.":[3,31.72,1.74],"Ana se peina antes del cole.":[3,33.76,1.76],"Hoy es lunes.":[3,35.82,1.08],"El gato se esconde debajo de la cama.":[3,37.2,2.04],"Vamos al parque.":[3,39.54,1.12],"La luna brilla de noche.":[3,40.96,1.52],"El sol calienta mucho.":[3,42.78,1.56],"Dame el lápiz rojo.":[3,44.64,1.28],"Los niños se ríen mucho.":[3,46.22,1.64],"Mañana voy al cine.":[3,48.16,1.28],"La niña salta a la comba.":[3,49.74,1.64],"Echa un poco de sal a la sopa.":[3,51.68,1.74],"Me gustan las fresas.":[3,53.72,1.46],"Mi casa es grande.":[3,55.48,1.24],"El perro ladra.":[3,57.02,1.12],"Ese es mi libro.":[3,58.44,1.16],"Lucía tiene 383 cromos.":[3,59.9,2.82],"A Hugo le quedan 217 canicas.":[3,63.02,2.82],"En total hay 283 galletas.":[3,66.14,2.66],"En el tren quedan 255 pasajeros.":[3,69.1,3.08],"Martina ha leído 125 páginas en total.":[3,72.48,3.14],"En el zoo quedan 54 pájaros.":[3,75.92,2.48],"A Leo le faltan 174 pegatinas.":[3,78.7,2.84],"Ese día van al cine 623 personas.":[3,81.84,3.24],"En el huerto hay 121 plantas.":[3,85.38,2.5],"A Sofía le quedan 66 euros.":[3,88.18,2.42],"En el colegio hay 611 alumnos.":[3,90.9,2.54],"A la granja le quedan 355 gallinas.":[3,93.74,3.18],"¿Dónde duerme Pincho durante el día?":[4,0.3,1.94],"¿Qué come Pincho?":[4,2.54,1.18],"¿Por qué se convierte Pincho en una bola de púas?":[4,4.02,2.7],"¿Qué tiempo había hecho la noche antes de que la abuela viera las huellas?":[4,7.02,3.46],"¿Cuántos años cumple Leo?":[4,10.78,1.52],"¿Dónde juegan al escondite?":[4,12.6,1.6],"¿Cuántos amigos del cole van a la fiesta?":[4,14.5,2.26],"¿Cómo se siente Leo al final del día?":[4,17.06,2.04],"¿Para qué estira el cuello la jirafa?":[4,19.4,1.78],"¿Cuántas patas tiene la araña?":[4,21.48,1.76],"¿Tiene huesos la jirafa?":[4,23.54,1.42],"¿Qué necesitan los pingüinos en el zoo?":[4,25.26,2.0],"¿Qué quería hacer Marta?":[4,27.56,1.34],"¿Qué sacó el abuelo?":[4,29.2,1.18],"¿Cómo se sentía Marta al mirar por la ventana?":[4,30.68,2.44],"Al final, ¿se lo pasó bien Marta?":[4,33.42,2.28],"¿Qué hacía la hormiga en verano?":[4,36.0,1.6],"¿Qué instrumento tocaba el saltamontes?":[4,37.9,2.18],"¿Por qué llamó el saltamontes a la puerta de la hormiga?":[4,40.38,2.64],"¿Quién pensó antes en el invierno?":[4,43.32,1.82],"¿De qué color es Burbuja?":[4,45.44,1.5],"¿Cuándo le da de comer Daniel?":[4,47.24,1.54],"¿Qué le puso Daniel en la pecera?":[4,49.08,1.78],"¿Le gusta a Burbuja el barco?":[4,51.16,1.68],"¿Qué día fueron de excursión?":[4,53.14,1.6],"¿Cómo llegaron al castillo?":[4,55.04,1.54],"¿Quién vivió en el castillo hace muchos años?":[4,56.88,2.62],"¿Por qué Nora sujetaba la gorra con la mano?":[4,59.8,2.34],"¿Cómo es Pelusa?":[4,62.44,1.12],"¿Dónde le gusta dormir?":[4,63.86,1.38],"¿Qué dejó la abuela encima del sofá?":[4,65.54,1.96],"¿Cómo estaba el salón cuando volvió la abuela?":[4,67.8,2.218],"Lucía tiene 245 cromos. Su abuela le regala 138 cromos más. ¿Cuántos cromos tiene ahora?":[5,0.3,7.36],"Hugo tenía 362 canicas y le da 145 a sus amigos. ¿Cuántas canicas le quedan?":[5,7.96,6.44],"En una caja hay 156 galletas y en otra caja hay 127. ¿Cuántas galletas hay en total?":[5,14.7,6.82],"Un tren lleva 430 pasajeros. En la estación se bajan 175. ¿Cuántos pasajeros quedan en el tren?":[5,21.82,7.36],"Martina leyó 68 páginas la semana pasada y 57 páginas esta semana. ¿Cuántas páginas ha leído en total?":[5,29.48,7.48],"En el zoo hay 92 pájaros. Se van volando 38. ¿Cuántos pájaros quedan?":[5,37.26,5.36],"Leo quiere juntar 500 pegatinas. Ya tiene 326. ¿Cuántas pegatinas le faltan?":[5,42.92,6.1],"Al cine van 248 personas por la mañana y 375 por la tarde. ¿Cuántas personas van al cine ese día?":[5,49.32,7.96],"En el huerto del cole hay 75 lechugas y 46 tomateras. ¿Cuántas plantas hay en total?":[5,57.58,5.9],"Sofía tenía 85 euros en su hucha. Se compra un libro de 19 euros. ¿Cuánto dinero le queda?":[5,63.78,6.66],"En el colegio hay 315 niños y 296 niñas. ¿Cuántos alumnos hay en total?":[5,70.74,6.06],"Una granja tiene 640 gallinas. Vende 285. ¿Cuántas gallinas le quedan?":[5,77.1,6.371],"Pincho es un erizo pequeño que vive en el jardín de la abuela Carmen. Por el día duerme debajo de un montón de hojas secas. Cuando se hace de noche, sale a buscar caracoles y gusanos para comer. Si un perro se acerca, Pincho se convierte en una bola llena de púas. Una mañana, la abuela encontró sus huellas en la tierra mojada.":[6,0.3,19.566],"Hoy Leo cumple siete años. Su madre ha preparado una tarta de chocolate con siete velas. A la fiesta vienen sus amigos del cole: Sara, Iván y Nora. Juegan al escondite en el patio hasta que se hace de noche. Cuando Leo sopla las velas, todos aplauden. Antes de dormir, Leo dice: «¡Ha sido el mejor día del año!».":[6,20.166,19.859],"La clase de segundo fue de visita al zoo. La jirafa estiraba su cuello largo para comer las hojas más altas. Los pingüinos nadaban muy rápido, pero ninguno echaba a volar. En el terrario había una araña enorme con ocho patas y una mariposa azul. La seño explicó que la araña y la mariposa no tienen huesos: son animales invertebrados.":[6,40.325,19.879],"Marta quería ir al parque con su bici nueva, pero empezó a llover muy fuerte. Se quedó mirando por la ventana con la cara muy seria. Entonces su abuelo sacó una caja de pinturas y un montón de folios. Pasaron la tarde pintando dragones, castillos y barcos. Cuando salió el arcoíris, Marta ya no se acordaba de la bici.":[6,60.504,18.22],"Durante todo el verano, la hormiga trabajaba sin parar y guardaba comida en su hormiguero. El saltamontes, en cambio, se pasaba el día cantando y tocando la guitarra. «¿Por qué trabajas tanto?», le preguntaba. Cuando llegó el invierno, hacía mucho frío y en el campo no quedaba comida. Una mañana, el saltamontes llamó a la puerta de la hormiga con la tripa vacía.":[6,79.024,22.58],"Burbuja es un pez naranja que vive en una pecera redonda, en casa de Daniel. Todas las mañanas, antes de ir al cole, Daniel le echa un poquito de comida. A Burbuja le encanta esconderse detrás de una piedra verde. Un sábado, Daniel limpió la pecera y le puso un barco pirata pequeñito. Desde ese día, Burbuja nada sin parar alrededor del barco.":[6,101.904,21.159],"El viernes, la clase de segundo fue de excursión a un castillo muy antiguo. Subieron en autobús por una carretera llena de curvas. Arriba, el guía les enseñó la torre más alta y les contó que allí vivieron caballeros hace muchísimos años. Hacía mucho viento y Nora tuvo que sujetar su gorra con la mano. Antes de volver, se comieron los bocadillos sentados junto a la muralla.":[6,123.363,22.007],"Pelusa es una gatita blanca con una mancha negra en la oreja. Le encanta dormir al sol en la terraza. Una tarde, la abuela dejó un ovillo de lana roja encima del sofá. Pelusa dio un salto, lo tiró al suelo y empezó a jugar con él. Cuando la abuela volvió, ¡había lana roja por todo el salón!":[6,145.671,17.868],"en:cat":[7,0.3,0.82],"en:dog":[7,1.42,0.82],"en:fish":[7,2.54,0.74],"en:bird":[7,3.58,0.82],"en:duck":[7,4.7,0.8],"en:cow":[7,5.8,0.76],"en:pig":[7,6.86,0.7],"en:frog":[7,7.86,0.7],"en:lion":[7,8.86,0.94],"en:bee":[7,10.1,0.74],"en:bear":[7,11.14,0.82],"en:mouse":[7,12.26,1.0],"en:apple":[7,13.56,0.76],"en:banana":[7,14.62,0.92],"en:egg":[7,15.84,0.72],"en:milk":[7,16.86,0.78],"en:cake":[7,17.94,0.76],"en:pizza":[7,19.0,0.78],"en:bread":[7,20.08,0.78],"en:cheese":[7,21.16,0.98],"en:orange":[7,22.44,0.92],"en:grapes":[7,23.66,0.98],"en:sun":[7,24.94,0.8],"en:star":[7,26.04,0.9],"en:moon":[7,27.24,0.8],"en:tree":[7,28.34,0.7],"en:car":[7,29.34,0.76],"en:bus":[7,30.4,0.96],"en:ball":[7,31.66,0.84],"en:book":[7,32.8,0.82],"en:pen":[7,33.92,0.72],"en:bed":[7,34.94,0.72],"en:house":[7,35.96,0.94],"en:hat":[7,37.2,0.82],"en:kite":[7,38.32,0.78],"en:bike":[7,39.4,0.82],"en:red":[7,40.52,0.7],"en:blue":[7,41.52,0.84],"en:green":[7,42.66,0.86],"en:yellow":[7,43.82,0.78],"en:purple":[7,44.9,0.8],"en:black":[7,46.0,0.86],"en:white":[7,47.16,0.8],"en:brown":[7,48.26,0.86],"¿En qué continente vive? Tócalo en el mapa.":[8,0.3,2.9],"¿Dónde vive este animal? Elige su casa.":[8,3.5,2.76],"¿Qué come este animal?":[8,6.56,1.26],"¿Cómo nace: de la tripa de su madre o de un huevo?":[8,8.12,2.94],"¿Verdadero o falso?":[8,11.36,1.4],"Este es tu álbum de animales. Cada vez que aciertas una pregunta de animales, consigues un cromo nuevo. Toca un cromo para ver su ficha.":[8,13.06,7.74],"Conocimiento del medio":[8,21.1,1.48],"La selva es un bosque muy caluroso y húmedo, lleno de árboles y de lluvia.":[8,22.88,4.28],"La sabana es una llanura enorme de hierba alta, con pocos árboles.":[8,27.46,3.68],"En el desierto casi nunca llueve y hay mucha arena.":[8,31.44,3.0],"En los polos hace muchísimo frío y casi todo está cubierto de hielo.":[8,34.74,4.2],"Los océanos son mares inmensos de agua salada.":[8,39.24,3.02],"Los ríos y los lagos tienen agua dulce.":[8,42.56,2.4],"En el bosque hay muchos árboles y en invierno hace frío.":[8,45.26,3.14],"En la montaña hay rocas, cuestas empinadas y mucho frío en lo alto.":[8,48.7,4.28],"En la granja viven animales que cuidan las personas.":[8,53.28,2.84],"Los herbívoros comen plantas: hierba, hojas, semillas y frutas.":[8,56.42,4.6],"Los carnívoros comen otros animales.":[8,61.32,2.16],"Los omnívoros comen de todo: plantas y animales.":[8,63.78,3.12],"Los vivíparos nacen de la tripa de su madre.":[8,67.2,2.44],"Los ovíparos nacen de un huevo.":[8,69.94,1.94],"Vive en África, en las selvas del Congo y de otros países cercanos.":[8,72.18,3.94],"Es el mono más grande del mundo y vive en familias. Come sobre todo hojas, tallos y frutas.":[8,76.42,6.42],"Vive en África, en la sabana, por ejemplo en Kenia y Tanzania.":[8,83.14,3.64],"Vive en grupos llamados manadas. Las leonas son las que más cazan.":[8,87.08,4.38],"Vive en África, en la sabana.":[8,91.76,1.92],"Es el animal más alto del mundo. Con su cuello largo come las hojas de los árboles más altos.":[8,93.98,5.78],"El elefante africano vive en África, en la sabana y en la selva.":[8,100.06,3.66],"Es el animal más grande de la tierra. Usa la trompa para beber, oler, coger cosas y saludar.":[8,104.02,6.24],"cebra":[8,110.56,0.698],"Cada cebra tiene sus rayas diferentes, como nuestras huellas de los dedos.":[8,111.558,4.0],"hipopótamo":[8,115.858,1.0],"Vive en África, en los ríos y lagos.":[8,117.158,2.38],"Pasa el día dentro del agua para no quemarse con el sol y sale de noche a comer hierba.":[8,119.838,4.4],"Es el animal más rápido de la tierra: corre casi tan rápido como un coche en la autovía.":[8,124.538,4.58],"dromedario":[8,129.418,0.9],"Vive en los desiertos de África, como el Sáhara.":[8,130.618,2.6],"Tiene una sola joroba. Su primo el camello tiene dos.":[8,133.518,3.14],"camello":[8,136.957,0.7],"Vive en los desiertos de Asia, como el desierto de Gobi, en Mongolia.":[8,137.957,3.7],"Tiene dos jorobas llenas de grasa y aguanta muchos días sin beber agua.":[8,141.957,3.74],"panda":[8,145.998,0.62],"Vive en Asia, en los bosques de bambú de las montañas de China.":[8,146.918,3.36],"Se pasa casi todo el día comiendo bambú.":[8,150.578,2.26],"Vive en Asia, en las selvas y bosques de la India y de otros países.":[8,153.138,3.76],"Es el felino más grande del mundo y, al contrario que los gatos, le encanta nadar.":[8,157.198,4.44],"orangután":[8,161.937,0.94],"Vive en Asia, en las selvas de las islas de Borneo y Sumatra.":[8,163.177,3.34],"Su nombre significa «persona del bosque». Pasa casi toda su vida en los árboles.":[8,166.817,4.54],"Vive en Oceanía, en Australia.":[8,171.657,2.02],"Avanza dando saltos enormes. Su cría crece dentro de una bolsa en la tripa de su madre.":[8,173.977,5.62],"koala":[8,179.897,0.7],"Vive en Oceanía, en los bosques de eucaliptos de Australia.":[8,180.897,3.2],"Come hojas de eucalipto y duerme casi todo el día, ¡unas veinte horas!":[8,184.397,3.8],"El pingüino emperador vive en la Antártida, en el Polo Sur.":[8,188.497,3.14],"No sabe volar, pero nada rapidísimo. El papá cuida el huevo entre sus patas.":[8,191.937,5.12],"oso polar":[8,197.357,0.86],"Vive en el Ártico, cerca del Polo Norte, por ejemplo en Canadá.":[8,198.517,3.48],"Su pelo parece blanco para esconderse en la nieve, pero su piel es negra.":[8,202.297,3.82],"bisonte":[8,206.417,0.84],"Vive en América del Norte, en las praderas de Estados Unidos y Canadá.":[8,207.557,3.68],"Es el animal más pesado de América del Norte.":[8,211.537,2.52],"mapache":[8,214.357,0.82],"Vive en América del Norte, en bosques cerca de ríos.":[8,215.477,4.158],"Parece que lleva un antifaz y moja la comida en el agua antes de comérsela.":[8,219.935,3.72],"Vive en América del Sur, en las montañas de los Andes, en Perú y Bolivia.":[8,223.955,4.26],"Si se enfada, ¡escupe! Su lana es muy calentita.":[8,228.515,3.54],"perezoso":[8,232.355,0.84],"Vive en América del Sur, en la selva del Amazonas, en Brasil.":[8,233.495,3.62],"Es tan lento que en su pelo crecen algas verdes.":[8,237.415,2.76],"guacamayo":[8,240.475,0.9],"Vive en América del Sur, en la selva del Amazonas.":[8,241.675,2.92],"Tiene plumas de muchos colores y un pico muy fuerte para romper semillas.":[8,244.895,4.0],"lince ibérico":[8,249.195,1.16],"Vive solo en España y Portugal. En Andalucía vive en Doñana y en Sierra Morena, muy cerca de Córdoba.":[8,250.655,6.2],"Estuvo a punto de desaparecer, pero gracias a los cuidados ya hay más de dos mil. Le encantan los conejos.":[8,257.155,6.34],"lobo ibérico":[8,263.795,1.12],"Vive en Europa, en los montes del norte de España, como en Zamora y Asturias.":[8,265.215,4.36],"Vive en manadas y aúlla para hablar con los demás lobos.":[8,269.875,2.88],"oso pardo":[8,273.055,0.9],"En España vive en las montañas del norte: en Asturias, Cantabria y León.":[8,274.255,4.14],"En invierno se mete en una cueva y duerme mucho: hiberna. Su cría se llama osezno.":[8,278.695,5.62],"cigüeña":[8,284.615,0.74],"En primavera y verano vive en España. En invierno, muchas viajan a África.":[8,285.655,4.68],"Hace nidos enormes en lo alto de las torres y los campanarios, y vuelve a ellos cada año.":[8,290.635,4.88],"flamenco":[8,295.815,0.8],"En España podemos verlo en Doñana y en la laguna de Fuente de Piedra, en Málaga.":[8,296.915,4.4],"Es rosa por los camarones que come, y le encanta dormir sobre una sola pata.":[8,301.615,4.3],"Vive en todos los océanos del mundo.":[8,306.215,2.04],"La ballena azul es el animal más grande que ha existido, ¡más que los dinosaurios!":[8,308.555,4.7],"Vive en los mares y océanos de casi todo el mundo.":[8,313.555,2.6],"Es muy listo, juega en grupo y respira aire por un agujero que tiene en la cabeza.":[8,316.455,4.58],"Vive en los mares y océanos.":[8,321.335,1.7],"Le salen dientes nuevos durante toda su vida.":[8,323.335,2.48],"Vive en ríos, lagos y mares.":[8,326.115,2.181],"Respira debajo del agua gracias a sus branquias.":[8,328.596,2.72],"foca":[8,331.616,0.66],"Vive en los mares fríos, cerca de los polos.":[8,332.576,2.56],"En el agua nada muy bien, pero en la tierra se mueve arrastrándose.":[8,335.436,3.48],"Vive en los ríos de las zonas calurosas, por ejemplo en el río Nilo, en África.":[8,339.216,4.4],"Puede quedarse muy quieto, como un tronco, esperando a su presa.":[8,343.916,3.64],"Hay tortugas de tierra, de río y de mar.":[8,347.856,2.48],"Las tortugas gigantes de las islas Galápagos pueden vivir más de cien años.":[8,350.636,4.32],"Vive en muchos sitios: desiertos, selvas y campos.":[8,355.256,3.38],"No tiene patas y saca la lengua para oler.":[8,358.936,2.42],"Vive en paredes y piedras donde da el sol.":[8,361.656,2.36],"Si la atrapan por la cola, la suelta, ¡y le vuelve a crecer!":[8,364.316,3.14],"Vive cerca de ríos, charcas y lagos.":[8,367.756,2.48],"De pequeña es un renacuajo con cola que vive en el agua.":[8,370.536,3.08],"Vive en ríos, lagos y estanques.":[8,373.916,2.12],"Tiene las patas palmeadas, como las aletas de un buzo, para nadar mejor.":[8,376.336,3.9],"castor":[8,380.536,0.7],"Vive en los ríos de América del Norte y de Europa.":[8,381.536,2.48],"Con sus dientes corta árboles y construye presas en los ríos.":[8,384.316,3.6],"búho":[8,388.216,0.68],"Vive en los bosques.":[8,389.196,1.28],"Caza de noche y puede girar la cabeza muchísimo.":[8,390.776,3.02],"Vive en los bosques. En España hay muchos en Sierra Morena.":[8,394.095,3.48],"A los machos les crecen cuernos nuevos cada año.":[8,397.875,2.88],"Vive en bosques y campos de casi todo el mundo.":[8,401.055,2.62],"Tiene una cola muy peluda que usa como manta para dormir.":[8,403.975,3.14],"Vive en los bosques, en lo alto de los árboles.":[8,407.415,2.6],"Esconde frutos secos para comérselos en invierno.":[8,410.315,2.78],"Vive en las montañas. En España vive el águila imperial ibérica.":[8,413.395,4.0],"Ve tan bien que descubre un conejo desde muy, muy alto.":[8,417.695,3.78],"cabra":[8,421.775,0.62],"La cabra montés vive en las montañas de España.":[8,422.695,2.62],"Trepa por las rocas más empinadas sin caerse.":[8,425.615,2.7],"Vive en las granjas y en los prados.":[8,428.615,1.9],"Nos da leche, y con la leche se hacen el queso y el yogur.":[8,430.815,3.26],"Vive en granjas, cuadras y prados.":[8,434.375,2.28],"Puede dormir de pie sin caerse.":[8,436.955,1.9],"oveja":[8,439.155,0.819],"Vive en las granjas y en el campo.":[8,440.275,1.76],"Con su lana se hacen jerséis y mantas.":[8,442.335,2.4],"Vive en las granjas.":[8,445.035,1.24],"Es muy listo y se revuelca en el barro para refrescarse.":[8,446.575,3.26],"Vive en los corrales de las granjas.":[8,450.135,1.9],"Pone los huevos que comemos.":[8,452.335,1.68],"Vive en granjas y en el campo.":[8,454.315,1.68],"Es muy fuerte y ayuda a llevar cargas pesadas.":[8,456.295,2.78],"Vive en el campo, en madrigueras bajo tierra.":[8,459.375,2.52],"Tiene las orejas muy largas para oír los peligros desde lejos.":[8,462.195,3.36],"Vive con las personas, en casa.":[8,465.855,2.02],"Tiene un olfato buenísimo y es el mejor amigo de las personas.":[8,468.175,3.56],"Ve muy bien de noche y ronronea cuando está contento.":[8,472.035,3.06],"Vive en cuevas y sale de noche.":[8,475.395,1.98],"Es el único mamífero que vuela de verdad.":[8,477.675,2.22],"Vive en jardines, campos y bosques, cerca de las flores.":[8,480.195,3.54],"Antes de ser mariposa es una oruga.":[8,484.035,2.38],"Vive en las plantas, comiendo hojas.":[8,486.715,2.22],"Un día se encierra en un capullo y sale convertida en mariposa.":[8,489.235,3.42],"Vive en colmenas, con miles de abejas más.":[8,492.955,2.56],"Fabrica miel y ayuda a las flores a dar frutos.":[8,495.815,2.7],"Vive en hormigueros bajo tierra.":[8,498.815,1.82],"Puede levantar cosas mucho más pesadas que ella.":[8,500.934,2.72],"Vive en casi todas partes: casas, jardines y bosques.":[8,503.954,3.64],"Tiene ocho patas y teje telarañas para cazar insectos.":[8,507.894,3.36],"Vive en sitios húmedos y sale cuando llueve.":[8,511.554,2.52],"Lleva su casa a cuestas: su concha.":[8,514.374,2.34],"Vive en jardines y campos.":[8,517.014,1.74],"Se come los pulgones que estropean las plantas.":[8,519.054,2.52],"Vive en los prados.":[8,521.874,1.18],"Salta muchísimo con sus patas de atrás.":[8,523.354,2.3],"Vive bajo tierra.":[8,525.954,1.18],"Ayuda a que la tierra esté sana para las plantas.":[8,527.434,2.5],"Vive en el fondo del mar, escondido entre las rocas.":[8,530.234,2.86],"Tiene ocho brazos, tres corazones y puede cambiar de color.":[8,533.394,3.52],"Vive en el mar.":[8,537.214,0.92],"No tiene cerebro ni huesos, y casi toda ella es agua.":[8,538.434,3.22],"Vive en el mar y en las playas.":[8,541.954,1.88],"Camina de lado y tiene un caparazón duro.":[8,544.134,2.44],"Tiene diez patas.":[8,546.874,1.16],"Vive en sitios secos y calurosos, como los desiertos.":[8,548.334,3.26],"Lleva a sus crías encima de la espalda.":[8,551.894,1.98],"¿Cómo se llama la cría de la vaca?":[8,554.174,1.78],"La cría de la vaca es el ternero.":[8,556.254,2.4],"¿Cómo se llama la cría del caballo?":[8,558.954,1.84],"La cría del caballo es el potro.":[8,561.094,2.38],"¿Cómo se llama la cría de la oveja?":[8,563.774,1.84],"La cría de la oveja es el cordero.":[8,565.914,2.3],"¿Cómo se llama la cría del cerdo?":[8,568.514,1.8],"La cría del cerdo es el cochinillo.":[8,570.614,2.32],"¿Cómo se llama la cría de la cabra?":[8,573.234,1.86],"La cría de la cabra es el cabrito.":[8,575.394,2.38],"¿Cómo se llama la cría del burro?":[8,578.074,1.76],"La cría del burro es el pollino.":[8,580.134,2.1],"¿Cómo se llama la cría del perro?":[8,582.534,1.74],"La cría del perro es el cachorro.":[8,584.574,2.2],"¿Cómo se llama la cría del gato?":[8,587.074,1.76],"La cría del gato es el gatito.":[8,589.134,2.1],"¿Cómo se llama la cría de la gallina?":[8,591.534,1.9],"La cría de la gallina es el pollito.":[8,593.734,2.28],"¿Cómo se llama la cría del pato?":[8,596.314,1.8],"La cría del pato es el patito.":[8,598.414,2.18],"¿Cómo se llama la cría de la rana?":[8,600.894,1.8],"La cría de la rana es el renacuajo.":[8,602.994,2.42],"¿Cómo se llama la cría de la mariposa?":[8,605.714,2.0],"La cría de la mariposa es la oruga.":[8,608.014,2.32],"¿Cómo se llama la cría del conejo?":[8,610.634,1.88],"La cría del conejo es el gazapo.":[8,612.814,2.22],"¿Cómo se llama la cría del ciervo?":[8,615.334,1.84],"La cría del ciervo es el cervatillo.":[8,617.474,2.34],"¿Cómo se llama la cría del león?":[8,620.114,1.8],"La cría del león es el cachorro.":[8,622.214,2.22],"¿Cómo se llama la cría del oso?":[8,624.734,1.74],"La cría del oso es el osezno.":[8,626.774,2.06],"¿Cómo se llama la cría del lobo?":[8,629.134,1.76],"La cría del lobo es el lobezno.":[8,631.194,2.12],"¿Cómo se llama la cría del águila?":[8,633.614,1.78],"La cría del águila es el aguilucho.":[8,635.694,2.2],"Los pingüinos viven en el Polo Norte.":[8,638.194,2.22],"Viven en el Polo Sur, en la Antártida. En el Polo Norte vive el oso polar.":[8,640.714,5.176],"La ballena es un pez.":[8,646.19,1.22],"Es un mamífero: respira aire y su cría toma leche de su madre.":[8,647.71,3.98],"El guepardo es el animal más rápido de la tierra.":[8,651.99,2.52],"Corre casi tan rápido como un coche en la autovía.":[8,654.81,2.62],"La jirafa es el animal más alto del mundo.":[8,657.73,2.34],"Con su cuello tan largo llega a las hojas más altas.":[8,660.37,2.74],"Las arañas son insectos.":[8,663.41,1.62],"Los insectos tienen seis patas y las arañas tienen ocho. Las arañas son arácnidos.":[8,665.33,5.48],"Los murciélagos son aves.":[8,671.11,1.58],"Son mamíferos que vuelan: tienen pelo y sus crías toman leche.":[8,672.99,3.52],"El pulpo tiene ocho brazos.":[8,676.81,1.74],"¡Y además tiene tres corazones!":[8,678.85,1.88],"El camello tiene dos jorobas y el dromedario tiene una.":[8,681.03,3.1],"El camello vive en Asia y el dromedario, en África.":[8,684.43,3.18],"Los gorilas viven en América.":[8,687.91,1.78],"Viven en África, en las selvas del Congo y de otros países cercanos.":[8,689.99,3.76],"El oso panda come sobre todo bambú.":[8,694.05,2.08],"El lince ibérico solo vive en España y Portugal.":[8,696.43,2.82],"En Andalucía vive en Doñana y en Sierra Morena, muy cerca de Córdoba.":[8,699.55,3.84],"Las ranas nacen con patas.":[8,703.69,1.74],"Nacen como renacuajos, con cola, y viven en el agua. Después les salen las patas.":[8,705.73,5.68],"Las abejas fabrican la miel.":[8,711.71,1.72],"La hacen con el néctar de las flores.":[8,713.73,2.04],"Los elefantes beben agua con la trompa.":[8,716.07,2.2],"Sorben el agua con la trompa y luego se la echan en la boca.":[8,718.57,3.1],"Todas las cebras tienen las rayas iguales.":[8,721.97,2.42],"El koala vive en Australia.":[8,724.69,1.62],"Vive en los bosques de eucaliptos de Australia, en Oceanía.":[8,726.61,3.18],"Los delfines respiran debajo del agua, como los peces.":[8,730.09,3.18],"Tienen que subir a respirar aire por un agujero que tienen en la cabeza.":[8,733.57,3.58],"Las serpientes tienen patas.":[8,737.45,1.78],"No tienen patas: se mueven arrastrándose.":[8,739.53,2.62],"El hipopótamo pasa mucho tiempo dentro del agua.":[8,742.45,2.68],"Así no se quema con el sol.":[8,745.43,1.64],"Las cigüeñas hacen sus nidos en lo alto de las torres.":[8,747.37,2.92],"Y vuelven al mismo nido cada año.":[8,750.59,1.94],"El tiburón es un mamífero.":[8,752.83,1.531],"Es un pez: respira dentro del agua con sus branquias.":[8,754.661,3.52],"El perezoso es muy rápido.":[8,758.481,1.96],"Es uno de los animales más lentos del mundo.":[8,760.741,2.56],"Antes de ser mariposa, la mariposa es una oruga.":[8,763.601,2.98],"La oruga se encierra en un capullo y sale convertida en mariposa.":[8,766.881,3.52],"Al tigre le gusta nadar.":[8,770.701,1.5],"Al contrario que a muchos gatos, al tigre le encanta el agua.":[8,772.501,3.32],"La ballena azul es el animal más grande que existe.":[8,776.121,2.98],"Es más grande incluso que los dinosaurios.":[8,779.401,2.34],"El oso polar tiene la piel blanca.":[8,782.041,2.0],"Su pelo parece blanco, pero su piel es negra.":[8,784.341,2.88],"Las gallinas son mamíferos.":[8,787.521,1.84],"Son aves: tienen plumas y nacen de un huevo.":[8,789.661,2.8],"Los caballos pueden dormir de pie.":[8,792.761,2.06],"Pueden echar una cabezadita de pie sin caerse.":[8,795.121,2.571],"♪guitarra":[9,0.2,2.8],"♪violin":[9,3.25,2.8],"♪arpa":[9,6.3,2.46],"♪flauta":[9,9.01,2.67],"♪trompeta":[9,11.93,2.71],"♪saxofon":[9,14.89,2.8],"♪clarinete":[9,17.94,2.74],"♪tambor":[9,20.93,2.09],"♪pandereta":[9,23.27,2.8],"♪maracas":[9,26.32,2.73],"♪triangulo":[9,29.3,0.84],"♪castanuelas":[9,30.39,2.78],"♪fiesta":[9,33.42,8.0],"¡Enhorabuena! ¡Has conseguido todas las estrellas de Lengua! ¡Aquí tienes tu trofeo!":[10,0.3,4.8],"¡Enhorabuena! ¡Has conseguido todas las estrellas de Mates! ¡Aquí tienes tu trofeo!":[10,5.4,5.0],"¡Enhorabuena! ¡Has conseguido todas las estrellas de Conocimiento del medio! ¡Aquí tienes tu trofeo!":[10,10.7,5.66],"¡Enhorabuena! ¡Has conseguido todas las estrellas de Inglés! ¡Aquí tienes tu trofeo!":[10,16.66,5.0],"Arte y música":[10,21.96,1.1],"¡Enhorabuena! ¡Has conseguido todas las estrellas de Arte y música! ¡Aquí tienes tu trofeo!":[10,23.36,5.44],"¡Enhorabuena! ¡Has conseguido todas las estrellas de Leer cada día! ¡Aquí tienes tu trofeo!":[10,29.1,5.52],"¿Cuál de estos es un color primario?":[10,34.92,1.96],"Los colores primarios son el rojo, el amarillo y el azul. ¡Mezclándolos salen los demás!":[10,37.18,6.02],"¿Qué forma es esta?":[10,43.5,1.18],"¿Qué instrumento suena? Escucha y toca su dibujo.":[10,44.98,3.48],"¿Qué instrumento suena?":[10,48.76,1.32],"¿Este sonido es agudo o grave?":[10,50.38,2.22],"¿Este sonido es largo o corto?":[10,52.9,2.18],"Escucha los dos sonidos. ¿Cuál suena más fuerte?":[10,55.38,3.3],"Escucha la melodía y repítela tocando las teclas.":[10,58.98,2.76],"¡Ahora tú!":[10,62.04,0.84],"Escucha otra vez.":[10,63.18,1.12],"¡Muy bien! Una nota más.":[10,64.6,2.02],"Es agudo, como el canto de un pajarito.":[10,66.92,2.46],"Es grave, como la voz de un oso.":[10,69.68,2.2],"Es largo: dura mucho tiempo.":[10,72.18,2.1],"Es corto: dura muy poquito.":[10,74.58,2.06],"El primero suena más fuerte.":[10,76.94,1.62],"El segundo suena más fuerte.":[10,78.86,1.76],"¿Qué color sale si mezclas el rojo y el amarillo?":[10,80.92,2.746],"Rojo y amarillo hacen naranja.":[10,83.966,2.12],"¿Qué color sale si mezclas el amarillo y el azul?":[10,86.386,2.56],"Amarillo y azul hacen verde.":[10,89.246,2.02],"¿Qué color sale si mezclas el rojo y el azul?":[10,91.566,2.58],"Rojo y azul hacen morado.":[10,94.446,1.92],"¿Qué color sale si mezclas el rojo y el blanco?":[10,96.666,2.58],"Rojo y blanco hacen rosa.":[10,99.546,1.92],"¿Qué color sale si mezclas el negro y el blanco?":[10,101.766,2.6],"Negro y blanco hacen gris.":[10,104.666,1.9],"¿Qué color sale si mezclas el azul y el blanco?":[10,106.866,2.54],"Azul y blanco hacen celeste.":[10,109.706,2.2],"¿Qué dos colores mezclas para conseguir el naranja?":[10,112.206,2.66],"¿Qué dos colores mezclas para conseguir el verde?":[10,115.166,2.5],"¿Qué dos colores mezclas para conseguir el morado?":[10,117.966,2.52],"¿Qué dos colores mezclas para conseguir el rosa?":[10,120.786,2.56],"¿Qué dos colores mezclas para conseguir el gris?":[10,123.646,2.42],"¿Qué dos colores mezclas para conseguir el celeste?":[10,126.366,2.7],"¿Qué color sale si mezclas los tres primarios: el rojo, el amarillo y el azul?":[10,129.366,4.54],"Rojo, amarillo y azul juntos hacen marrón.":[10,134.206,2.8],"Es un círculo.":[10,137.306,1.02],"Es un cuadrado.":[10,138.626,1.08],"Es un triángulo.":[10,140.006,1.08],"Es un rectángulo.":[10,141.386,1.2],"Es un óvalo.":[10,142.886,0.96],"Es un rombo.":[10,144.146,1.02],"Es un pentágono.":[10,145.466,1.2],"Es un hexágono.":[10,146.966,1.1],"¿Cuántos lados tiene el triángulo?":[10,148.366,1.76],"El triángulo tiene 3 lados.":[10,150.426,2.08],"¿Cuántos lados tiene el cuadrado?":[10,152.806,1.72],"El cuadrado tiene 4 lados.":[10,154.826,2.02],"¿Cuántos lados tiene el rectángulo?":[10,157.146,1.82],"El rectángulo tiene 4 lados.":[10,159.266,2.18],"¿Cuántos lados tiene el rombo?":[10,161.746,1.64],"El rombo tiene 4 lados.":[10,163.686,1.92],"¿Cuántos lados tiene el pentágono?":[10,165.906,1.8],"El pentágono tiene 5 lados.":[10,168.006,2.08],"¿Cuántos lados tiene el hexágono?":[10,170.386,1.76],"El hexágono tiene 6 lados.":[10,172.446,2.02],"¿Cuántos lados tiene el círculo?":[10,174.766,1.74],"El círculo no tiene lados: su borde es una línea curva.":[10,176.806,3.52],"¿Qué forma tiene el reloj?":[10,180.626,1.36],"El reloj tiene forma de círculo.":[10,182.286,2.08],"¿Qué forma tiene la galleta?":[10,184.666,1.54],"La galleta tiene forma de círculo.":[10,186.506,2.1],"¿Qué forma tiene la puerta?":[10,188.906,1.48],"La puerta tiene forma de rectángulo.":[10,190.686,2.08],"¿Qué forma tiene la tele?":[10,193.066,1.4],"La tele tiene forma de rectángulo.":[10,194.766,2.06],"¿Qué forma tiene el huevo?":[10,197.126,1.36],"El huevo tiene forma de óvalo.":[10,198.786,1.86],"¿Qué forma tiene el balón de rugby?":[10,200.946,1.86],"El balón de rugby tiene forma de óvalo.":[10,203.106,2.2],"¿Qué forma tiene el trozo de pizza?":[10,205.606,1.9],"El trozo de pizza tiene forma de triángulo.":[10,207.806,2.52],"¿Qué forma tiene la señal de peligro?":[10,210.626,1.98],"La señal de peligro tiene forma de triángulo.":[10,212.906,2.56],"¿Qué forma tiene la cometa?":[10,215.766,1.56],"La cometa tiene forma de rombo.":[10,217.626,1.92],"¿Qué forma tiene el gofre?":[10,219.846,1.44],"El gofre tiene forma de cuadrado.":[10,221.586,1.9],"¿De qué familia es la guitarra?":[10,223.786,1.74],"La guitarra es de cuerda.":[10,225.826,1.54],"Es la guitarra.":[10,227.666,1.08],"¿De qué familia es el violín?":[10,229.046,1.66],"El violín es de cuerda.":[10,231.006,1.66],"Es el violín.":[10,232.966,1.1],"¿De qué familia es el arpa?":[10,234.366,1.56],"El arpa es de cuerda.":[10,236.226,1.38],"Es el arpa.":[10,237.906,0.96],"¿De qué familia es la flauta?":[10,239.166,1.68],"La flauta es de viento.":[10,241.146,1.64],"Es la flauta.":[10,243.086,1.12],"¿De qué familia es la trompeta?":[10,244.506,1.72],"La trompeta es de viento.":[10,246.526,1.7],"Es la trompeta.":[10,248.526,1.22],"¿De qué familia es el saxofón?":[10,250.046,1.86],"El saxofón es de viento.":[10,252.206,1.796],"Es el saxofón.":[10,254.302,1.04],"¿De qué familia es el clarinete?":[10,255.642,1.88],"El clarinete es de viento.":[10,257.822,1.64],"Es el clarinete.":[10,259.762,1.16],"¿De qué familia es el tambor?":[10,261.222,1.6],"El tambor es de percusión.":[10,263.122,1.84],"Es el tambor.":[10,265.262,0.9],"¿De qué familia es la pandereta?":[10,266.462,1.84],"La pandereta es de percusión.":[10,268.602,2.04],"Es la pandereta.":[10,270.942,1.1],"¿De qué familia son las maracas?":[10,272.342,1.82],"Las maracas son de percusión.":[10,274.462,1.78],"Son las maracas.":[10,276.542,1.1],"¿De qué familia es el triángulo?":[10,277.942,1.8],"El triángulo es de percusión.":[10,280.042,1.8],"Es el triángulo.":[10,282.142,1.14],"¿De qué familia son las castañuelas?":[10,283.582,2.02],"Las castañuelas son de percusión.":[10,285.902,1.96],"Son las castañuelas.":[10,288.162,1.34],"Los instrumentos de cuerda suenan al tocar o frotar sus cuerdas.":[10,289.802,3.36],"Los instrumentos de viento suenan al soplar.":[10,293.462,2.34],"Los instrumentos de percusión suenan al golpearlos o agitarlos.":[10,296.102,3.336]}};
 let actx=null;
 function ac(){
   if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}
@@ -482,7 +574,7 @@ function tone(freqs,dur=.12,type='sine',gain=.08){
       o.connect(g).connect(c.destination);o.start(t+i*dur);o.stop(t+i*dur+dur+.03);});
   }catch(e){}
 }
-const sfx={ok:()=>tone([784,1047,1319],.09,'triangle',.07),ko:()=>tone([300,220],.14,'sine',.05),win:()=>tone([523,659,784,1047,1319],.12,'triangle',.07),tap:()=>tone([660],.04,'sine',.02),pop:()=>tone([880,1320],.05,'triangle',.04)};
+const sfx={star:()=>tone([1319,1568,2093,2637],.07,'sine',.06),ok:()=>tone([784,1047,1319],.09,'triangle',.07),ko:()=>tone([300,220],.14,'sine',.05),win:()=>tone([523,659,784,1047,1319],.12,'triangle',.07),tap:()=>tone([660],.04,'sine',.02),pop:()=>tone([880,1320],.05,'triangle',.04)};
 const V={map:(VOICE_MANIFEST&&VOICE_MANIFEST.map)||{},files:(VOICE_MANIFEST&&VOICE_MANIFEST.files)||[],buf:{},load:{}};
 const vkey=(t,lang)=>(lang&&lang.startsWith('en')?'en:':'')+String(t).replace(/\s+/g,' ').trim();
 function vbuf(i){
@@ -529,12 +621,21 @@ function sayBtn(text,lang='es-ES'){
   return b;
 }
 
+/* sonidos grabados (instrumentos, música de premio): suenan aunque hable Mochi */
+const SND=new Set();
+function playSnd(key,{gain=1,onend}={}){
+  const hit=V.map[key],c=ac(); if(!hit||!c){onend&&onend();return;}
+  vbuf(hit[0]).then(b=>{const s=c.createBufferSource(),g=c.createGain();g.gain.value=gain;s.buffer=b;s.connect(g).connect(c.destination);
+    s.onended=()=>{SND.delete(s);onend&&onend();};SND.add(s);s.start(0,hit[1],hit[2]);}).catch(()=>onend&&onend());
+}
+function stopSnd(){SND.forEach(s=>{try{s.onended=null;s.stop();}catch(e){}});SND.clear();}
+
 /* ---------- confeti y estrellitas ---------- */
 function confetti(){
   if(reduced) return;
   const c=$('#confetti'); c.hidden=false; const g=c.getContext('2d'); const W=c.width=innerWidth,H=c.height=innerHeight;
   const cs=getComputedStyle(document.documentElement);
-  const cols=['--lengua','--mates','--cono','--ingles','--lectura','--star','--sun'].map(v=>cs.getPropertyValue(v).trim());
+  const cols=['--lengua','--mates','--cono','--ingles','--arte','--lectura','--star','--sun'].map(v=>cs.getPropertyValue(v).trim());
   const ps=Array.from({length:170},()=>({x:W/2+(Math.random()-.5)*W*.6,y:H*.42,vx:(Math.random()-.5)*16,vy:-Math.random()*16-5,r:Math.random()*7+5,c:pick(cols),a:Math.random()*6,va:(Math.random()-.5)*.3,s:Math.random()<.3}));
   const t0=performance.now(); let last=t0;
   function f(t){const dt=Math.min(32,t-last)/16; last=t; g.clearRect(0,0,W,H);
@@ -582,23 +683,25 @@ const SUBJECTS=[
   {id:'mates',name:'Mates',img:'img/mates.png',blurb:'Números hasta el 999, cuentas con llevadas, tablas y problemas'},
   {id:'cono',name:'Conocimiento del medio',img:'img/explora-wave.png',blurb:'Animales del mundo: dónde viven, qué comen, cómo nacen… ¡y tu álbum de cromos!'},
   {id:'ingles',name:'Inglés',img:'img/ingles.png',blurb:'Memory y escribir palabras en inglés'},
+  {id:'arte',name:'Arte y música',img:'img/arte-wave.png',blurb:'Mezclar colores, formas, instrumentos y sonidos'},
   {id:'lectura',name:'Leer cada día',img:'img/lectura.png',blurb:'10 o 15 minutos de lectura en voz alta'},
-  {id:'cuaderno',name:'Mi cuaderno',img:'img/cuaderno.png',blurb:'Cuántos cuadritos dejo en Lengua y en Mates'},
 ];
 const SUBJ=Object.fromEntries(SUBJECTS.map(s=>[s.id,s]));
 const GAMES={}; const ORDER=[];
 function defGame(g){GAMES[g.id]=g;ORDER.push(g.id);}
 const gamesOf=sid=>ORDER.map(id=>GAMES[id]).filter(g=>g.subject===sid);
+const rewardSay=sid=>`¡Enhorabuena! ¡Has conseguido todas las estrellas de ${SUBJ[sid].name}! ¡Aquí tienes tu trofeo!`;
 
 /* ---------- pantallas ---------- */
 let cleanup=null, RUN=null, greeted=false;
+const SHOWN={};
 function mount(...nodes){
   if(cleanup){try{cleanup()}catch(e){} cleanup=null;}
-  hideFb(); stopVoice();
+  hideFb(); stopVoice(); stopSnd(); closeReward();
   const noTop=nodes[0]&&nodes[0].dataset&&nodes[0].dataset.notop;
   $('#app').replaceChildren(...(noTop?[]:[topbar()]),...nodes); scrollTo(0,0);
 }
-function soundBtn(){return h('button',{class:'round','aria-label':'Activar o quitar sonidos y voz',onclick:e=>{DB.sound=!DB.sound;save();e.currentTarget.textContent=DB.sound?'🔊':'🔇';if(!DB.sound)stopVoice();}},DB.sound?'🔊':'🔇');}
+function soundBtn(){return h('button',{class:'round','aria-label':'Activar o quitar sonidos y voz',onclick:e=>{DB.sound=!DB.sound;save();e.currentTarget.textContent=DB.sound?'🔊':'🔇';if(!DB.sound){stopVoice();stopSnd();}}},DB.sound?'🔊':'🔇');}
 function playerPill(full=true){const p=me();return p&&h('button',{class:'pill',onclick:goProfiles,'aria-label':'Cambiar de jugador'},h('span',{class:'av'},p.avatar),full?h('span',null,p.name):null,h('span',{class:'coin',id:'coin'},totalStars(p)));}
 function topbar(){
   const p=me();
@@ -609,14 +712,24 @@ function topbar(){
 const backOf=sid=>gamesOf(sid).length>1?()=>goSubject(sid):goHome;
 function gameHead(sid,title,prog){return h('div',{class:'game-head'},backBtn(backOf(sid)),h('div',{class:'game-title'},h('h2',null,title),prog||null),h('div',{class:'gh-tools'},soundBtn(),playerPill(false)));}
 const backBtn=fn=>h('button',{class:'round',onclick:()=>{sfx.tap();fn();},'aria-label':'Volver'},'←');
-const starsEl=n=>h('span',{class:'stars','aria-label':n+' de 3 estrellas'},[1,2,3].map(k=>h('span',{class:k<=n?'on':'off'},'★')));
+const starsEl=(n,max=3)=>h('span',{class:'stars','aria-label':`${n} de ${max} estrellas`},Array.from({length:max},(_,k)=>h('span',{class:k<n?'on':'off'},'★')));
+/* barra de estrellas de una asignatura: crece desde lo que se vio la última vez */
+function subjBar(sid,cls=''){
+  const {got,max}=subjProg(sid),pct=max?Math.round(got/max*100):0,prev=SHOWN[sid]==null?pct:SHOWN[sid];
+  const fill=h('i',{style:`width:${prev}%`}),cnt=h('b',null,`${got}/${max}`);
+  const el=h('span',{class:'subj-prog '+cls+(got>=max&&max?' full':'')},h('span',{class:'bar'},fill),cnt,h('span',{class:'st','aria-hidden':'true'},'★'));
+  el.setAttribute('aria-label',`${got} de ${max} estrellas`);
+  if(prev!==pct) requestAnimationFrame(()=>requestAnimationFrame(()=>{fill.style.width=pct+'%'; if(pct>prev){el.classList.add('grow');setTimeout(()=>sfx.star(),450);}}));
+  SHOWN[sid]=pct; return el;
+}
+function coinPop(){const coin=$('#coin'); if(!coin) return; coin.textContent=totalStars(); coin.classList.remove('pop'); void coin.offsetWidth; coin.classList.add('pop');}
 
 function goProfiles(){
   RUN=null; CUR_SUB=null;
   if(!DB.players.length) return goNewPlayer();
   mount(h('div',{class:'hero'},mochi('wave'),h('div',{class:'bubble'},h('div',null,h('h1',null,'¿Quién va a jugar hoy?')),sayBtn(SAY.who))),
     h('div',{class:'profiles'},
-      DB.players.map(p=>h('button',{class:'prof',onclick:()=>{DB.cur=p.id;save();sfx.pop();goHome();}},h('span',{class:'av'},p.avatar),p.name,h('span',{class:'coin'},totalStars(p)))),
+      DB.players.map(p=>h('button',{class:'prof',onclick:()=>{DB.cur=p.id;save();sfx.pop();for(const k in SHOWN)delete SHOWN[k];goHome();}},h('span',{class:'av'},p.avatar),p.name,h('span',{class:'coin'},totalStars(p)))),
       h('button',{class:'prof',onclick:goNewPlayer},h('span',{class:'av'},'＋'),'Nuevo jugador',h('small',{style:'color:var(--ink-soft);font-weight:400'},'Para hermanos o amigos'))));
   instr(SAY.who);
 }
@@ -627,8 +740,8 @@ function goNewPlayer(){
   const go=()=>{
     const name=inp.value.trim().slice(0,16);
     if(!name){inp.focus();inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');return;}
-    const p={id:'p'+Date.now().toString(36),name:cap(name),avatar:av,stars:{},read:[]};
-    DB.players.push(p);DB.cur=p.id;save();sfx.win();goHome();
+    const p={id:'p'+Date.now().toString(36),name:cap(name),avatar:av,stars:{},read:[],trophies:[]};
+    DB.players.push(p);DB.cur=p.id;save();sfx.win();for(const k in SHOWN)delete SHOWN[k];goHome();
   };
   mount(h('form',{class:'form',onsubmit:e=>{e.preventDefault();go();}},
     h('div',{class:'hero'},mochi('wave'),h('div',{class:'bubble'},h('div',null,h('h1',null,'¡Hola! Soy Mochi'),h('p',null,'Tu mochila de 2º. Vamos a jugar y a aprender.')),sayBtn(SAY.hello))),
@@ -645,54 +758,88 @@ function backupBox(){
   const make=()=>{try{out.value='MOCHILA:'+btoa(unescape(encodeURIComponent(JSON.stringify({v:1,players:DB.players}))));}catch(e){out.value='';}};
   const say=(t,err)=>{msg.className='msg'+(err?' err':'');msg.textContent=t;};
   const copy=()=>{make();try{navigator.clipboard.writeText(out.value).then(()=>say('Código copiado.'),()=>{out.select();say('Selecciona el código y cópialo.');});}catch(e){out.select();say('Selecciona el código y cópialo.');}};
+  const arr=v=>Array.isArray(v)?v:[];
   const load=()=>{
     try{const d=JSON.parse(decodeURIComponent(escape(atob(inp.value.trim().replace(/^MOCHILA:/,'')))));
       if(!d||!Array.isArray(d.players)) throw 0; let n=0;
       d.players.forEach(p=>{if(!p||!p.id||!p.name)return;const cur=DB.players.find(x=>x.id===p.id);
-        if(cur){cur.stars=cur.stars||{};Object.entries(p.stars||{}).forEach(([k,v])=>{if((cur.stars[k]||0)<v)cur.stars[k]=v;});cur.read=[...new Set([...(cur.read||[]),...(p.read||[])])].slice(-90);cur.album=[...new Set([...(cur.album||[]),...(p.album||[])])];}
-        else DB.players.push({id:String(p.id),name:String(p.name).slice(0,16),avatar:p.avatar||'🦊',stars:p.stars||{},read:p.read||[],album:Array.isArray(p.album)?p.album:[]});n++;});
-      if(!DB.cur&&DB.players.length)DB.cur=DB.players[0].id; save(); inp.value=''; make();
+        if(cur){cur.stars=cur.stars||{};Object.entries(p.stars||{}).forEach(([k,v])=>{if((cur.stars[k]||0)<v)cur.stars[k]=v;});cur.read=[...new Set([...arr(cur.read),...arr(p.read)])].slice(-90);
+          cur.album=[...new Set([...arr(cur.album),...arr(p.album)])];cur.trophies=[...new Set([...arr(cur.trophies),...arr(p.trophies)])];}
+        else DB.players.push({id:String(p.id),name:String(p.name).slice(0,16),avatar:p.avatar||'🦊',stars:p.stars||{},read:arr(p.read),album:arr(p.album),trophies:arr(p.trophies)});n++;});
+      if(!DB.cur&&DB.players.length)DB.cur=DB.players[0].id; migrate(); save(); inp.value=''; make();
       say(`Listo: ${n} ${n===1?'jugador cargado':'jugadores cargados'}.`);
     }catch(e){say('Ese código no es válido. Cópialo entero, empezando por MOCHILA:',true);}
   };
   make();
   return h('div',{class:'backup'},h('h3',null,'Pasar el progreso a otro dispositivo'),
-    h('p',{style:'margin:0;color:var(--ink-soft)'},'Copia este código y pégalo en la Mochila del otro iPad o navegador. Las estrellas y los cromos se suman; no se borra nada.'),
+    h('p',{style:'margin:0;color:var(--ink-soft)'},'Copia este código y pégalo en la Mochila del otro iPad o navegador. Las estrellas, los cromos y los trofeos se suman; no se borra nada.'),
     out,h('div',{class:'row'},h('button',{class:'btn',style:'--c:var(--mates)',onclick:copy},'Copiar código')),
     inp,h('div',{class:'row'},h('button',{class:'btn',style:'--c:var(--cono)',onclick:load},'Cargar código'),msg));
 }
 function familiesBox(){
   return h('details',{class:'families'},h('summary',null,'Para las familias'),
-    h('p',null,'Actividades para repasar en casa lo que se trabaja en 2º de Primaria. Cada niño o niña crea su jugador y gana hasta 3 estrellas por actividad. Mochi lee en voz alta las instrucciones, las palabras y los cuentos.'),
+    h('p',null,'Actividades para repasar en casa lo que se trabaja en 2º de Primaria. Cada niño o niña crea su jugador y gana hasta 3 estrellas por actividad; la barra de cada asignatura se va llenando y, al completarla, gana un trofeo con su vídeo. Mochi lee en voz alta las instrucciones, las palabras y los cuentos.'),
     h('ul',null,
       h('li',null,'Lengua: m antes de p y b, r y rr, c y z, c y qu, g y gu, ch y ll, mayúsculas, separar por sílabas al cambiar de renglón, palabras del revés (es/se, al/la) y comprensión lectora y oral, con preguntas cuya respuesta hay que deducir.'),
       h('li',null,'Mates: números hasta el 999, sumas y restas con llevadas en columna, tablas del 0, 1, 2 y 5, redondear a la decena y a la centena, y problemas con la solución escrita en una frase con verbo.'),
-      h('li',null,'Cono: vertebrados e invertebrados y sus grupos. Inglés: memory y escribir palabras. Lectura: temporizador de 10 o 15 minutos con preguntas para hacer después.')),
+      h('li',null,'Conocimiento del medio: animales del mundo y de aquí (dónde viven, su hábitat, qué comen, cómo nacen, sus crías), vertebrados e invertebrados y sus grupos, y un álbum de cromos.'),
+      h('li',null,'Inglés: memory y escribir palabras. Arte y música: colores primarios y mezclas, formas, familias de instrumentos, reconocer instrumentos por su sonido, agudo y grave, largo y corto, fuerte y suave, y repetir melodías.'),
+      h('li',null,'Leer cada día: temporizador de 10 o 15 minutos con preguntas para hacer después. Cada día que se lee se gana una estrella, hasta 5.')),
     backupBox(),
     h('p',null,'Las estrellas se guardan en este dispositivo. Para tenerla como una app en el iPad: en Safari, botón Compartir y luego «Añadir a pantalla de inicio»; así se abre a pantalla completa y el progreso queda guardado. El botón del altavoz de arriba quita los sonidos y la voz automática.'));
 }
+function trophyShelf(){
+  const p=me(),n=SUBJECTS.filter(s=>hasTrophy(s.id,p)).length;
+  return h('section',{class:'shelf'},
+    h('div',{class:'shelf-head'},h('h2',null,'🏆 Mis trofeos'),h('span',{class:'tag'},`${n} de ${SUBJECTS.length}`)),
+    h('div',{class:'shelf-row'},SUBJECTS.map(s=>{const own=hasTrophy(s.id,p),sp=subjProg(s.id,p);
+      return h('button',{class:'trophy'+(own?' own':''),style:`--c:var(--${s.id})`,'aria-label':own?`Trofeo de ${s.name}: ver el vídeo`:`Trofeo de ${s.name}: ${sp.got} de ${sp.max} estrellas`,
+        onclick:()=>{if(own){sfx.pop();showReward(s.id);}else{sfx.tap();showToast(`Trofeo de ${s.name}`,`Consigue las ${sp.max} estrellas de ${s.name} para ganarlo. Llevas ${sp.got}.`);}}},
+        h('span',{class:'cup','aria-hidden':'true'},'🏆'),h('img',{src:s.img,alt:''}),h('span',{class:'t-name'},s.name),h('span',{class:'t-sub'},own?'▶ Ver vídeo':`${sp.got}/${sp.max} ★`));})));
+}
 function goHome(){
   const p=me(); if(!p) return goProfiles(); RUN=null; CUR_SUB=null; preloadVoices();
-  const cards=SUBJECTS.map(s=>{
-    const gs=gamesOf(s.id).filter(g=>!g.noStars),got=gs.reduce((a,g)=>a+bestStars(g.id),0),max=gs.length*3;
-    return h('button',{class:'subj'+(s.name.length>14?' long':''),style:`--c:var(--${s.id})`,onclick:()=>{sfx.pop();goSubject(s.id);}},
-      h('img',{class:'subj-img',src:s.img,alt:''}),h('span',{class:'subj-name'},s.name),h('span',{class:'subj-blurb'},s.blurb),
-      h('span',{class:'subj-prog'},h('span',{class:'bar'},h('i',{style:`width:${max?Math.round(got/max*100):0}%`})),`${got}/${max} ★`));
-  });
+  const pend=SUBJECTS.find(s=>earnTrophy(s.id));
+  const cards=SUBJECTS.map(s=>h('button',{class:'subj'+(s.name.length>14?' long':'')+(hasTrophy(s.id)?' done':''),style:`--c:var(--${s.id})`,onclick:()=>{sfx.pop();goSubject(s.id);}},
+      h('img',{class:'subj-img',src:s.img,alt:''}),hasTrophy(s.id)?h('span',{class:'subj-cup','aria-label':'Trofeo conseguido'},'🏆'):null,
+      h('span',{class:'subj-name'},s.name),h('span',{class:'subj-blurb'},s.blurb),subjBar(s.id)));
   const t=totalStars(p);
   mount(h('div',{class:'hero'},mochi('wave'),h('div',{class:'bubble'},h('div',null,h('h1',null,`¡Hola, ${p.name}!`),h('p',null,t?`Llevas ${t} estrellas. ¿Qué repasamos hoy?`:'¿Qué repasamos hoy? Elige una asignatura.')),sayBtn(SAY.home))),
-    h('div',{class:'subjects'},cards),familiesBox());
+    h('div',{class:'subjects'},cards),trophyShelf(),familiesBox());
+  if(pend){setTimeout(()=>{if(!RUN&&!CUR_SUB&&!RW&&me()===p) showReward(pend.id,true,true);},900);return;}
   if(!greeted){greeted=true;instr(SAY.home);}
 }
 function goSubject(id){
   const only=gamesOf(id); if(only.length===1) return openGame(only[0].id);
   RUN=null; CUR_SUB=id; const s=SUBJ[id];
   const acts=gamesOf(id).map(g=>h('button',{class:'act',onclick:()=>{sfx.pop();openGame(g.id);}},
-    h('span',{class:'act-icon','aria-hidden':'true'},g.icon),h('h3',null,g.title),h('p',null,g.desc),g.badge?h('span',{class:'tag'},g.badge()):starsEl(bestStars(g.id))));
+    h('span',{class:'act-icon','aria-hidden':'true'},g.icon),h('h3',null,g.title),h('p',null,g.desc),g.badge?h('span',{class:'tag'},g.badge()):starsEl(bestStars(g.id),gmax(g))));
   mount(h('div',{class:'game',style:`--c:var(--${id})`},
-    h('div',{class:'banner',style:`--c:var(--${id})`},backBtn(goHome),h('div',null,h('h1',null,s.name),h('p',null,s.blurb)),h('img',{src:s.img,alt:''})),
+    h('div',{class:'banner',style:`--c:var(--${id})`},backBtn(goHome),h('div',{class:'banner-txt'},h('h1',null,s.name),h('p',null,s.blurb),
+      h('div',{class:'banner-prog'},subjBar(id,'on-banner'),hasTrophy(id)?h('button',{class:'cupbtn',onclick:()=>{sfx.pop();showReward(id);}},'🏆 Ver mi trofeo'):null)),h('img',{src:s.img,alt:''})),
     h('div',{class:'acts'},acts)));
   instr(s.name);
+}
+
+/* ---------- trofeo: vídeo de premio al completar una asignatura ---------- */
+let RW=null;
+function closeReward(){if(!RW) return; const r=RW; RW=null; stopSnd(); document.documentElement.style.overflow=''; try{r.vid.pause();}catch(e){} r.el.classList.add('out'); setTimeout(()=>r.el.remove(),260); document.removeEventListener('keydown',r.key);}
+function showReward(sid,isNew,fromHome){
+  closeReward(); stopVoice(); hideFb(); const s=SUBJ[sid];
+  const vid=h('video',{class:'rw-video',src:`vid/premio-${sid}.mp4`,poster:`vid/premio-${sid}.jpg`,muted:true,playsinline:true,autoplay:true,loop:true,preload:'auto','aria-label':`Vídeo de premio de ${s.name}`});
+  vid.muted=true; vid.playsInline=true; vid.setAttribute('webkit-playsinline','');
+  const party=()=>{confetti(); if(DB.sound){stopSnd();playSnd('♪fiesta',{gain:.5});setTimeout(()=>{if(RW&&RW.sid===sid) speak(rewardSay(sid));},700);}};
+  const again=()=>{sfx.pop();try{vid.currentTime=0;vid.play().catch(()=>{});}catch(e){} party();};
+  const done=()=>{closeReward(); if(fromHome) setTimeout(()=>{if(!RUN&&!CUR_SUB&&!RW&&$('.subjects')) goHome();},350);};
+  const el=h('div',{class:'reward',role:'dialog','aria-modal':'true','aria-label':`Trofeo de ${s.name}`,onclick:e=>{if(e.target===el) done();}},
+    h('div',{class:'rw-card',style:`--c:var(--${sid})`},
+      h('div',{class:'rw-head'},h('span',{class:'rw-cup','aria-hidden':'true'},'🏆'),h('div',null,h('h2',null,isNew?'¡Trofeo conseguido!':`Trofeo de ${s.name}`),h('p',null,`Todas las estrellas de ${s.name}: ${subjProg(sid).max} de ${subjProg(sid).max}`))),
+      h('div',{class:'rw-frame'},vid),
+      h('div',{class:'row center'},h('button',{class:'btn ghost',onclick:again},'Otra vez ↻'),h('button',{class:'btn big',style:`--c:var(--${sid})`,onclick:()=>{sfx.tap();done();}},'¡Genial! ▶'))));
+  const key=e=>{if(e.key==='Escape') done();};
+  document.body.append(el); document.addEventListener('keydown',key); document.documentElement.style.overflow='hidden';
+  RW={el,vid,sid,key}; try{vid.play().catch(()=>{});}catch(e){} party(); coinPop();
+  setTimeout(()=>{try{el.querySelector('.btn.big').focus({preventScroll:true});}catch(e){}},120);
 }
 
 /* ---------- motor de juego ---------- */
@@ -708,13 +855,28 @@ function setupScreen(g){
       h('button',{class:'btn big',style:`--c:var(--${sid})`,onclick:()=>{DB.opt=DB.opt||{};DB.opt[g.id]=chosen;save();sfx.pop();begin(g,chosen);}},'¡A jugar! ▶')))));
   instr(g.title,SAY.pickOpt);
 }
+/* barra de estrellas del juego: se llena con los aciertos y enciende una estrella al pasar cada marca */
+const STAR_AT=[.3,.6,.9];
+const starsFor=f=>f>=.9?3:f>=.6?2:f>=.3?1:0;
+function meterEl(marks){
+  const fill=h('i',{class:'m-fill'}),count=h('span',{class:'m-count'});
+  const stars=marks.map((m,k)=>h('span',{class:'m-star',style:`left:${m*100}%`,'data-k':k+1},'★'));
+  const el=h('div',{class:'meter',role:'progressbar','aria-label':'Estrellas de esta partida','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':'0'},count,h('div',{class:'m-track'},fill,stars));
+  let lit=0,last=0;
+  return {el,lit:()=>lit,frac:()=>last,
+    count(t){count.textContent=t;count.hidden=!t;},
+    set(frac,n){frac=Math.max(0,Math.min(1,frac)); if(frac-last>.015){fill.classList.remove('up');void fill.offsetWidth;fill.classList.add('up');} last=frac;
+      fill.style.width=(frac*100)+'%'; el.setAttribute('aria-valuenow',Math.round(frac*100));
+      if(n>lit){for(let k=lit;k<n;k++){const st=stars[k];if(!st)continue;setTimeout(()=>{st.classList.add('on');burst(st);},380+(k-lit)*260);}setTimeout(sfx.star,380);lit=n;}}};
+}
 function begin(g,opt){
-  const run={g,opt,i:0,total:g.rounds||8,score:0,missed:false,locked:false,data:{}};
+  const run={g,opt,i:0,total:g.rounds||8,score:0,pts:0,missed:false,locked:false,data:{}};
   RUN=run; CUR_SUB=g.subject; if(g.prepare) g.prepare(run);
-  const prog=h('div',{class:'prog','aria-hidden':'true'},g.custom?[]:Array.from({length:run.total},()=>h('span',{class:'seg'})),g.custom?null:h('span',{class:'goal'},'★'));
+  const meter=g.noStars?null:meterEl(g.marks||STAR_AT);
   const stage=h('section',{class:'stage'});
-  mount(h('div',{class:'game','data-notop':'1',style:`--c:var(--${g.subject})`},gameHead(g.subject,g.icon+' '+g.title,prog),stage));
-  run.stage=stage; run.segs=[...prog.querySelectorAll('.seg')]; run.ctx=makeCtx(run);
+  mount(h('div',{class:'game','data-notop':'1',style:`--c:var(--${g.subject})`},gameHead(g.subject,g.icon+' '+g.title,meter&&meter.el),stage));
+  run.stage=stage; run.meter=meter; run.ctx=makeCtx(run);
+  if(meter) meter.count(g.custom?'':`1/${run.total}`);
   if(g.custom) return g.custom(stage,run,run.ctx);
   if(g.intro) return g.intro(stage,run,()=>{if(RUN===run) nextQ(run);});
   nextQ(run);
@@ -723,37 +885,43 @@ function nextQ(run){
   if(RUN!==run) return;
   if(run.i>=run.total) return finish(run);
   run.missed=false; run.locked=false;
-  run.segs.forEach((d,k)=>d.classList.toggle('cur',k===run.i));
-  hideFb(); stopVoice(); run.stage.replaceChildren();
+  if(run.meter) run.meter.count(`${run.i+1}/${run.total}`);
+  hideFb(); stopVoice(); stopSnd(); run.stage.replaceChildren();
   const q=run.g.make(run); run.q=q;
   run.g.render(q,run.stage,run.ctx,run);
   scrollTo({top:0});
 }
 function makeCtx(run){
   return {
-    right(msg,v={}){ if(RUN!==run||run.locked) return; run.locked=true; sfx.ok(); if(!run.missed) run.score++;
+    right(msg,v={}){ if(RUN!==run||run.locked) return; run.locked=true; sfx.ok(); if(!run.missed) run.score++; run.pts+=run.missed?.5:1;
       if(run.g.subject==='cono'&&run.q&&run.q.n&&typeof unlockAnimal==='function'&&unlockAnimal(run.q.n)) msg=(msg?msg+' ':'')+'🃏 ¡Cromo nuevo para tu álbum!';
-      const d=run.segs[run.i]; if(d){d.classList.remove('cur');d.classList.add(run.missed?'miss':'ok');}
+      const f=run.pts/run.total; if(run.meter) run.meter.set(f,starsFor(f));
       const p=pick(PRAISE); showFb('ok',p,msg,()=>{run.i++;nextQ(run);});
-      if(DB.sound||v.force) speakSeq([v.pre,p,v.post]); },
+      if(DB.sound||v.force) speakSeq([v.pre,p,v.post].flat()); },
     wrong(msg){ if(RUN!==run||run.locked) return; run.missed=true; sfx.ko(); const r=pick(RETRY); showToast(r,msg||'');
       if(DB.sound) speak(r); },
+    meter(frac,n){ if(RUN===run&&run.meter) run.meter.set(frac,n||0); },
     finish(stars,msg){ if(RUN!==run) return; finish(run,stars,msg); }
   };
 }
 function finish(run,stars,msg){
   const g=run.g;
-  if(stars==null){const pct=run.score/run.total; stars=pct>=.9?3:pct>=.6?2:1; msg=`Has acertado ${run.score} de ${run.total} a la primera.`;}
+  if(stars==null){stars=Math.max(1,starsFor(run.pts/run.total)); msg=`Has acertado ${run.score} de ${run.total} a la primera.`;}
   setStars(g.id,stars); RUN=null; hideFb(); sfx.win(); if(stars>=2) confetti();
-  run.segs.forEach(d=>d.classList.remove('cur'));
-  const title=END_T[stars-1];
+  if(run.meter){run.meter.count(''); run.meter.set(run.g.custom?run.meter.frac():run.pts/run.total,stars);}
+  const sp=subjProg(g.subject),trophy=sp.max&&sp.got>=sp.max&&!hasTrophy(g.subject);
+  const title=END_T[Math.min(stars,3)-1];
   run.stage.replaceChildren(h('div',{class:'end'},
     h('div',{class:'end-stars',role:'img','aria-label':stars+' estrellas'},[1,2,3].map(n=>h('span',{class:n<=stars?'on':''},'★'))),
     mochi('happy'),h('h2',null,title),h('p',null,msg||''),
     h('div',{class:'row center'},h('button',{class:'btn big',onclick:()=>{sfx.pop();begin(g,run.opt);}},'Otra vez ↻'),h('button',{class:'btn ghost big',onclick:()=>backOf(g.subject)()},gamesOf(g.subject).length>1?'Otras actividades':'Volver al inicio'))));
-  const coin=$('#coin'); if(coin) coin.textContent=totalStars();
+  coinPop();
+  if(trophy){setTimeout(()=>{if(!RUN&&!RW&&CUR_SUB===g.subject&&earnTrophy(g.subject)) showReward(g.subject,true);},1700);return;}
   if(DB.sound) setTimeout(()=>speak(title),500);
 }
+/* datos de versiones anteriores: estrellas de lectura = días leídos (máx. 5) */
+function migrate(){DB.players.forEach(p=>{p.stars=p.stars||{};if(Array.isArray(p.read)) p.stars.leer=Math.min(5,p.read.length); else delete p.stars.leer; p.trophies=Array.isArray(p.trophies)?p.trophies:[];});}
+migrate();
 
 /* ---------- piezas comunes ---------- */
 function choices(list,correct,ctx,{wide=false,cls='',explain,hint,voice,onPick}={}){
@@ -1196,6 +1364,221 @@ defGame({id:'problemas',subject:'mates',icon:'🧠',title:'Problemas',desc:'Pien
 </script>
 <script>
 "use strict";
+/* ================= ARTE Y MÚSICA ================= */
+const SAYA={
+  prim:'¿Cuál de estos es un color primario?',
+  primWhy:'Los colores primarios son el rojo, el amarillo y el azul. ¡Mezclándolos salen los demás!',
+  forma:'¿Qué forma es esta?',
+  suena:'¿Qué instrumento suena? Escucha y toca su dibujo.',
+  suenaCorto:'¿Qué instrumento suena?',
+  altura:'¿Este sonido es agudo o grave?',
+  dura:'¿Este sonido es largo o corto?',
+  fuerte:'Escucha los dos sonidos. ¿Cuál suena más fuerte?',
+  simon:'Escucha la melodía y repítela tocando las teclas.',
+  tu:'¡Ahora tú!', otra:'Escucha otra vez.', mas:'¡Muy bien! Una nota más.',
+};
+const ARTE_SND={agudo:'Es agudo, como el canto de un pajarito.',grave:'Es grave, como la voz de un oso.',largo:'Es largo: dura mucho tiempo.',corto:'Es corto: dura muy poquito.',f1:'El primero suena más fuerte.',f2:'El segundo suena más fuerte.'};
+
+/* ---- colores ---- */
+const COL={rojo:'#E8343F',amarillo:'#FFCF1F',azul:'#2F6FE4',naranja:'#FF8A1F',verde:'#2DAA4F',morado:'#8D3FD1',blanco:'#FFFFFF',negro:'#2B2F3A',rosa:'#FF9CC2',gris:'#9AA3B2',celeste:'#86D0FF',marron:'#8A5530'};
+const CN={rojo:'rojo',amarillo:'amarillo',azul:'azul',naranja:'naranja',verde:'verde',morado:'morado',blanco:'blanco',negro:'negro',rosa:'rosa',gris:'gris',celeste:'celeste',marron:'marrón'};
+const MIXES=[['rojo','amarillo','naranja'],['amarillo','azul','verde'],['rojo','azul','morado'],['rojo','blanco','rosa'],['negro','blanco','gris'],['azul','blanco','celeste']];
+const PRIM=['rojo','amarillo','azul'], MIXED=['naranja','verde','morado','rosa','gris','celeste','marron'];
+const mixWhy=(a,b,r)=>`${cap(CN[a])} y ${CN[b]} hacen ${CN[r]}.`;
+const COLQ=[
+  ...MIXES.map(([a,b,r])=>({t:'mix',a,b,r,say:`¿Qué color sale si mezclas el ${CN[a]} y el ${CN[b]}?`,why:mixWhy(a,b,r)})),
+  ...MIXES.map(([a,b,r])=>({t:'pair',a,b,r,say:`¿Qué dos colores mezclas para conseguir el ${CN[r]}?`,why:mixWhy(a,b,r)})),
+  {t:'prim',say:SAYA.prim,why:SAYA.primWhy},{t:'prim',say:SAYA.prim,why:SAYA.primWhy},
+  {t:'three',r:'marron',say:'¿Qué color sale si mezclas los tres primarios: el rojo, el amarillo y el azul?',why:'Rojo, amarillo y azul juntos hacen marrón.'},
+];
+const blob=(c,cls='')=>h('span',{class:'blob '+cls+(c==='blanco'?' white':''),style:c?`--b:${COL[c]}`:null,'aria-hidden':'true'},c?null:'?');
+const colOpt=c=>({value:c,label:[blob(c,'mini'),h('span',null,cap(CN[c]))]});
+defGame({id:'colores',subject:'arte',icon:'🎨',title:'Mezcla colores',desc:'Colores primarios y qué sale al mezclarlos',rounds:8,
+  prepare(run){run.data.next=deck(COLQ);},
+  make(run){return run.data.next();},
+  render(q,stage,ctx){
+    let box,mixRow,opts;
+    if(q.t==='mix'||q.t==='three'){
+      const res=blob(null,'q');
+      mixRow=h('div',{class:'mix'+(q.t==='three'?' three':'')},q.t==='three'?[blob('rojo'),h('b',null,'+'),blob('amarillo'),h('b',null,'+'),blob('azul')]:[blob(q.a),h('b',null,'+'),blob(q.b)],h('b',null,'='),res);
+      const others=q.t==='three'?['negro','verde','morado']:pickN(MIXED.filter(c=>c!==q.r),3);
+      opts=choices(shuffle([q.r,...others]).map(colOpt),q.r,ctx,{cls:'colors',explain:q.why,voice:{post:q.why},hint:'Fíjate en los dos colores: ¿cuál sale al juntarlos?',
+        onPick:ok=>{if(ok){res.textContent='';res.style.setProperty('--b',COL[q.r]);res.classList.remove('q');res.classList.add('filled');}}});
+    }else if(q.t==='pair'){
+      const l=blob(null,'q'),r=blob(null,'q');
+      mixRow=h('div',{class:'mix'},l,h('b',null,'+'),r,h('b',null,'='),blob(q.r));
+      const pairs=shuffle([[q.a,q.b],...pickN(MIXES.filter(m=>m[2]!==q.r),2)]);
+      opts=choices(pairs.map(([a,b])=>({value:a+'+'+b,label:[h('span',{class:'pair'},blob(a,'mini'),'+',blob(b,'mini')),h('span',null,`${cap(CN[a])} y ${CN[b]}`)]})),q.a+'+'+q.b,ctx,
+        {cls:'colors pairs',explain:q.why,voice:{post:q.why},hint:'Piensa qué dos colores llevan dentro ese color.',
+         onPick:ok=>{if(ok){[[l,q.a],[r,q.b]].forEach(([el,c])=>{el.textContent='';el.style.setProperty('--b',COL[c]);el.classList.remove('q');el.classList.add('filled');if(c==='blanco')el.classList.add('white');});}}});
+    }else{
+      const p=pick(PRIM);
+      opts=choices(shuffle([p,...pickN(['naranja','verde','morado','rosa'],3)]).map(colOpt),p,ctx,{cls:'colors',explain:q.why,voice:{post:q.why},hint:'Los primarios no salen de mezclar otros colores.'});
+      mixRow=h('div',{class:'mix'},h('span',{class:'q-emoji small','aria-hidden':'true'},'🎨'));
+    }
+    box=pane2([mixRow],[h('div',{class:'with-say'},h('div',{class:'q-prompt'},q.say),sayBtn(q.say)),opts]);
+    stage.append(box); instr(q.say);
+  }});
+
+/* ---- formas ---- */
+const SH={circulo:{n:'círculo',l:0},cuadrado:{n:'cuadrado',l:4},triangulo:{n:'triángulo',l:3},rectangulo:{n:'rectángulo',l:4},ovalo:{n:'óvalo',l:0},rombo:{n:'rombo',l:4},pentagono:{n:'pentágono',l:5},hexagono:{n:'hexágono',l:6}};
+const BASIC=['circulo','cuadrado','triangulo','rectangulo','ovalo','rombo'];
+const SHOBJ=[['🕐','el reloj','circulo'],['🍪','la galleta','circulo'],['🚪','la puerta','rectangulo'],['📺','la tele','rectangulo'],['🥚','el huevo','ovalo'],['🏈','el balón de rugby','ovalo'],
+  ['🍕','el trozo de pizza','triangulo'],['⚠️','la señal de peligro','triangulo'],['🪁','la cometa','rombo'],['🧇','el gofre','cuadrado']];
+const sidesWhy=id=>SH[id].l?`El ${SH[id].n} tiene ${SH[id].l} lados.`:`El ${SH[id].n} no tiene lados: su borde es una línea curva.`;
+const SHQ=[
+  ...[...BASIC,'pentagono','hexagono'].map(id=>({t:'name',id,say:SAYA.forma,why:`Es un ${SH[id].n}.`})),
+  ...['triangulo','cuadrado','rectangulo','rombo','pentagono','hexagono','circulo'].map(id=>({t:'sides',id,say:`¿Cuántos lados tiene el ${SH[id].n}?`,why:sidesWhy(id)})),
+  ...SHOBJ.map(([e,o,id])=>({t:'obj',e,o,id,say:`¿Qué forma tiene ${o}?`,why:`${cap(o)} tiene forma de ${SH[id].n}.`})),
+];
+const SHCOL=['rojo','azul','verde','naranja','morado','amarillo','celeste','rosa'];
+let shapeN=0;
+function shapeSvg(id,c){
+  const NS='http://www.w3.org/2000/svg',mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  const svg=mk('svg',{viewBox:'0 0 200 200',class:'shape',role:'img','aria-label':'Una forma'}),gid='sg'+(++shapeN);
+  const gr=mk('linearGradient',{id:gid,x1:0,y1:0,x2:0,y2:1});gr.append(mk('stop',{offset:'0','stop-color':'#fff','stop-opacity':'.45'}),mk('stop',{offset:'.55','stop-color':'#fff','stop-opacity':'0'}));
+  const defs=mk('defs',{});defs.append(gr);svg.append(defs);
+  const poly=(n,r,rot,dy=0)=>Array.from({length:n},(_,i)=>{const a=(rot+i*360/n)*Math.PI/180;return `${(100+r*Math.cos(a)).toFixed(1)},${(100+dy+r*Math.sin(a)).toFixed(1)}`;}).join(' ');
+  const shape=()=>{switch(id){
+    case 'circulo':return mk('circle',{cx:100,cy:100,r:82});
+    case 'ovalo':return mk('ellipse',{cx:100,cy:100,rx:90,ry:60});
+    case 'cuadrado':return mk('rect',{x:28,y:28,width:144,height:144,rx:8});
+    case 'rectangulo':return mk('rect',{x:8,y:50,width:184,height:100,rx:8});
+    case 'triangulo':return mk('polygon',{points:poly(3,94,-90,14)});
+    case 'rombo':return mk('polygon',{points:'100,10 160,100 100,190 40,100'});
+    case 'pentagono':return mk('polygon',{points:poly(5,90,-90,6)});
+    default:return mk('polygon',{points:poly(6,90,0)});}};
+  const base=shape(),shine=shape();
+  base.setAttribute('fill',COL[c]);base.setAttribute('stroke','rgba(0,0,0,.22)');base.setAttribute('stroke-width','8');base.setAttribute('stroke-linejoin','round');
+  shine.setAttribute('fill',`url(#${gid})`);
+  svg.append(base,shine); return svg;
+}
+defGame({id:'formas',subject:'arte',icon:'🔺',title:'Formas',desc:'Círculo, cuadrado, triángulo, rectángulo, óvalo y rombo',rounds:8,
+  prepare(run){run.data.next=deck(SHQ);},
+  make(run){return run.data.next();},
+  render(q,stage,ctx){
+    let left,opts;
+    if(q.t==='sides'){
+      left=[shapeSvg(q.id,pick(SHCOL)),h('div',{class:'tag'},cap(SH[q.id].n))];
+      const l=SH[q.id].l;
+      opts=choices(l===0?[0,3,4,5]:[3,4,5,6],l,ctx,{explain:q.why,voice:{post:q.why},hint:'Cuenta los lados con el dedo, uno a uno.'});
+    }else{
+      left=q.t==='obj'?[h('div',{class:'q-emoji','aria-hidden':'true'},q.e)]:[shapeSvg(q.id,pick(SHCOL))];
+      const pool=BASIC.filter(x=>x!==q.id);
+      opts=choices(shuffle([q.id,...pickN(pool,3)]).map(id=>({value:id,label:cap(SH[id].n)})),q.id,ctx,{cls:'words',explain:q.why,voice:{post:q.why},
+        hint:q.t==='obj'?'Imagina su borde: ¿es redondo, tiene esquinas…?':'Mira si tiene lados rectos o curvos, y cuántos.'});
+    }
+    stage.append(pane2(left,[h('div',{class:'with-say'},h('div',{class:'q-prompt'},q.say),sayBtn(q.say)),opts]));
+    instr(q.say);
+  }});
+
+/* ---- instrumentos ---- */
+const INS=[
+  {id:'guitarra',n:'la guitarra',f:'cuerda'},{id:'violin',n:'el violín',f:'cuerda'},{id:'arpa',n:'el arpa',f:'cuerda'},
+  {id:'flauta',n:'la flauta',f:'viento'},{id:'trompeta',n:'la trompeta',f:'viento'},{id:'saxofon',n:'el saxofón',f:'viento'},{id:'clarinete',n:'el clarinete',f:'viento'},
+  {id:'tambor',n:'el tambor',f:'percusion'},{id:'pandereta',n:'la pandereta',f:'percusion'},{id:'maracas',n:'las maracas',f:'percusion'},{id:'triangulo',n:'el triángulo',f:'percusion'},{id:'castanuelas',n:'las castañuelas',f:'percusion'}];
+const FAM={cuerda:{n:'Cuerda',d:'Suenan al tocar sus cuerdas',why:'Los instrumentos de cuerda suenan al tocar o frotar sus cuerdas.'},
+  viento:{n:'Viento',d:'Suenan al soplar',why:'Los instrumentos de viento suenan al soplar.'},
+  percusion:{n:'Percusión',d:'Suenan al golpearlos o agitarlos',why:'Los instrumentos de percusión suenan al golpearlos o agitarlos.'}};
+INS.forEach(i=>{i.pl=/^las /.test(i.n);i.es=i.pl?'son':'es';i.nm=i.n.replace(/^(el|la|las) /,'');i.img=`img/i-${i.id}.png`;
+  i.ask=`¿De qué familia ${i.es} ${i.n}?`;i.is=`${cap(i.n)} ${i.es} de ${FAM[i.f].n.toLowerCase()}.`;i.it=`${i.pl?'Son':'Es'} ${i.n}.`;});
+const insImg=(i,cls='')=>h('img',{class:'ins-img '+cls,src:i.img,alt:cap(i.nm)});
+const playIns=(i,cb)=>playSnd('♪'+i.id,{onend:cb});
+defGame({id:'familias',subject:'arte',icon:'🎻',title:'Familias de instrumentos',desc:'¿Es de cuerda, de viento o de percusión?',rounds:8,
+  prepare(run){run.data.next=deck(INS);},
+  make(run){return run.data.next();},
+  render(q,stage,ctx){
+    const hear=h('button',{class:'btn ghost',onclick:()=>{stopSnd();playIns(q);}},'🔊 Escuchar');
+    const opts=choices(Object.entries(FAM).map(([k,f])=>({value:k,label:[h('strong',null,f.n),h('small',null,f.d)]})),q.f,ctx,{cls:'fams',
+      explain:`${q.is} ${FAM[q.f].why}`,voice:{post:[q.is,FAM[q.f].why]},hint:'¿Cómo se toca: con cuerdas, soplando o golpeando?'});
+    stage.append(pane2([insImg(q,'big'),h('div',{class:'tag'},cap(q.nm)),hear],[h('div',{class:'with-say'},h('div',{class:'q-prompt'},q.ask),sayBtn(q.ask)),opts]));
+    clearTimeout(instrTimer); instrTimer=setTimeout(()=>{if(DB.sound) speak(q.ask,'es-ES',.9,()=>playIns(q));},350);
+  }});
+defGame({id:'suena',subject:'arte',icon:'🎧',title:'¿Qué instrumento suena?',desc:'Escucha el sonido y adivina el instrumento',rounds:8,
+  prepare(run){run.data.next=deck(INS);},
+  make(run){const i=run.data.next();return {i,opts:shuffle([i,...pickN(INS.filter(x=>x!==i),3)])};},
+  render(q,stage,ctx,run){
+    const play=h('button',{class:'listen','aria-label':'Escuchar el instrumento',onclick:()=>{stopSnd();play.classList.add('playing');playIns(q.i,()=>play.classList.remove('playing'));}},'▶');
+    const opts=choices(q.opts.map(i=>({value:i.id,label:[insImg(i),h('span',null,cap(i.nm))]})),q.i.id,ctx,{cls:'insts',explain:q.i.it,voice:{post:q.i.it},hint:'Escucha otra vez con el botón grande.'});
+    stage.append(pane2([play,h('div',{class:'q-prompt'},SAYA.suenaCorto)],[opts]));
+    clearTimeout(instrTimer);
+    instrTimer=setTimeout(()=>{if(!DB.sound) return; speak(run.i===0?SAYA.suena:SAYA.suenaCorto,'es-ES',.9,()=>play.click());},350);
+  }});
+
+/* ---- cualidades del sonido (sintetizadas) ---- */
+function synthNote(f,{at=0,dur=.3,vol=.4,low=false}={}){
+  const c=ac(); if(!c) return; const t=c.currentTime+.04+at;
+  try{const o=c.createOscillator(),o2=c.createOscillator(),g=c.createGain(),g2=c.createGain(),lp=c.createBiquadFilter();
+    o.type=low?'sawtooth':'triangle'; o.frequency.value=f; o2.type='sine'; o2.frequency.value=f*2; g2.gain.value=.2;
+    lp.type='lowpass'; lp.frequency.value=low?900:Math.min(9000,f*5);
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.025); g.gain.setValueAtTime(vol,t+Math.max(.03,dur-.1)); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(lp); o2.connect(g2).connect(lp); lp.connect(g).connect(c.destination);
+    o.start(t); o2.start(t); o.stop(t+dur+.05); o2.stop(t+dur+.05);}catch(e){}
+}
+const SONQ=['agudo','grave','largo','corto','fuerte','fuerte'];
+defGame({id:'sonido',subject:'arte',icon:'🔉',title:'Agudo, grave, largo, corto…',desc:'Las cualidades del sonido: altura, duración e intensidad',rounds:8,
+  prepare(run){run.data.next=deck(SONQ);},
+  make(run){const k=run.data.next();return k==='fuerte'?{t:'fuerte',a:pick([1,2])}:{t:k==='agudo'||k==='grave'?'altura':'dura',a:k};},
+  render(q,stage,ctx,run){
+    const marks=[h('span',{class:'snd-n'},'1'),h('span',{class:'snd-n'},'2')];
+    const lit=(k,ms)=>{marks[k].classList.add('on');setTimeout(()=>marks[k].classList.remove('on'),ms);};
+    function playIt(){
+      if(q.t==='altura'){const hi=q.a==='agudo';[0,1,2].forEach(k=>synthNote(hi?[1047,1319,1568][k]:[131,165,196][k],{at:k*.32,dur:.3,vol:hi?.22:.45,low:!hi}));return 1100;}
+      if(q.t==='dura'){if(q.a==='largo'){synthNote(523,{dur:2.4,vol:.3});return 2500;} synthNote(523,{dur:.16,vol:.32});return 400;}
+      const v=q.a===1?[.55,.05]:[.05,.55];
+      [0,1].forEach(s=>{[0,1,2].forEach(k=>synthNote([523,659,784][k],{at:s*1.4+k*.3,dur:.28,vol:v[s]}));setTimeout(()=>lit(s,950),s*1400+40);});
+      return 2400;
+    }
+    const play=h('button',{class:'listen','aria-label':'Escuchar el sonido',onclick:()=>{if(play.classList.contains('playing'))return;play.classList.add('playing');setTimeout(()=>play.classList.remove('playing'),playIt());}},'▶');
+    const say=q.t==='altura'?SAYA.altura:q.t==='dura'?SAYA.dura:SAYA.fuerte;
+    const list=q.t==='altura'?[{value:'agudo',label:'🐦 Agudo'},{value:'grave',label:'🐻 Grave'}]:q.t==='dura'?[{value:'largo',label:'🐍 Largo'},{value:'corto',label:'🐞 Corto'}]:[{value:1,label:'1️⃣ El primero'},{value:2,label:'2️⃣ El segundo'}];
+    const why=q.t==='fuerte'?ARTE_SND['f'+q.a]:ARTE_SND[q.a];
+    const opts=choices(list,q.a,ctx,{cls:'words',explain:why,voice:{post:why},hint:'Pulsa el botón grande y escucha otra vez.'});
+    stage.append(pane2([play,q.t==='fuerte'?h('div',{class:'snd-row'},marks):null],[h('div',{class:'with-say'},h('div',{class:'q-prompt'},say),sayBtn(say)),opts]));
+    clearTimeout(instrTimer); instrTimer=setTimeout(()=>{if(DB.sound) speak(say,'es-ES',.9,()=>setTimeout(()=>play.click(),250));},350);
+  }});
+
+/* ---- repite la melodía ---- */
+const KEYS=[{n:'Do',f:523.25,c:'rojo'},{n:'Mi',f:659.25,c:'amarillo'},{n:'Sol',f:783.99,c:'verde'},{n:'La',f:880,c:'azul'}];
+function marimba(f){const c=ac(); if(!c) return; const t=c.currentTime+.02;
+  try{[[1,.42,.9],[4,.06,.25]].forEach(([m,v,d])=>{const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f*m;
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d+.05);});}catch(e){}}
+const SIMON_LV=7, simonStars=l=>l>=7?3:l>=5?2:l>=3?1:0;
+defGame({id:'simon',subject:'arte',icon:'🎹',title:'Repite la melodía',desc:'Escucha las notas y tócalas en el mismo orden',marks:[3/7,5/7,1],
+  custom(stage,run,ctx){
+    let seq=[rnd(0,3),rnd(0,3)],pos=0,lock=true,fails=0,done=0,timers=[];
+    const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
+    const info=h('div',{class:'tag'},'Escucha…');
+    const keys=KEYS.map((k,i)=>h('button',{class:'skey',style:`--k:${COL[k.c]}`,'aria-label':'Nota '+k.n,onpointerdown:e=>{e.preventDefault();tap(i);},onclick:e=>{if(e.detail===0)tap(i);}},h('span',null,k.n)));
+    const again=h('button',{class:'btn ghost',onclick:()=>{if(!lock){sfx.tap();playSeq();}}},'🔁 Oír otra vez');
+    function light(i,ms=320){const b=keys[i];b.classList.add('on');marimba(KEYS[i].f);later(()=>b.classList.remove('on'),ms);}
+    function playSeq(){lock=true;pos=0;info.textContent='Escucha…';info.className='tag';
+      seq.forEach((n,k)=>later(()=>light(n),400+k*560));
+      later(()=>{lock=false;info.textContent='¡Ahora tú!';info.className='tag go';if(DB.sound&&done===0&&fails===0) speak(SAYA.tu);},400+seq.length*560);}
+    function tap(i){
+      if(lock) return; light(i,220);
+      if(i!==seq[pos]){lock=true;fails++;sfx.ko();
+        if(fails>=2){later(()=>end(),700);return;}
+        showToast('¡Uy! Esa no era',SAYA.otra); if(DB.sound) later(()=>speak(SAYA.otra),300); later(playSeq,1500); return;}
+      pos++;
+      if(pos===seq.length){lock=true;done++;fails=0;ctx.meter(done/SIMON_LV,simonStars(done));
+        if(done>=SIMON_LV){later(()=>end(),900);return;}
+        info.textContent='¡Muy bien!';info.className='tag good'; if(DB.sound) later(()=>speak(SAYA.mas),350);
+        seq.push(rnd(0,3)); later(playSeq,1900);}
+    }
+    function end(){timers.forEach(clearTimeout);timers=[];const st=Math.max(1,simonStars(done));
+      ctx.finish(st,done?`Has repetido melodías de hasta ${done+1} notas.`:'¡Sigue practicando: escucha bien y repite!');}
+    cleanup=()=>{timers.forEach(clearTimeout);timers=[];};
+    stage.append(h('div',{class:'with-say'},h('div',{class:'q-prompt'},SAYA.simon),sayBtn(SAYA.simon)),info,h('div',{class:'simon'},keys),again);
+    if(DB.sound) speak(SAYA.simon,'es-ES',.9,()=>{if(RUN===run) playSeq();}); else later(playSeq,500);
+  }});
+
+/* frases de Arte y música que dice Mochi (para grabarlas) */
+const ARTE_PHRASES=()=>[...Object.values(SAYA),...Object.values(ARTE_SND),...COLQ.flatMap(q=>[q.say,q.why]),...SHQ.flatMap(q=>[q.say,q.why]),
+  ...INS.flatMap(i=>[i.ask,i.is,i.it]),...Object.values(FAM).map(f=>f.why)];
+</script>
+<script>
+"use strict";
 /* ================= CONOCIMIENTO DEL MEDIO ================= */
 const SAYC={
   huesos:'¿Tiene huesos por dentro?', grupos:'¿A qué grupo pertenece?',
@@ -1425,7 +1808,7 @@ defGame({id:'memory',subject:'ingles',icon:'🃏',title:'Memory',desc:'Encuentra
         sfx.pop();b.classList.add('up');b.setAttribute('aria-label',c.txt);sayEn(c.w);open.push([b,c]);
         if(open.length<2) return;
         moves++;info.textContent='Intentos: '+moves;const [[b1,c1],[b2,c2]]=open;open=[];
-        if(c1.i===c2.i){setTimeout(()=>{b1.classList.add('done');b2.classList.add('done');sfx.ok();found++;
+        if(c1.i===c2.i){setTimeout(()=>{b1.classList.add('done');b2.classList.add('done');sfx.ok();found++;ctx.meter(found/pairs.length,0);
           if(found===pairs.length){const st=moves<=9?3:moves<=13?2:1;setTimeout(()=>ctx.finish(st,`Has encontrado las ${pairs.length} parejas en ${moves} intentos.`),900);}},350);}
         else{lock=true;setTimeout(()=>{[b1,b2].forEach(x=>{x.classList.remove('up');x.setAttribute('aria-label','Carta tapada');});lock=false;},1150);}
       }},h('span',{class:'card-in'},h('span',{class:'backf','aria-hidden':'true'},h('img',{src:IMG.wave,alt:''})),h('span',{class:'face'+(c.kind==='e'?' emo':'')},c.txt)));
@@ -1465,8 +1848,8 @@ function weekStrip(){
     return h('div',{class:'day'+(read.has(key)?' done':'')+(key===dayKey(now)?' today':'')},h('div',null,read.has(key)?'✓':d.getDate(),h('br'),h('small',null,l)));}));
 }
 const ASK=['¿De qué trataba lo que has leído?','¿Quién salía? ¿Dónde pasaba?','¿Qué pasó al principio, en medio y al final?','¿Cómo crees que se sentía el personaje?','¿Qué es lo que más te ha gustado?','¿Qué crees que pasará después?'];
-defGame({id:'leer',subject:'lectura',icon:'⏱️',title:'Lectura en voz alta',desc:'Temporizador de 10 o 15 minutos y preguntas para después',
-  custom(stage,run){
+defGame({id:'leer',subject:'lectura',icon:'⏱️',title:'Lectura en voz alta',desc:'Temporizador de 10 o 15 minutos y preguntas para después. Una estrella por cada día que lees, hasta 5.',max:5,marks:[1],
+  custom(stage,run,ctx){
     let mins=(DB.opt&&DB.opt.leerMin)||10,total=mins*60000,left=total,endAt=0,timer=null,wake=null,running=false;
     const NS='http://www.w3.org/2000/svg',R=120,CIRC=2*Math.PI*R;
     const svg=document.createElementNS(NS,'svg');svg.setAttribute('viewBox','0 0 280 280');
@@ -1474,11 +1857,11 @@ defGame({id:'leer',subject:'lectura',icon:'⏱️',title:'Lectura en voz alta',d
     mk('trk');const val=mk('val');val.setAttribute('stroke-dasharray',CIRC);
     const fmt=ms=>{const s=Math.ceil(ms/1000);return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;};
     const time=h('div',{class:'time',role:'timer'},fmt(left));
-    const draw=()=>{time.textContent=fmt(left);val.setAttribute('stroke-dashoffset',CIRC*(1-left/total));};
+    const draw=()=>{time.textContent=fmt(left);val.setAttribute('stroke-dashoffset',CIRC*(1-left/total));ctx.meter(1-left/total,left<=0?1:0);};
     const reqWake=async()=>{try{wake=await navigator.wakeLock.request('screen');}catch(e){wake=null;}};
     const relWake=()=>{try{wake&&wake.release();}catch(e){}wake=null;};
     const chips=h('div',{class:'chips'},[10,15].map(m=>h('button',{class:'chip'+(m===mins?' on':''),'data-m':m,onclick:()=>{if(running)return;mins=m;DB.opt=DB.opt||{};DB.opt.leerMin=m;save();total=left=m*60000;draw();sfx.pop();chips.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',+x.dataset.m===m));}},`${m} minutos`)));
-    const startB=h('button',{class:'btn big',onclick:()=>{sfx.pop();running?pause():start();}},'▶ Empezar');
+    const startB=h('button',{class:'btn big',style:'--c:var(--lectura)',onclick:()=>{sfx.pop();running?pause():start();}},'▶ Empezar');
     const resetB=h('button',{class:'btn ghost',onclick:()=>{pause();left=total;draw();startB.textContent='▶ Empezar';}},'↺ Reiniciar');
     const doneBox=h('div',{class:'end',hidden:true});
     function tick(){left=Math.max(0,endAt-Date.now());draw();if(left<=0)finishRead();}
@@ -1486,9 +1869,13 @@ defGame({id:'leer',subject:'lectura',icon:'⏱️',title:'Lectura en voz alta',d
     function pause(){if(!running)return;clearInterval(timer);timer=null;left=Math.max(0,endAt-Date.now());running=false;startB.textContent='▶ Seguir';relWake();draw();}
     function finishRead(){clearInterval(timer);timer=null;running=false;relWake();startB.textContent='▶ Otra vez';
       const p=me();if(p){p.read=[...new Set([...(p.read||[]),dayKey(new Date())])].slice(-90);save();}
-      setStars('leer',3);const coin=$('#coin');if(coin)coin.textContent=totalStars();
-      sfx.win();confetti();doneBox.hidden=false;doneBox.replaceChildren(h('div',{class:'end-stars'},[1,2,3].map(()=>h('span',{class:'on'},'★'))),mochi('happy'),h('h2',null,'¡Lectura terminada!'),h('p',null,'Ahora toca hablar de lo que has leído.'));
-      week.replaceWith(week=weekStrip()); if(DB.sound) speak(SAYR.done);}
+      const days=Math.min(5,((p&&p.read)||[]).length); setStars('leer',days); coinPop();
+      sfx.win();confetti();doneBox.hidden=false;doneBox.replaceChildren(starsEl(days,5),mochi('happy'),h('h2',null,'¡Lectura terminada!'),
+        h('p',null,days<5?`Llevas ${days} de 5 días de lectura. Ahora toca hablar de lo que has leído.`:'Ahora toca hablar de lo que has leído.'));
+      doneBox.firstChild.classList.add('big');
+      week.replaceWith(week=weekStrip());
+      if(earnTrophy('lectura')){setTimeout(()=>{if(CUR_SUB==='lectura'&&!RW) showReward('lectura',true);},1600);return;}
+      if(DB.sound) speak(SAYR.done);}
     cleanup=()=>{clearInterval(timer);relWake();};
     let week=weekStrip();
     stage.append(h('div',{class:'q-prompt'},'Lee en voz alta, despacito y respetando los puntos y las comas'),
@@ -1498,38 +1885,6 @@ defGame({id:'leer',subject:'lectura',icon:'⏱️',title:'Lectura en voz alta',d
           h('strong',null,'Mi semana de lectura'),week)));
     draw(); instr(SAYR.start);
   }});
-
-/* ================= MI CUADERNO ================= */
-function nbEl(kind){
-  const cells=[];const at=(el,c,r,span=1,rspan=1)=>{el.style.gridColumn=`${c} / span ${span}`;el.style.gridRow=`${r} / span ${rspan}`;cells.push(el);};
-  let N;
-  if(kind.startsWith('lengua')){N=18;
-    for(let k=1;k<=2;k++) at(h('span',{class:'sq gapsq'},h('span',null,k)),k,1);
-    at(h('span',{class:'sq dotsq'}),3,1);
-    at(h('span',{class:'sq txt'},'Hoy es lunes y hace sol.'),4,1,15);
-    at(h('span',{class:'sq'}),1,2);
-  }else{N=24;const g1=kind==='mates1',g2=kind==='mates2';
-    for(let k=1;k<=5;k++) at(h('span',{class:'sq'+(g1?' gapsq':'')},g1?h('span',null,k):null),k,2);
-    at(h('span',{class:'sq cuenta'},h('span',null,'25'),h('span',null,'+13'),h('b',null,'38')),6,1,3,3);
-    for(let k=1;k<=10;k++) at(h('span',{class:'sq'+(g2?' gapsq':'')},g2?h('span',null,k):null),8+k,2);
-    at(h('span',{class:'sq cuenta'},h('span',null,'47'),h('span',null,'−21'),h('b',null,'26')),19,1,3,3);
-    at(h('span',{class:'sq'}),24,3);
-  }
-  const nb=h('div',{class:'nb',style:`grid-template-columns:repeat(${N},32px);grid-template-rows:repeat(${kind.startsWith('lengua')?2:3},32px)`},cells);
-  return h('div',{class:'nb-wrap',hidden:true},nb);
-}
-const NB_Q=[
- {kind:'lengua',q:'En Lengua, ¿cuántos cuadritos dejo antes de empezar a escribir?',opts:[1,2,5,10],a:2,why:'En Lengua dejo 2 cuadritos, pongo un puntito y empiezo.'},
- {kind:'lengua-dot',q:'Después de dejar los cuadritos, ¿qué pongo antes de escribir?',opts:['Un puntito','Una raya','Un dibujo'],a:'Un puntito',why:'2 cuadritos, un puntito… ¡y a escribir!'},
- {kind:'mates1',q:'En Mates, ¿cuántos cuadritos dejo hasta la primera cuenta?',opts:[2,5,10],a:5,why:'5 cuadritos hasta la primera cuenta.'},
- {kind:'mates2',q:'En Mates, ¿cuántos cuadritos dejo entre una cuenta y la siguiente?',opts:[2,5,10],a:10,why:'10 cuadritos entre cuenta y cuenta, para que no se mezclen.'},
-];
-defGame({id:'margenes',subject:'cuaderno',icon:'📏',title:'¿Cuántos cuadritos?',desc:'Los márgenes de Lengua y de Mates en el cuaderno de cuadros',rounds:NB_Q.length,
-  make(run){return NB_Q[run.i];},
-  render(q,stage,ctx){const wrap=nbEl(q.kind);
-    stage.append(h('div',{class:'with-say'},h('div',{class:'q-prompt'},q.q),sayBtn(q.q)),choices(q.opts,q.a,ctx,{wide:typeof q.a==='string',explain:q.why,voice:{post:q.why},hint:'Acuérdate de lo que dice la seño en clase.',
-      onPick:ok=>{if(ok){wrap.hidden=false;requestAnimationFrame(()=>wrap.firstChild.classList.add('reveal'));}}}),wrap);
-    instr(q.q);}});
 
 /* ================= ARRANQUE ================= */
 document.addEventListener('pointerdown',()=>{ac();try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist().catch(()=>{});}catch(e){}},{once:true});
