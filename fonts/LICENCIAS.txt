@@ -1,0 +1,4 @@
+Fuentes incluidas en la Mochila de 2º (licencia SIL Open Font License 1.1, https://openfontlicense.org):
+- Andika — Copyright SIL International (https://software.sil.org/andika/)
+- Baloo 2 — Copyright Ek Type (https://github.com/EkType/Baloo2)
+Se distribuyen sin modificar, en formato woff2, para que la app no tenga que cargarlas desde servidores externos.
