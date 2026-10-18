@@ -723,7 +723,7 @@ function lvProg(sid,l,p=me()){const gs=gamesOf(sid).filter(hasLevels);return {go
 function totalStars(p=me()){return p?SUBJECTS.reduce((a,s)=>a+subjProg(s.id,p).got+subjRetos(s.id,p).got,0):0;}
 function setStars(id,n){const p=me(); if(!p) return; p.stars=p.stars||{}; if(n>(p.stars[id]||0)) p.stars[id]=n; save();}
 /* trofeos: uno por nivel en cada asignatura (todas las estrellas de ese nivel); «Leer cada día» solo tiene el primero */
-const TROPHY=[null,{name:'Trofeo',ic:'🏆',vid:null},{name:'Trofeo de fuego',ic:'🔥',vid:'fuego'},{name:'Trofeo galáctico',ic:'🚀',vid:'galaxia'}];
+const TROPHY=[null,{name:'Trofeo',ic:'🏆',vid:null},{name:'Trofeo de fuego',ic:'🔥',vid:'fuego'},{name:'Trofeo galáctico',ic:'🚀',vid:'cohete'}];
 const tLevels=sid=>gamesOf(sid).some(hasLevels)?[1,2,3]:[1];
 const tKey=(sid,l=1)=>l>1?sid+'@'+l:sid;
 const tProg=(sid,l=1,p=me())=>l>1?lvProg(sid,l,p):subjProg(sid,p);
