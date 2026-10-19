@@ -1161,9 +1161,23 @@ function backupBox(){
     out,h('div',{class:'row'},h('button',{class:'btn',style:'--c:var(--mates)',onclick:copy},'Copiar código')),
     inp,h('div',{class:'row'},h('button',{class:'btn',style:'--c:var(--cono)',onclick:load},'Cargar código'),msg));
 }
+/* Android y ordenadores (Chrome, Edge, Samsung…): el navegador ofrece instalarla como app.
+   Allí la app instalada comparte las estrellas con el navegador, así que no hay que copiar nada. */
+let installEvt=null;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;const sh=$('.shelf');if(sh&&!$('.install')&&!(DB.opt&&DB.opt.hideInstall)) sh.after(installCardOther());});
+addEventListener('appinstalled',()=>{installEvt=null;$('.install')&&$('.install').remove();});
+function installCardOther(){
+  const card=h('div',{class:'install'},h('div',{class:'install-ic','aria-hidden':'true'},'📲'),
+    h('div',{class:'install-tx'},h('h3',null,'¿La quieres como una app?'),
+      h('p',null,'Puedes instalar la Mochila en este dispositivo: se abrirá a pantalla completa desde su icono y funciona sin internet. Las estrellas se mantienen.'),
+      h('div',{class:'row'},h('button',{class:'btn',style:'--c:var(--mates)',onclick:async()=>{sfx.pop();const e=installEvt;if(!e)return;installEvt=null;try{await e.prompt();await e.userChoice;}catch(x){} card.remove();}},'📲 Instalar'),
+        h('button',{class:'btn ghost',onclick:()=>{DB.opt=DB.opt||{};DB.opt.hideInstall=true;save();card.remove();}},'Ahora no'))));
+  return card;
+}
 /* en Safari: copiar las estrellas antes de añadirla a la pantalla de inicio */
 function installCard(){
-  if(STANDALONE||!IOS||!DB.players.length||(DB.opt&&DB.opt.hideInstall)) return null;
+  if(STANDALONE||!DB.players.length||(DB.opt&&DB.opt.hideInstall)) return null;
+  if(!IOS) return installEvt?installCardOther():null;
   const msg=h('p',{class:'msg','aria-live':'polite'}), ta=h('textarea',{class:'codebox',readonly:true,hidden:true,'aria-label':'Código de tus estrellas'});
   const copy=()=>{const code=exportCode();sfx.pop();
     copyText(code,()=>{msg.className='msg';msg.textContent='¡Copiadas! Ahora añade la Mochila a la pantalla de inicio, ábrela y toca «Traer mis estrellas de Safari».';},
@@ -2484,6 +2498,7 @@ defGame({id:'grupos',subject:'cono',icon:'🐾',title:'Grupos de vertebrados',de
     sayC(q.n,SAYC.grupos);
   }});
 function fichaSheet(a){
+  document.querySelectorAll('.sheet').forEach(s=>s.remove());
   const close=()=>{stopVoice();sheet.remove();};
   const row=(ic,t)=>t?h('li',null,h('span',{class:'ic','aria-hidden':'true'},ic),h('span',null,t)):null;
   const tipo=a.v?`Vertebrado${a.g?': '+GROUP[a.g].l.toLowerCase():''}`:'Invertebrado: no tiene huesos';
