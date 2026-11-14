@@ -807,6 +807,7 @@ html{touch-action:manipulation; -webkit-text-size-adjust:100%}
 .pz-piece.sel{outline:4px solid var(--sun); outline-offset:3px; transform:scale(1.05)}
 .pz-piece.lifted{opacity:.25}
 .pz-piece.gone{opacity:0; transform:scale(.6); pointer-events:none; box-shadow:none}
+.pz-board,.pz-tile,.pz-piece,.pz-cell,.pz-tray,.pz-drag{-webkit-user-select:none; user-select:none; -webkit-touch-callout:none}
 .pz-drag{position:fixed; left:0; top:0; z-index:60; pointer-events:none; filter:drop-shadow(0 12px 14px rgba(0,0,0,.35))}
 .pz-pic{position:relative; width:min(100%,440px); aspect-ratio:1; margin:0 auto; border-radius:16px; background-size:cover; overflow:hidden; box-shadow:0 0 0 6px var(--card),0 12px 24px var(--shadow)}
 .pz-pic::after{content:""; position:absolute; inset:0; pointer-events:none; background-size:calc(100% / var(--g)) calc(100% / var(--g));
@@ -973,11 +974,31 @@ function haPlay(ch,file,start,dur,onend){
   },40);
   try{const p=a.play();if(p&&p.catch)p.catch(e=>{dlog('html '+ch+': '+(e&&e.message||e));done();});}catch(e){dlog('html! '+e.message);done();}
 }
+/* En el modo «html», los efectos cortos y las notas tienen cada uno su archivo pequeño (carpeta snd) y dos
+   reproductores ya cargados: suenan al momento y no se pisan. Con un solo reproductor para todos, al ir
+   cambiándole el archivo, los sonidos seguidos (piezas del puzzle, notas…) se perdían. */
+const FXFILES=['sfx-ok','sfx-ko','sfx-win','sfx-tap','sfx-pop','sfx-star','n-do','n-re','n-mi','n-sol','n-la'];
+const FXP={};
+function fxPool(k){if(!FXP[k]) FXP[k]={i:0,els:[0,1].map(()=>{const a=new Audio('snd/'+k+'.m4a');a.preload='auto';a.setAttribute('playsinline','');a.setAttribute('webkit-playsinline','');return a;})};return FXP[k];}
+/* cada archivo empieza con 0,15 s de silencio: se usa para despertarlos sin que se oiga nada */
+const FX_LEAD=.15;
+function fxPlay(k,onend){
+  const p=fxPool(k),a=p.els[p.i++%p.els.length]; a._tok=(a._tok||0)+1;
+  try{a.pause();a.currentTime=FX_LEAD;}catch(e){}
+  a.onended=onend?()=>{a.onended=null;onend();}:null;
+  try{const r=a.play();if(r&&r.catch)r.catch(e=>{dlog('fx '+k+': '+(e&&e.message||e));onend&&onend();});}catch(e){onend&&onend();}
+}
+/* el iPad solo deja sonar un reproductor si alguna vez arrancó con un toque: al primer toque se arrancan todos
+   un instante (en el silencio del principio) y se paran */
+function fxUnlock(){FXFILES.forEach(k=>fxPool(k).els.forEach(a=>{if(a._ok)return;a._ok=true;const tok=a._tok=(a._tok||0)+1;
+  try{a.currentTime=0;const r=a.play();if(r&&r.catch)r.catch(()=>{a._ok=false;});}catch(e){a._ok=false;return;}
+  setTimeout(()=>{if(a._tok===tok){try{a.pause();a.currentTime=0;}catch(e){}}},60);}));}
 let haUnlocked=false, stuckSince=0;
+setTimeout(()=>{if(engine()==='html') FXFILES.forEach(fxPool);},800);   // que vayan cargándose antes del primer toque
 function unlockAudio(){
   audioSessionPlayback();
   if(engine()==='html'){
-    if(!haUnlocked&&V.files.length){haUnlocked=true;['voice','fx'].forEach(ch=>{if(!(HA[ch]&&HA[ch]._done)) haPlay(ch,V.files[0],0,.05);});}
+    if(!haUnlocked&&V.files.length){haUnlocked=true;['voice','fx'].forEach(ch=>{if(!(HA[ch]&&HA[ch]._done)) haPlay(ch,V.files[0],0,.05);});fxUnlock();}
     return;
   }
   if(actx&&actx.state==='interrupted'){if(!stuckSince) stuckSince=Date.now(); else if(Date.now()-stuckSince>1500){try{actx.close();}catch(e){} actx=null; stuckSince=0;}}
@@ -985,7 +1006,7 @@ function unlockAudio(){
   try{const b=c.createBuffer(1,1,22050),src=c.createBufferSource();src.buffer=b;src.connect(c.destination);src.start(0);}catch(e){}
 }
 ['touchend','pointerup','click','keydown'].forEach(ev=>document.addEventListener(ev,()=>{if(engine()==='html'?!haUnlocked:(!actx||actx.state!=='running')) unlockAudio(); else stuckSince=0;},{capture:true,passive:true}));
-document.addEventListener('visibilitychange',()=>{if(document.hidden){haUnlocked=false;return;} if(engine()==='web'&&actx&&actx.state!=='running'){try{const p=actx.resume();if(p&&p.catch)p.catch(()=>{});}catch(e){}}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){haUnlocked=false;Object.values(FXP).forEach(p=>p.els.forEach(a=>a._ok=false));return;} if(engine()==='web'&&actx&&actx.state!=='running'){try{const p=actx.resume();if(p&&p.catch)p.catch(()=>{});}catch(e){}}});
 /* como mucho 2 archivos de voz descodificados además de la voz general y los efectos (cada uno ocupa decenas de MB) */
 function vtouch(i){
   V.used=(V.used||[]).filter(x=>x!==i); V.used.push(i);
@@ -1006,7 +1027,7 @@ function preloadVoices(){if(preloaded||engine()!=='web')return;preloaded=true;['
 const SND=new Set();
 function playSnd(key,{gain=1,onend}={}){
   const hit=V.map[key]; if(!hit){onend&&onend();return false;}
-  if(engine()==='html'){haPlay('fx',V.files[hit[0]],hit[1],hit[2],onend);return true;}
+  if(engine()==='html'){const k=key.slice(1);if(FXFILES.includes(k)){fxPlay(k,onend);return true;}haPlay('fx',V.files[hit[0]],hit[1],hit[2],onend);return true;}
   const c=ac(); if(!c){onend&&onend();return false;}
   vbuf(hit[0]).then(b=>{const s=c.createBufferSource(),g=c.createGain();g.gain.value=gain;s.buffer=b;s.connect(g).connect(c.destination);
     s.onended=()=>{SND.delete(s);onend&&onend();};SND.add(s);s.start(0,hit[1],hit[2]);}).catch(()=>onend&&onend());
@@ -2715,9 +2736,14 @@ defGame({id:'montar',subject:'puzzles',icon:'🖼️',title:'Monta el puzzle',de
       const face=pzFace(p,G,G,t%G,Math.floor(t/G)); face.style.transform=`rotate(${r*90}deg)`;
       const pc={t,r,face,placed:false,el:h('button',{class:'pz-piece','aria-label':'Pieza '+(i+1)},face)}; drag(pc); return pc;});
     const tray=h('div',{class:'pz-tray g'+G,style:`--cols:${G}`},pieces.map(pc=>pc.el));
-    const cellAt=(x,y)=>{const r=grid.getBoundingClientRect();if(x<r.left||x>r.right||y<r.top||y>r.bottom)return null;
-      return Math.min(G-1,Math.floor((y-r.top)/r.height*G))*G+Math.min(G-1,Math.floor((x-r.left)/r.width*G));};
     const hover=k=>cellEls.forEach((c,j)=>c.classList.toggle('over',j===k&&!filled[j]));
+    /* dónde cae la pieza que se suelta: si roza su sitio (un cuarto o más), encaja; si cae claramente en otro hueco,
+       cuenta como intento; si cae fuera, vuelve a la bandeja sin más (con dedos pequeños es fácil no atinar) */
+    const dropCell=(pc,gr)=>{const r=grid.getBoundingClientRect(),s=r.width/G;let best=null,bo=0,right=null,ro=0;
+      for(let k=0;k<N;k++){if(filled[k])continue;const x=r.left+(k%G)*s,y=r.top+Math.floor(k/G)*s;
+        const ov=Math.max(0,Math.min(gr.right,x+s)-Math.max(gr.left,x))*Math.max(0,Math.min(gr.bottom,y+s)-Math.max(gr.top,y))/(s*s);
+        if(ov>bo){bo=ov;best=k;} if((k===pc.t||pzDist(looks(pc.t,pc.r),sig[k])<8)&&ov>ro){ro=ov;right=k;}}
+      return right!=null&&ro>=.25?right:bo>=.4?best:null;};
     function select(pc){if(sel)sel.el.classList.remove('sel');sel=pc;if(pc)pc.el.classList.add('sel');board.classList.toggle('picking',!!pc);}
     function tapPiece(pc){
       if(done||pc.placed) return;
@@ -2732,11 +2758,11 @@ defGame({id:'montar',subject:'puzzles',icon:'🖼️',title:'Monta el puzzle',de
         if(e.pointerId!==pid||pc.placed) return;
         if(!moving&&Math.hypot(e.clientX-sx,e.clientY-sy)>8){moving=true;const s=grid.getBoundingClientRect().width/G,f=pzFace(p,G,G,pc.t%G,Math.floor(pc.t/G));f.style.transform=`rotate(${pc.r*90}deg)`;
           ghostEl=h('div',{class:'pz-drag',style:`width:${s}px;height:${s}px`},f);document.body.append(ghostEl);pc.el.classList.add('lifted');}
-        if(moving){ghostEl.style.transform=`translate(${e.clientX-ghostEl.offsetWidth/2}px,${e.clientY-ghostEl.offsetHeight/2}px)`;hover(cellAt(e.clientX,e.clientY));}
+        if(moving){ghostEl.style.transform=`translate(${e.clientX-ghostEl.offsetWidth/2}px,${e.clientY-ghostEl.offsetHeight/2}px)`;hover(dropCell(pc,ghostEl.getBoundingClientRect()));}
       });
       const end=e=>{
         if(e.pointerId!==pid) return; pid=null;
-        if(moving){moving=false;const k=e.type==='pointerup'?cellAt(e.clientX,e.clientY):null;if(ghostEl){ghostEl.remove();ghostEl=null;}pc.el.classList.remove('lifted');hover(null);
+        if(moving){moving=false;const k=e.type==='pointerup'&&ghostEl?dropCell(pc,ghostEl.getBoundingClientRect()):null;if(ghostEl){ghostEl.remove();ghostEl=null;}pc.el.classList.remove('lifted');hover(null);
           if(k!=null&&!filled[k]) tryPlace(pc,k);}
         else if(e.type==='pointerup') tapPiece(pc);
       };
