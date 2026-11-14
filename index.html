@@ -979,7 +979,7 @@ function haPlay(ch,file,start,dur,onend){
    cambiándole el archivo, los sonidos seguidos (piezas del puzzle, notas…) se perdían. */
 const FXFILES=['sfx-ok','sfx-ko','sfx-win','sfx-tap','sfx-pop','sfx-star','n-do','n-re','n-mi','n-sol','n-la'];
 const FXP={};
-function fxPool(k){if(!FXP[k]) FXP[k]={i:0,els:[0,1].map(()=>{const a=new Audio('snd/'+k+'.m4a');a.preload='auto';a.setAttribute('playsinline','');a.setAttribute('webkit-playsinline','');return a;})};return FXP[k];}
+function fxPool(k){if(!FXP[k]) FXP[k]={i:0,els:[0,1].map(()=>{const a=new Audio('snd/'+k+'.mp4');a.preload='auto';a.setAttribute('playsinline','');a.setAttribute('webkit-playsinline','');return a;})};return FXP[k];}
 /* cada archivo empieza con 0,15 s de silencio: se usa para despertarlos sin que se oiga nada */
 const FX_LEAD=.15;
 function fxPlay(k,onend){
