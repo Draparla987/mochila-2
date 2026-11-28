@@ -1,7 +1,7 @@
 {
-  "name": "Mochila de 2º",
-  "short_name": "Mochila 2º",
-  "description": "Juegos para repasar 2º de Primaria con Mochi",
+  "name": "Mochi",
+  "short_name": "Mochi",
+  "description": "Juegos para aprender y repasar con Mochi",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
